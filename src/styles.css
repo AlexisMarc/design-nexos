@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.b-primary {
+    @apply transition-all rounded ease-in-out delay-150 bg-gradient-to-r hover:bg-gradient-to-tr from-brand-yellow-400 hover:from-brand-yellow-300 active:from-brand-yellow-600 disabled:from-brand-yellow-100 from-0% via-brand-orange-400 disabled:via-brand-orange-100 hover:via-brand-orange-300 active:via-brand-orange-600 via-60% to-brand-red-400 hover:to-brand-red-300 active:to-brand-red-600 disabled:to-brand-red-100 to-100% focus:ring ring-brand-red-500 ring-offset-neutral-50 dark:ring-offset-neutral-900 focus:ring-offset-2 text-neutral-50 active:shadow-inner active:shadow-neutral-900 disabled:shadow-inner disabled:shadow-neutral-600 disabled:text-neutral-400
+}
+
+.b-secondary {
+    @apply transition-all rounded ease-in-out delay-150 bg-gradient-to-r hover:bg-gradient-to-tr from-neutral-300 hover:from-neutral-300 active:from-neutral-600 disabled:from-neutral-100 from-10% to-neutral-500 hover:to-brand-cyan-300 active:to-brand-cyan-600 disabled:to-neutral-200 to-95% focus:ring ring-brand-cyan-500 ring-offset-neutral-50 dark:ring-offset-neutral-900 focus:ring-offset-2 text-neutral-50 active:shadow-inner active:shadow-neutral-900 disabled:shadow-inner disabled:shadow-neutral-600 disabled:text-neutral-400
+}
+
+.b-tertiary {
+    @apply transition-all rounded delay-75 border-2 border-brand-orange-500 text-brand-orange-500 hover:bg-brand-orange-50 active:shadow-inner active:shadow-neutral-900 focus:ring ring-brand-orange-500 ring-offset-neutral-50 dark:ring-offset-neutral-900 focus:ring-offset-2 disabled:shadow-inner disabled:shadow-neutral-600 disabled:text-neutral-400 disabled:bg-neutral-100 disabled:border-brand-orange-300
+}
+
+.b-fit {
+    @apply w-fit h-fit
+}
+
+.i-field input {
+    @apply px-4 py-2 w-full h-fit border-2 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-100 dark:border-neutral-300 border-neutral-400 rounded focus-visible:border-brand-orange-500 dark:focus-visible:border-brand-orange-500 focus-visible:outline-none
+}
+
+.i-field textarea {
+    @apply px-4 py-2 w-full h-fit border-2 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-100 dark:border-neutral-300 border-neutral-400 rounded focus-visible:border-brand-orange-500 dark:focus-visible:border-brand-orange-500 focus-visible:outline-none min-h-11
+}
+
+.i-field label {
+    @apply text-xs font-black text-neutral-700 dark:text-neutral-300
+}

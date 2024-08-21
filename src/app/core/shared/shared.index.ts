@@ -1,0 +1,1 @@
+export * from './nx-table/nx-table.module'
