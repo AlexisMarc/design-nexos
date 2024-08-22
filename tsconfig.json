@@ -4,7 +4,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@modules": ["./src/app/core/modules/module.index.ts"],
+      "@login": ["./src/app/core/modules/login/pages/index.ts"],
+      "@home": ["./src/app/core/modules/home/components/home.index.ts"],
       "@models": ["./src/app/core/models"],
       "@services": ["./src/app/core/services"],
     },

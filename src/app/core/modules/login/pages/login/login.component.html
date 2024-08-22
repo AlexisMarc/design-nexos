@@ -1,0 +1,25 @@
+<div class="w-full h-svh flex flex-col items-center sm:justify-center bg-neutral-100">
+    <div
+        class="flex w-full sm:w-fit lg:w-full lg:h-[calc(100svh-6rem)] lg:max-w-4xl lg:max-h-[42rem] justify-stretch lg:shadow-lg shadow-neutral-500">
+        <div
+            class="w-full lg:w-1/2 justify-center h-fit lg:h-full px-8 sm:py-8 lg:p-12 sm:min-w-96 flex flex-col gap-4 sm:bg-neutral-50 sm:rounded sm:shadow-lg shadow-neutral-500 lg:shadow-none lg:rounded-none lg:rounded-tl lg:rounded-bl">
+            <div class="w-full pt-4">
+                <img class="w-full lg:hidden" src="assets/img/LOGO-FULL-BLACK.png" alt="Logo">
+                <img class="hidden lg:block" src="assets/img/LOGO-NEXOSPH-SIN-JIRAFAS-140X40.png" alt="Logo">
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+        <div class="bg-brand-orange-500 w-1/2 h-full hidden lg:block rounded-br rounded-tr min-w-96">
+            <img class="object-cover h-full rounded-br rounded-tr" src="assets/img/OGMOGL0.jpg" alt="">
+        </div>
+    </div>
+    <div class="w-full flex fixed bottom-0 left-0 lg:relative sm:justify-between justify-end max-w-4xl py-4 px-8">
+        <span class="hidden sm:block text-neutral-600 font-bold text-xs">Copyright 2024 Grupo Empresarial Nexos. Todos
+            los derechos reservados </span>
+        <div class="flex gap-4">
+            <a class="text-brand-orange-500 w-full font-black text-xs" href="http://">Ayuda</a>
+            <a class="text-brand-orange-500 w-full font-black text-xs text-nowrap" href="http://">Política de
+                privacidad</a>
+        </div>
+    </div>
+</div>
