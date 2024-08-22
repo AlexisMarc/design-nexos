@@ -1,0 +1,21 @@
+<div class="w-full h-svh bg-neutral-100 flex">
+    <div class="w-fit h-full p-2">
+        <app-nx-sidebar></app-nx-sidebar>
+    </div>
+
+    <div class="flex-1 h-full flex flex-col gap-4 p-4">
+        <app-nx-header></app-nx-header>
+        <div class="flex-1 h-full bg-neutral-50 rounded">
+            <ng-content></ng-content>
+        </div>
+        <div class="w-full flex justify-between py-1 px-2">
+            <span class="text-neutral-500 font-medium text-xs">Copyright 2024 Grupo Empresarial Nexos. Todos
+                los derechos reservados </span>
+            <div class="flex gap-4">
+                <a class="text-brand-orange-500 w-full font-black text-xs" href="http://">Ayuda</a>
+                <a class="text-brand-orange-500 w-full font-black text-xs text-nowrap" href="http://">Política de
+                    privacidad</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,7 @@ import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, Component, Co
 })
 export class NxTableComponent<T> implements OnInit, AfterViewInit, AfterContentInit, OnChanges{
   public data = input.required<T[]>();
-  @ContentChildren(ChildComponent) children: QueryList<ChildComponent>;
+  //@ContentChildren(ChildComponent) children: QueryList<ChildComponent>;
 
 
   ngOnChanges(changes: SimpleChanges): void {

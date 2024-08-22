@@ -1,0 +1,11 @@
+.options-header button{
+    @apply rounded-full flex justify-center items-center w-8 h-8 fill-neutral-700 hover:bg-brand-orange-500/10 focus:ring ring-brand-orange-500/40
+}
+
+.breadcrumbs {
+    @apply flex-1 flex gap-0.5 text-neutral-600 fill-neutral-600 font-medium items-center
+}
+
+.breadcrumbs a {
+    @apply transition-all py-0.5 px-2 hover:bg-brand-orange-500/10 rounded hover:text-brand-orange-600 hover:fill-brand-orange-600
+}

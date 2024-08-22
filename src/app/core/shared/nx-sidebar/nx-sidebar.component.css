@@ -1,0 +1,8 @@
+
+.sidebar {
+    @apply h-full w-fit rounded-lg flex flex-col p-4 gap-0.5 bg-gradient-to-t from-brand-red-200 to-brand-orange-200
+}
+
+.sidebar a{
+    @apply text-neutral-800 fill-neutral-800 flex gap-2 py-2 px-4 rounded-lg font-medium hover:shadow-md hover:bg-brand-orange-500/20 hover:text-neutral-900 hover:fill-neutral-800 transition-all duration-150 text-nowrap
+}
