@@ -4,11 +4,11 @@
 @tailwind utilities;
 
 .b-primary {
-    @apply transition-all rounded ease-in-out delay-150 bg-gradient-to-r hover:bg-gradient-to-tr from-brand-yellow-400 hover:from-brand-yellow-300 active:from-brand-yellow-600 disabled:from-brand-yellow-100 from-0% via-brand-orange-400 disabled:via-brand-orange-100 hover:via-brand-orange-300 active:via-brand-orange-600 via-60% to-brand-red-400 hover:to-brand-red-300 active:to-brand-red-600 disabled:to-brand-red-100 to-100% focus:ring ring-brand-red-500 ring-offset-neutral-50 dark:ring-offset-neutral-900 focus:ring-offset-2 text-neutral-50 active:shadow-inner active:shadow-neutral-900 disabled:shadow-inner disabled:shadow-neutral-600 disabled:text-neutral-400
+    @apply transition-all rounded ease-in-out delay-150 bg-brand-orange-500 hover:bg-brand-orange-300 disabled:bg-brand-orange-100 focus:ring ring-brand-orange-500 ring-offset-neutral-50 dark:ring-offset-neutral-900 focus:ring-offset-2 text-neutral-50 active:shadow-inner active:shadow-neutral-900 disabled:shadow-inner disabled:shadow-neutral-600 disabled:text-neutral-400
 }
 
 .b-secondary {
-    @apply transition-all rounded ease-in-out delay-150 bg-gradient-to-r hover:bg-gradient-to-tr from-neutral-300 hover:from-neutral-300 active:from-neutral-600 disabled:from-neutral-100 from-10% to-neutral-500 hover:to-brand-cyan-300 active:to-brand-cyan-600 disabled:to-neutral-200 to-95% focus:ring ring-brand-cyan-500 ring-offset-neutral-50 dark:ring-offset-neutral-900 focus:ring-offset-2 text-neutral-50 active:shadow-inner active:shadow-neutral-900 disabled:shadow-inner disabled:shadow-neutral-600 disabled:text-neutral-400
+    @apply transition-all rounded ease-in-out delay-150 bg-neutral-500 hover:bg-neutral-300 active:bg-neutral-600 disabled:bg-neutral-200 focus:ring ring-neutral-500 ring-offset-neutral-50 dark:ring-offset-neutral-900 focus:ring-offset-2 text-neutral-50 active:shadow-inner active:shadow-neutral-900 disabled:shadow-inner disabled:shadow-neutral-600 disabled:text-neutral-400
 }
 
 .b-tertiary {
@@ -31,4 +31,4 @@
     @apply text-xs font-black text-neutral-700 dark:text-neutral-300
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0}
