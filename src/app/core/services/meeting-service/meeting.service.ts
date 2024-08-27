@@ -11,8 +11,8 @@ export class MeetingService {
   private http = inject(HttpClient);
   constructor() { }
 
-  public getLastMeetingSettingsByResidential():Observable<any>{
-    return this.http.get(this.api+'/meeting/lastmeeting')
+  public getLastMeetingSettingsByResidential(id:string):Observable<any>{
+    return this.http.get(this.api+'/meeting/lastmeeting/'+id)
   }
 
 }

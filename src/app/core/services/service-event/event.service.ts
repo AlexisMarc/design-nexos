@@ -7,12 +7,6 @@ interface ReqDataEvent {
   status: 'active' | 'inactive';
 }
 
-interface RespData<T> {
-  success: boolean;
-  message: string;
-  content: T;
-}
-
 @Injectable({
   providedIn: 'root',
 })

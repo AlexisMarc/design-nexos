@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { MeetingService } from '@services';
 
 @Component({
   selector: 'app-basic-form-meeting',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './basic-form-meeting.component.css',
 })
 export class BasicFormMeetingComponent implements OnInit {
+  ngOnInit(): void { 
+  }
 
-  ngOnInit(): void { }
 
 }

@@ -1,17 +1,17 @@
-<div class="w-full flex flex-col gap-4">
+<form [formGroup]="form" class="w-full flex flex-col gap-4" (ngSubmit)="saveForm()" >
     <div class="w-fit">
         <h3 class="text-4xl font-bold text-neutral-900">Inicio de sesión</h3>
         <p class="font-medium text-neutral-600">Bienvenido al gestor de Nexos</p>
     </div>
     <div class="i-field">
         <label for="username">Email</label>
-        <input id="username" type="text">
+        <input formControlName="email" id="username" type="text">
     </div>
     <div class="i-field">
         <label for="password">Contraseña</label>
-        <input id="password" type="password">
+        <input formControlName="password" id="password" type="password">
     </div>
     <a class="text-brand-orange-500 w-full text-right font-black text-sm" href="http://"><span>¿Olvidaste la
             contraseña?</span></a>
-    <button class="w-full h-fit py-2 px-4 b-primary">Iniciar sesión</button>
-</div>
+    <button type="submit" class="w-full h-fit py-2 px-4 b-primary">Iniciar sesión</button>
+</form>
