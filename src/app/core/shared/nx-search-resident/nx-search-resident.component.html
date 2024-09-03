@@ -1,0 +1,72 @@
+<div class="w-full h-fit relative">
+    <label for="input-search" class="sr-only">Buscar</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            </svg>
+        </div>
+        <input [disabled]="!!selectedResident()" type="text" id="input-search" [(ngModel)]="valueFilter"
+            (input)="onFilterValue()"
+            class="block w-full p-4 ps-10 text-sm text-neutral-900 rounded-2xl focus-visible:outline-brand-orange-500 bg-neutral-50 focus:ring-brand-orange-500 focus:border-brand-orange-500 shadow"
+            placeholder="Buscar">
+        @if (loading) {
+        <div class="absolute inset-y-0 right-4 flex items-center ps-3 pointer-events-none">
+            <svg class="w-6 h-6 fill-brand-orange-500 animate-spin" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960">
+                <path
+                    d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z" />
+            </svg>
+        </div>
+        }
+        @if (!!selectedResident()) {
+        <button (click)="resetValue()" class="b-fit p-2 top-3 rounded-2xl absolute inset-y-0 right-2 flex items-center hover:bg-neutral-100">
+            <svg class="w-4 h-4 fill-neutral-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+        </button>
+        }
+    </div>
+    <div [ngClass]="viewBox?'block':'hidden'"
+        class="absolute transition-all z-50 top-full left-0 rounded-2xl p-2 bg-neutral-50 shadow-lg w-full mt-2">
+        <ng-scrollbar [orientation]="'vertical'" style="max-height: 12rem;">
+            @if (loading) {<div class="w-full h-44 flex flex-col">
+                <div class="flex gap-2 flex-col">
+                    <div class="w-full rounded-2xl bg-neutral-100 p-4 animate-pulse"></div>
+                    <div class="w-full rounded-2xl bg-neutral-100 p-4 animate-pulse"></div>
+                    <div class="w-full rounded-2xl bg-neutral-100 p-4 animate-pulse"></div>
+                    <div class="w-full rounded-2xl bg-neutral-100 p-4 animate-pulse"></div>
+                    <div class="w-full rounded-2xl bg-neutral-100 p-4 animate-pulse"></div>
+                </div>
+            </div>}
+            @else {
+            <ul class="h-fit text-sm text-neutral-700 relative">
+                @for (resident of residents; track $index) {
+                <li>
+                    <a (click)="selectResident(resident)"
+                        class="group flex items-center gap-2 rounded-2xl select-none cursor-pointer hover:bg-neutral-100 hover:shadow px-4 py-2">
+                        <div class="flex flex-col flex-1">
+                            <span
+                                class="w-full text-sm font-bold text-neutral-900 group-hover:text-brand-orange-600">{{resident.name}}
+                            </span>
+                            <span class="w-full text-xs text-neutral-500"> Administrador: {{resident.administrator?
+                                resident.administrator.name: 'Sin administrador'}} </span>
+                        </div>
+                        <svg class="h-6 w-6 invisible fill-neutral-500 group-hover:visible"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+                        </svg>
+                    </a>
+                </li>
+                } @empty {
+                <div class="flex items-center rounded-2xl bg-neutral-100 select-none">
+                    <span class="w-full py-2 ms-4 text-sm font-medium text-neutral-500 rounded">Sin resultados...</span>
+                </div>
+                }
+            </ul>
+            }
+        </ng-scrollbar>
+    </div>
+</div>

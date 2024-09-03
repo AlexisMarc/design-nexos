@@ -1,0 +1,27 @@
+<label [for]="fileInput"
+[ngClass]="{'shadow-inner shadow-neutral-100': isDisabled, 'shadow': !isDisabled}"
+    class="h-full w-full flex flex-col gap-1 items-center justify-center bg-neutral-50 rounded-2xl p-4 text-neutral-900">
+    @if (value) {
+    <svg class="fill-neutral-900 w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="m438-240 226-226-58-58-169 169-84-84-57 57 142 142ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+    </svg>
+    }
+    @else {
+    <svg class="fill-neutral-900 w-10 h-10" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M10.5 32.4749C7.63333 32.4749 5.16667 31.4416 3.1 29.3749C1.03333 27.3082 0 24.8416 0 21.9749C0 19.3749 0.825 17.0832 2.475 15.0999C4.125 13.1166 6.25 11.9249 8.85 11.5249C9.51667 8.29157 11.0833 5.6499 13.55 3.5999C16.0167 1.5499 18.8667 0.524902 22.1 0.524902C25.8667 0.524902 29.025 1.88324 31.575 4.5999C34.125 7.31657 35.4 10.5749 35.4 14.3749V15.5749C37.8 15.5082 39.8333 16.2832 41.5 17.8999C43.1667 19.5166 44 21.5582 44 24.0249C44 26.3249 43.1667 28.3082 41.5 29.9749C39.8333 31.6416 37.85 32.4749 35.55 32.4749H23.5C22.7 32.4749 22 32.1749 21.4 31.5749C20.8 30.9749 20.5 30.2749 20.5 29.4749V16.5749L16.35 20.7249L14.2 18.5749L22 10.7749L29.8 18.5749L27.65 20.7249L23.5 16.5749V29.4749H35.55C37.05 29.4749 38.3333 28.9416 39.4 27.8749C40.4667 26.8082 41 25.5249 41 24.0249C41 22.5249 40.4667 21.2416 39.4 20.1749C38.3333 19.1082 37.05 18.5749 35.55 18.5749H32.4V14.3749C32.4 11.4082 31.3917 8.85824 29.375 6.7249C27.3583 4.59157 24.8667 3.5249 21.9 3.5249C18.9333 3.5249 16.4333 4.59157 14.4 6.7249C12.3667 8.85824 11.35 11.4082 11.35 14.3749H10.4C8.33333 14.3749 6.58333 15.0999 5.15 16.5499C3.71667 17.9999 3 19.7916 3 21.9249C3 23.9916 3.73217 25.7666 5.1965 27.2499C6.66083 28.7332 8.42867 29.4749 10.5 29.4749H17.5V32.4749H10.5Z" />
+    </svg>
+    }
+
+
+    <span class="text-xs font-extrabold">{{title()}}</span>
+    <div class="flex gap-1">
+        <span class="text-xs text-neutral-500">{{message()}} </span>
+        <span class="text-xs font-extrabold">{{size()}}</span>
+    </div>
+    <button [disabled]="isDisabled" (click)="value ? resetValue() :fileInput.click()"
+        class="b-primary b-fit py-1 px-8 mt-2">{{value?'Borrar':'Subir'}}</button>
+    <input #fileInput [disabled]="isDisabled" class="hidden" type="file" [id]="id" [accept]="allowedFileTypes"
+        (change)="changeValue($event)">
+</label>

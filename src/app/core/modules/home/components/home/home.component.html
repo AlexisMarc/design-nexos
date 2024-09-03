@@ -1,3 +1,78 @@
 <app-layout>
-    Hola soy el home
+    <div class="grid grid-cols-3 gap-8 w-full">
+        <label for="fileInput"
+            class="h-fit w-full flex flex-col gap-1 items-center justify-center bg-neutral-50 rounded-2xl p-4 text-neutral-900 shadow">
+            <svg class="fill-neutral-900 w-11 h-8" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M10.5 32.4749C7.63333 32.4749 5.16667 31.4416 3.1 29.3749C1.03333 27.3082 0 24.8416 0 21.9749C0 19.3749 0.825 17.0832 2.475 15.0999C4.125 13.1166 6.25 11.9249 8.85 11.5249C9.51667 8.29157 11.0833 5.6499 13.55 3.5999C16.0167 1.5499 18.8667 0.524902 22.1 0.524902C25.8667 0.524902 29.025 1.88324 31.575 4.5999C34.125 7.31657 35.4 10.5749 35.4 14.3749V15.5749C37.8 15.5082 39.8333 16.2832 41.5 17.8999C43.1667 19.5166 44 21.5582 44 24.0249C44 26.3249 43.1667 28.3082 41.5 29.9749C39.8333 31.6416 37.85 32.4749 35.55 32.4749H23.5C22.7 32.4749 22 32.1749 21.4 31.5749C20.8 30.9749 20.5 30.2749 20.5 29.4749V16.5749L16.35 20.7249L14.2 18.5749L22 10.7749L29.8 18.5749L27.65 20.7249L23.5 16.5749V29.4749H35.55C37.05 29.4749 38.3333 28.9416 39.4 27.8749C40.4667 26.8082 41 25.5249 41 24.0249C41 22.5249 40.4667 21.2416 39.4 20.1749C38.3333 19.1082 37.05 18.5749 35.55 18.5749H32.4V14.3749C32.4 11.4082 31.3917 8.85824 29.375 6.7249C27.3583 4.59157 24.8667 3.5249 21.9 3.5249C18.9333 3.5249 16.4333 4.59157 14.4 6.7249C12.3667 8.85824 11.35 11.4082 11.35 14.3749H10.4C8.33333 14.3749 6.58333 15.0999 5.15 16.5499C3.71667 17.9999 3 19.7916 3 21.9249C3 23.9916 3.73217 25.7666 5.1965 27.2499C6.66083 28.7332 8.42867 29.4749 10.5 29.4749H17.5V32.4749H10.5Z" />
+            </svg>
+            <span class="text-xs font-extrabold">Cargar archivo</span>
+            <div class="flex gap-1">
+                <span class="text-xs text-neutral-500">El archivo no puede superar los</span>
+                <span class="text-xs font-extrabold">4MB</span>
+            </div>
+            <button (click)="fileInput.click()" class="b-primary b-fit py-1 px-8 mt-2">Subir</button>
+            <input #fileInput class="hidden" type="file" id="fileInput">
+        </label>
+
+        <label for="textarea"
+            class="relative h-fit w-full flex flex-col gap-0.5 bg-neutral-50 rounded-2xl p-4 text-neutral-900 peer-focus-visible:bg-brand-red-50 shadow">
+            <span class="text-xs relative z-10 font-bold text-neutral-500">Label</span>
+            <textarea id="textarea" class="peer bg-neutral-50 relative z-10 focus-visible:outline-0 font-medium"
+                cols="30"></textarea>
+            <div
+                class="absolute peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2 w-full h-full top-0 left-0 rounded-2xl">
+            </div>
+        </label>
+        <label for="field"
+            class="relative h-fit w-full flex flex-col gap-0.5 bg-neutral-50 rounded-2xl p-4 text-neutral-900 peer-focus-visible:bg-brand-red-50 shadow">
+            <span class="text-xs relative z-10 font-bold text-neutral-500">Label</span>
+            <input id="field" type="text" class="peer bg-neutral-50 relative z-10 focus-visible:outline-0 font-medium">
+            <div
+                class="absolute peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2 w-full h-full top-0 left-0 rounded-2xl">
+            </div>
+        </label>
+        <label for="field-color"
+            class="relative h-fit w-full flex items-center gap-2 bg-neutral-50 rounded-2xl p-4 text-neutral-900 peer-focus-visible:bg-brand-red-50 shadow">
+            <label for="field-color"
+                class="w-12 h-12 relative flex justify-center items-center z-10 rounded-full bg-brand-orange-500 shadow">
+                <svg class="w-6 h-6 fill-neutral-50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M8.65 20.5L2.5 14.35C2.33333 14.1833 2.20833 14 2.125 13.8C2.04167 13.6 2 13.3917 2 13.175C2 12.9583 2.04167 12.75 2.125 12.55C2.20833 12.35 2.33333 12.1667 2.5 12L8.25 6.275L5.6 3.625L7.15 2L17.15 12C17.3167 12.1667 17.4375 12.35 17.5125 12.55C17.5875 12.75 17.625 12.9583 17.625 13.175C17.625 13.3917 17.5875 13.6 17.5125 13.8C17.4375 14 17.3167 14.1833 17.15 14.35L11 20.5C10.8333 20.6667 10.65 20.7917 10.45 20.875C10.25 20.9583 10.0417 21 9.825 21C9.60833 21 9.4 20.9583 9.2 20.875C9 20.7917 8.81667 20.6667 8.65 20.5ZM9.825 7.85L4.475 13.2H15.175L9.825 7.85ZM19.8 21C19.2 21 18.6917 20.7875 18.275 20.3625C17.8583 19.9375 17.65 19.4167 17.65 18.8C17.65 18.35 17.7625 17.925 17.9875 17.525C18.2125 17.125 18.4667 16.7333 18.75 16.35L19.8 15L20.9 16.35C21.1667 16.7333 21.4167 17.125 21.65 17.525C21.8833 17.925 22 18.35 22 18.8C22 19.4167 21.7833 19.9375 21.35 20.3625C20.9167 20.7875 20.4 21 19.8 21Z" />
+                </svg>
+            </label>
+            <div class="flex flex-1 flex-col">
+                <span class="text-xs relative z-10 font-bold text-neutral-500">Label</span>
+                <input id="color-field" type="text"
+                    class="peer w-full bg-neutral-50 relative z-10 focus-visible:outline-0 font-medium">
+            </div>
+            <input id="field-color" type="color" class="peer invisible absolute z-10">
+            <div
+                class="absolute peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2 w-full h-full top-0 left-0 rounded-2xl">
+            </div>
+        </label>
+        <label for="select"
+            class="relative h-fit w-full flex flex-col gap-0.5 bg-neutral-50 rounded-2xl p-4 text-neutral-900 peer-focus-visible:bg-brand-red-50 shadow">
+            <span class="text-xs relative z-10 font-bold text-neutral-500">Label</span>
+            <div class="w-full font-medium flex py-0.5">
+                <span class="flex-1">Value</span>
+                <svg class=" fill-neutral-900 w-6 h-6 rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
+                </svg>
+            </div>
+            <div
+                class="absolute hidden w-full h-fit p-0.5 bg-neutral-50 top-full left-0 rounded-b-2xl">
+                <label class="px-4 py-2 flex gap-2 items-center hover:bg-brand-orange-50 rounded-2xl">
+                    <input type="checkbox">
+                    <span>Option 1</span>
+                </label>
+                <label class="px-4 py-2 flex gap-2 items-center hover:bg-brand-orange-50 rounded-2xl">
+                    <input type="checkbox">
+                    <span>Option 1</span>
+                </label>
+            </div>
+        </label>
+    </div>
+
+
 </app-layout>

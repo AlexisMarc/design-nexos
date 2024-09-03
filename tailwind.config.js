@@ -10,6 +10,7 @@ module.exports = {
       xl: "1440px",
     },
     colors: {
+      white: "#ffffff",
       brand: {
         red: {
           50: "#FED4D4",

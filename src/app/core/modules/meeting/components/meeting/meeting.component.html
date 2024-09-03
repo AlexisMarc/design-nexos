@@ -62,9 +62,15 @@
                     </div>
                 </div>
             </div>
-            <!-- <app-basic-form-meeting></app-basic-form-meeting> -->
-             <app-config-form-meeting></app-config-form-meeting>
-             
+
+            @switch (sectionSelect) {
+                @case ('basic') {
+                    <app-basic-form-meeting (next)="nextSection()"></app-basic-form-meeting>
+                }
+                @case ('config') {
+                    <app-config-form-meeting (next)="nextSection()" (after)="afterSection()"></app-config-form-meeting>
+                }
+            }
         </div>
     </ng-scrollbar>
 <!-- </app-layout> -->

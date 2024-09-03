@@ -1,0 +1,108 @@
+<form class="w-full h-fit flex flex-col gap-8">
+    <div class="flex gap-2 items-center flex-1">
+        <nx-toggle-switch [values]="values"></nx-toggle-switch>
+        <span class="font-bold text-neutral-400">Selección de cantidad de asistencia</span>
+    </div>
+    <div class="flex gap-2 items-center flex-1">
+        <nx-toggle-switch [values]="values"></nx-toggle-switch>
+        <span class="font-bold text-neutral-400">Escaneo y envió de poderes</span>
+    </div>
+    <div class="flex flex-col gap-2 justify-center flex-1">
+        <div class="flex gap-2 items-center flex-1">
+            <nx-toggle-switch [values]="values" (onValue)="viewFields.emailArray=$event"></nx-toggle-switch>
+            <span class="font-bold text-neutral-400">Envió de registros de poderes</span>
+        </div>
+        @if (viewFields.emailArray){
+        <div class="w-full h-fit flex gap-4 bg-neutral-100 rounded-2xl px-8 py-4">
+            <div class="flex-1 h-fit grid gap-4 grid-cols-2">
+                <label for="event-name" class="container-field">
+                    <span>Correo</span>
+                    <input id="event-name" type="text" class="peer">
+                    <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+                    </div>
+                </label>
+                <label for="event-name" class="container-field">
+                    <span>correo</span>
+                    <input id="event-name" type="text" class="peer">
+                    <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+                    </div>
+                </label>
+            </div>
+            <button class="b-primary b-fit p-3">
+                <svg class="w-4 h-4 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                </svg>
+            </button>
+        </div>
+        }
+
+    </div>
+    <div class="flex gap-2 items-center flex-1">
+        <div class="flex gap-2 items-center flex-1">
+            <nx-toggle-switch [values]="values" (onValue)="viewFields.countUnit=$event"></nx-toggle-switch>
+            <span class="font-bold text-neutral-400">Cantidad de registro de unidades que puede seleccionar</span>
+        </div>
+        @if (viewFields.countUnit){
+        <div class="max-w-32">
+            <label for="event-count" class="container-field">
+                <input id="event-count" type="text" class="peer">
+                <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+                </div>
+            </label>
+        </div>
+        }
+
+    </div>
+    <div class="flex flex-col gap-2 justify-center flex-1">
+        <div class="flex gap-2 items-center flex-1">
+            <nx-toggle-switch [values]="values" (onValue)="viewFields.rolesFun=$event"></nx-toggle-switch>
+            <span class="font-bold text-neutral-400">Editar roles de calidad de asistencia</span>
+        </div>
+        @if (viewFields.rolesFun){
+        <div class="w-full h-fit grid gap-4 grid-cols-2 bg-neutral-100 rounded-2xl px-8 py-4">
+            <label for="event-name" class="container-field">
+                <input id="event-name" type="text" class="peer">
+                <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+                </div>
+            </label>
+            <label for="event-name" class="container-field">
+                <input id="event-name" type="text" class="peer">
+                <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+                </div>
+            </label>
+        </div>
+        }
+
+    </div>
+    <div class="flex flex-col gap-2 justify-center flex-1">
+        <div class="flex gap-2 items-center flex-1">
+            <nx-toggle-switch [values]="values" (onValue)="viewFields.form=$event"></nx-toggle-switch>
+            <span class="font-bold text-neutral-400">Formulario a diligenciar en el registro</span>
+        </div>
+        @if (viewFields.form) {
+        <div class="w-full h-fit flex gap-4 bg-neutral-100 rounded-2xl px-8 py-4">
+            <div class="flex flex-col flex-1">
+                <span class="font-bold text-xs text-neutral-500">Nombre de formulario</span>
+                <span class="font-semibold text-lg text-neutral-900">Formulario de registro </span>
+            </div>
+            <button class="b-primary b-fit p-3">
+                <svg class="w-4 h-4 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path
+                        d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z" />
+                </svg>
+            </button>
+            <button class="b-primary b-fit p-3">
+                <svg class="w-4 h-4 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path
+                        d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z" />
+                </svg>
+            </button>
+        </div>
+        }
+    </div>
+
+    <div class="mt-4 flex gap-2 justify-end">
+        <button class="b-secondary px-4 py-2 b-fit">Cancelar</button>
+        <button class="b-primary px-4 py-2 b-fit">Siguiente</button>
+    </div>
+</form>

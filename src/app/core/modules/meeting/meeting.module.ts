@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { BasicFormMeetingComponent, ConfigFormMeetingComponent, MeetingComponent, StyleFormMeetingComponent } from '@meeting';
 import { LayoutComponent } from '@ui';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NxToggleSwitchComponent } from '@shared';
 @NgModule({
   declarations: [
     MeetingComponent,
@@ -15,7 +17,10 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     NgScrollbarModule,
     MeetingRouterModule,
     CommonModule,
-    LayoutComponent
+    FormsModule,
+    ReactiveFormsModule,
+    LayoutComponent,
+    NxToggleSwitchComponent
   ],
 })
 export class MeetingModule {}

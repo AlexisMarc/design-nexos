@@ -1,0 +1,5 @@
+export * from './register/register.component'
+export * from './form-basic-values-register/form-basic-values-register.component'
+export * from './form-customize-register/form-customize-register.component'
+export * from './form-design-register/form-design-register.component'
+export * from './modeler-form-register/modeler-form-register.component'

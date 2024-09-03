@@ -1,0 +1,47 @@
+<div class="w-full h-fit p-4 flex gap-4">
+    <div class="flex-1 max-w-64 flex flex-col gap-4">
+        <div class="w-full h-fit flex items-center gap-2 rounded-2xl p-4 border-2 border-neutral-100 bg-white">
+            <button class="b-primary p-1 b-fit">
+                <svg class="w-6 h-6 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+                </svg>
+            </button>
+            <div class="flex flex-col">
+                <span class="font-bold text-xs text-neutral-500">Reuniones</span>
+                <span class="font-bold text-lg text-neutral-900">{{resident?.name ?? 'Cliente'}} </span>
+            </div>
+        </div>
+        <nx-progress-bar [items]="items" (emitSelect)="selectSection($event)"></nx-progress-bar>
+    </div>
+    <div class="flex-1 flex flex-col bg-white rounded-2xl border-2 border-neutral-100 p-8 gap-8">
+        <div class="w-full flex gap-2 items-center">
+            <nx-search-resident class="flex-1" [selectedResident]="resident"
+                (emitResident)="resident=$event"></nx-search-resident>
+            <button class="b-secondary px-4 py-2 b-fit">Clonar</button>
+            <button class="b-primary px-4 py-2 b-fit">Editar</button>
+        </div>
+        @switch (selectedSection) {
+        @case (0) {<app-form-basic-values-register></app-form-basic-values-register>}
+        @case (1) {<app-form-customize-register></app-form-customize-register>}
+        @case (2) {<app-form-design-register></app-form-design-register>}
+        }
+    </div>
+    <!--  -->
+    <!-- <nx-toggle-switch [values]="values"></nx-toggle-switch> -->
+    <!-- <nx-color-field></nx-color-field> -->
+    <!-- <nx-dropdown-field [items]="options"></nx-dropdown-field> -->
+    <!-- <nx-search-resident [selectedResident]="resident" (emitResident)="resident=$event"></nx-search-resident> -->
+    <!-- <label for="textarea" class="container-field">
+        <span>Label</span>
+        <textarea id="textarea" class="peer" cols="30"></textarea>
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </label>
+    <label for="field" class="container-field">
+        <span>Label</span>
+        <input id="field" type="text" class="peer">
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </label> -->
+</div>
+<app-modeler-form-register></app-modeler-form-register>

@@ -18,6 +18,7 @@
       "@organization": ["./src/app/core/modules/organization/components/organization.index.ts"],
       "@shared": ["./src/app/core/shared/shared.index.ts"],
       "@models": ["./src/app/core/models/models.index.ts"],
+      "@register": ["./src/app/core/modules/register/components/register.index.ts"],
       "@ui": ["./src/app/core/ui/ui.index.ts"],
       "@services": ["./src/app/core/services/services.index.ts"],
     },

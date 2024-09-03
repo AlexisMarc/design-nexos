@@ -1,1 +1,5 @@
 export * from './response/response.model'
+export * from './global/global.model'
+export * from './resident/resident.model'
+export * from './shared/shared.model'
+export * from './modules/register.model'

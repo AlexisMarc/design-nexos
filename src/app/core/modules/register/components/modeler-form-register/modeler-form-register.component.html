@@ -1,0 +1,49 @@
+<div class="w-full h-svh bg-neutral-900/50 fixed top-0 left-0 z-50 flex items-center justify-center">
+    <div class="p-8 rounded-2xl w-full h-fit bg-neutral-100 max-w-4xl max-h-svh shadow">
+        <button class="b-primary p-2 b-fit shadow absolute">
+            <svg class="w-6 h-6 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+        </button>
+        <ng-scrollbar [orientation]="'vertical'" style="max-height: 80svh;">
+            <div class="w-full h-fit p-8 rounded-2xl bg-white grid grid-cols-2 gap-8">
+                <div class="col-span-2 flex gap-4 items-center">
+                    <span class="text-neutral-900 font-bold text-3xl flex-1">{{formModeler.name}}</span>
+                    <img class="w-36" src="/assets/img/LOGO-NEXOSPH-SIN-JIRAFAS-140X40.png" alt="icon-form">
+                </div>
+                @for (field of formModeler.fields; track $index) {
+                <label for="field" class="container-field">
+                    <span>Label</span>
+                    <input id="field" type="text" class="peer">
+                    <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+                    </div>
+                </label>
+                }
+                <div class="mt-2 flex gap-2 col-span-2 justify-end">
+                    <button class="b-secondary px-4 py-2 b-fit">Cancelar</button>
+                    <button class="b-primary px-4 py-2 b-fit">Siguiente</button>
+                </div>
+            </div>
+        </ng-scrollbar>
+    </div>
+
+</div>
+
+<ng-template #fielView let-value="value" let-index="index">
+    <nx-toggle-switch [values]="values"></nx-toggle-switch>
+    <nx-color-field></nx-color-field>
+    <nx-dropdown-field [items]="options"></nx-dropdown-field>
+    <label for="textarea" class="container-field">
+        <span>Label</span>
+        <textarea id="textarea" class="peer" cols="30"></textarea>
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </label>
+    <label for="field" class="container-field">
+        <span>Label</span>
+        <input id="field" type="text" class="peer">
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </label>
+</ng-template>

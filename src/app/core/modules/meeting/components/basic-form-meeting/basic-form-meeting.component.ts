@@ -1,4 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MeetingService } from '@services';
 
 @Component({
@@ -7,8 +8,18 @@ import { MeetingService } from '@services';
   styleUrl: './basic-form-meeting.component.css',
 })
 export class BasicFormMeetingComponent implements OnInit {
-  ngOnInit(): void { 
+  public form: FormGroup;
+  public next = output<void>();
+  constructor() {
+    this.form = new FormGroup({
+      residential_id: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      state: new FormControl('active', Validators.required),
+      meeting_time: new FormControl('', Validators.required),
+      email_template_id: new FormControl('', Validators.required),
+    });
   }
+  ngOnInit(): void {}
 
 
 }
