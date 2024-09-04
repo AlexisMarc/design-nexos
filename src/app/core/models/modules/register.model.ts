@@ -46,18 +46,18 @@ export interface registerField {
     | 'url'
     | 'color'
     | 'range';
-  required: number;
-  readonly: number;
-  disabled: number;
+  required: boolean;
+  readonly: boolean;
+  disabled: boolean;
   maxlength: number;
   minlength: number;
   min: number;
   max: number;
   step: number;
   pattern: string;
-  autofocus: number;
+  autofocus: boolean;
   autocomplete: 'on' | 'off';
-  multiple: number;
+  multiple: boolean;
   size: number;
   alt: string;
   rows: number;

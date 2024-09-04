@@ -1,5 +1,5 @@
 <div class="w-full h-svh bg-neutral-900/50 fixed top-0 left-0 z-50 flex items-center justify-center">
-    <div class="p-8 rounded-2xl w-full h-fit bg-neutral-100 max-w-4xl max-h-svh shadow">
+    <div class="p-8 rounded w-full h-fit bg-neutral-100 max-w-4xl max-h-svh shadow">
         <button class="b-primary p-2 b-fit shadow absolute">
             <svg class="w-6 h-6 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                 <path
@@ -13,12 +13,7 @@
                     <img class="w-36" src="/assets/img/LOGO-NEXOSPH-SIN-JIRAFAS-140X40.png" alt="icon-form">
                 </div>
                 @for (field of formModeler.fields; track $index) {
-                <label for="field" class="container-field">
-                    <span>Label</span>
-                    <input id="field" type="text" class="peer">
-                    <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
-                    </div>
-                </label>
+                <ng-container [ngTemplateOutlet]="fielView" [ngTemplateOutletContext]="{field}"></ng-container>
                 }
                 <div class="mt-2 flex gap-2 col-span-2 justify-end">
                     <button class="b-secondary px-4 py-2 b-fit">Cancelar</button>
@@ -30,20 +25,98 @@
 
 </div>
 
-<ng-template #fielView let-value="value" let-index="index">
-    <nx-toggle-switch [values]="values"></nx-toggle-switch>
-    <nx-color-field></nx-color-field>
-    <nx-dropdown-field [items]="options"></nx-dropdown-field>
+<ng-template #fielView let-field="field" let-index="index">
+    @switch (field.type) {
+    @case ('input') {
+    <label [for]="'field_'+index" class="container-field">
+        <span>{{field.label_name}}</span>
+        @switch (field.type_input) {
+        @case ('text') {
+        <input [id]="'field_'+index" type="text" class="peer">
+        }
+        @case ('password') {
+        <input [id]="'field_'+index" type="password" class="peer">
+        }
+        @case ('email') {
+        <input [id]="'field_'+index" type="email" class="peer">
+        }
+        @case ('number') {
+        <input [id]="'field_'+index" type="number" class="peer">
+        }
+        @case ('datetime-local') {
+        <input [id]="'field_'+index" type="datetime-local" class="peer">
+        }
+        @case ('date') {
+        <input [id]="'field_'+index" type="date" class="peer">
+        }
+        @case ('month') {
+        <input [id]="'field_'+index" type="month" class="peer">
+        }
+        @case ('week') {
+        <input [id]="'field_'+index" type="week" class="peer">
+        }
+        @case ('time') {
+        <input [id]="'field_'+index" type="time" class="peer">
+        }
+        @case ('tel') {
+        <input [id]="'field_'+index" type="tel" class="peer">
+        }
+        @case ('url') {
+        <input [id]="'field_'+index" type="url" class="peer">
+        }
+        @case ('color') {
+        <input [id]="'field_'+index" type="color" class="peer">
+        }
+        @case ('range') {
+        <input [id]="'field_'+index" type="range" class="peer">
+        }
+        }
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </label>
+    }
+    @case ('select') {<nx-dropdown-field [items]="field.options"></nx-dropdown-field>}
+    @case ('textarea') {
     <label for="textarea" class="container-field">
-        <span>Label</span>
+        <span>{{field.label_name}}</span>
         <textarea id="textarea" class="peer" cols="30"></textarea>
         <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
         </div>
     </label>
-    <label for="field" class="container-field">
-        <span>Label</span>
-        <input id="field" type="text" class="peer">
+    }
+    @case ('toggle-swish') {<nx-toggle-switch [values]="values"></nx-toggle-switch>}
+    @case ('radio') {
+    <div class="container-field">
+        <span>{{field.label_name}}</span>
+        <input [id]="'field_'+index" [name]="'field_'+index" type="radio" class="peer">
+        <input [id]="'field_'+index" [name]="'field_'+index" type="radio" class="peer">
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </div>
+    }
+    @case ('checkbox') {
+    <label [for]="'field_'+index" class="container-field">
+        <span>{{field.label_name}}</span>
+        <input [id]="'field_'+index" type="checkbox" class="peer">
         <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
         </div>
     </label>
+    }
+    @case ('file') {
+    <nx-file-field></nx-file-field>
+    }
+    @case ('button') {
+    <input type="button" class="b-primary b-fit px-4 py-2" value="Botón">
+    }
+    @case ('submit') {
+    <input type="submit" class="b-primary b-fit px-4 py-2" value="Botón">
+    }
+    @case ('reset') {
+    <input type="reset" class="b-primary b-fit px-4 py-2" value="Botón">
+    }
+    @case ('image') {
+    <nx-file-field></nx-file-field>
+    }
+    @case ('hidden') {}
+    }
 </ng-template>
