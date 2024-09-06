@@ -66,8 +66,13 @@ export const routes: Routes = [
       import('./register/register.module').then((m) => m.RegisterModule),
   },
   {
+    path: 'client',
+    loadChildren: () =>
+      import('./client/client.module').then((m) => m.CLientModule),
+  },
+  {
     path: '',
-    redirectTo: 'register',
+    redirectTo: 'client',
     pathMatch: 'full',
   },
 ];

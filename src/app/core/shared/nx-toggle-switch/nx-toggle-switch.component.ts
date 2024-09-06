@@ -21,6 +21,7 @@ export class NxToggleSwitchComponent<T = boolean>
 {
   public id = uuidv4();
   public onValue = output<T>();
+  public viewValues = input<boolean>();
   label = input<string>();
   values = input.required<{
     OneValue: T;
@@ -69,6 +70,7 @@ export class NxToggleSwitchComponent<T = boolean>
         ? this.values().OneValue
         : this.values().TwoValue;
     this.onChange(this.value);
+    console.log(this.value)
     this.onTouched();
     this.onValue.emit(this.value);
   }

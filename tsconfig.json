@@ -21,6 +21,7 @@
       "@register": ["./src/app/core/modules/register/components/register.index.ts"],
       "@ui": ["./src/app/core/ui/ui.index.ts"],
       "@services": ["./src/app/core/services/services.index.ts"],
+      "@client": ["./src/app/core/modules/client/components/client.index.ts"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,
