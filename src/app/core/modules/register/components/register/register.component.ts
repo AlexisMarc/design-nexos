@@ -1,5 +1,8 @@
-import { itemsProgressBar, resident } from '@models';
-import { Component, OnInit } from '@angular/core';
+import { basicValue, itemsProgressBar, resident } from '@models';
+import { Component, inject, OnInit } from '@angular/core';
+import { NxToastService } from '@shared';
+import { EmailService } from '@services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -37,11 +40,43 @@ export class RegisterComponent implements OnInit {
   ];
 
   resident?: resident;
-  ngOnInit(): void {}
+  templateEmail: basicValue[] = [];
+
+  private _subscription = new Subscription();
+  private _serviceEmail = inject(EmailService);
+  private _serviceMessage = inject(NxToastService);
+
+  ngOnInit(): void {
+    this.initData();
+  }
 
   selectSection(index: number) {
     this.items[this.selectedSection].status = 'pending';
     this.items[index].status = 'select';
     this.selectedSection = index;
+  }
+
+  initData() {
+    this._subscription.add(
+      this._serviceEmail.getTemplateEmail().subscribe({
+        next: (value) => {
+          this._serviceMessage.addMessage({
+            type: 'success',
+            message: 'Plantillas consultadas',
+          });
+          if (value && value.length) {
+            this.templateEmail = value.map((value) => {
+              return { label: value.name_email, value: value.id.toString() };
+            });
+          }
+        },
+        error: () => {
+          this._serviceMessage.addMessage({
+            type: 'error',
+            message: 'Error al consultar plantillas consultadas',
+          });
+        },
+      })
+    );
   }
 }

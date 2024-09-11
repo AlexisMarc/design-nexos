@@ -1,6 +1,10 @@
-import { Component, type OnInit } from '@angular/core';
-import { itemsProgressBar, registerForm } from '@models';
-
+import { Component, inject, type OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NxValidators } from '@helpers';
+import { AppStore, basicValue, itemsProgressBar } from '@models';
+import { Store } from '@ngrx/store';
+import { EmailService } from '@services';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-form-basic-values-register',
   templateUrl: './form-basic-values-register.component.html',
@@ -8,60 +12,34 @@ import { itemsProgressBar, registerForm } from '@models';
 })
 export class FormBasicValuesRegisterComponent implements OnInit {
   values = { OneValue: true, TwoValue: false };
-  options = [
-    {
-      label: 'Opción 1',
-      value: '1',
-    },
-    {
-      label: 'Opción 2',
-      value: '2',
-    },
-    {
-      label: 'Opción 3',
-      value: '3',
-    },
-    {
-      label: 'Opción 4',
-      value: '4',
-    },
-  ];
+  templateEmail: basicValue[] = [];
+  templateWhatsApp: basicValue[] = [];
 
-  items: itemsProgressBar[] = [
-    {
-      status: 'success',
-      title: 'Paso 1',
-      description: 'Descripción',
-      disabled: true,
-      show: true,
-    },
-    {
-      status: 'select',
-      title: 'Paso 2',
-      description: 'Descripción',
-      disabled: false,
-      show: true,
-    },
-    {
-      status: 'select-success',
-      title: 'Paso 3',
-      description: 'Descripción',
-      disabled: false,
-      show: true,
-    },
-    {
-      status: 'pending',
-      title: 'Paso 4',
-      disabled: false,
-      show: true,
-    },
-    {
-      status: 'loading',
-      title: 'Paso 5',
-      description: 'Descripción',
-      disabled: false,
-      show: true,
-    },
-  ];
-  ngOnInit(): void {}
+  form = new FormGroup({
+    file: new FormControl('', [NxValidators.required()]),
+    name: new FormControl('', [NxValidators.required()]),
+    status: new FormControl(true, [NxValidators.required()]),
+    meeting_time: new FormControl('', [NxValidators.required()]),
+    login_with_credentials: new FormControl(false),
+    email_template_id: new FormControl('', [NxValidators.required()]),
+    whatsapp_id: new FormControl('', [NxValidators.required()]),
+    upload_database: new FormControl(false),
+  });
+  private _subscription = new Subscription();
+  private _store: Store<AppStore> = inject(Store<AppStore>);
+
+  ngOnInit(): void {
+    this._subscription.add(
+      this._store.select('register').subscribe({
+        next: (value) => {
+          console.log(value);
+        },
+      })
+    );
+  }
+
+  saveForm() {
+    this.form.markAllAsTouched();
+    console.log('submit');
+  }
 }

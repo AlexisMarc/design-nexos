@@ -20,7 +20,7 @@
         <span class="text-xs text-neutral-500">{{message()}} </span>
         <span class="text-xs font-extrabold">{{size()}}</span>
     </div>
-    <button [disabled]="isDisabled" (click)="value ? resetValue() :fileInput.click()"
+    <button [disabled]="isDisabled" type="button" (click)="value ? resetValue() :fileInput.click()"
         class="b-primary b-fit py-1 px-8 mt-2">{{value?'Borrar':'Subir'}}</button>
     <input #fileInput [disabled]="isDisabled" class="hidden" type="file" [id]="id" [accept]="allowedFileTypes"
         (change)="changeValue($event)">

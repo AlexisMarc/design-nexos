@@ -21,7 +21,11 @@
       "@register": ["./src/app/core/modules/register/components/register.index.ts"],
       "@ui": ["./src/app/core/ui/ui.index.ts"],
       "@services": ["./src/app/core/services/services.index.ts"],
-      "@client": ["./src/app/core/modules/client/components/client.index.ts"]
+      "@client": ["./src/app/core/modules/client/components/client.index.ts"],
+      "@store": ["./src/app/core/store/store.index.ts"],
+      "@constants": ["./src/app/core/utils/constants/constants.index.ts"],
+      "@helpers": ["./src/app/core/utils/helpers/helpers.index.ts"],
+      "@directives": ["./src/app/core/directives/directives.index.ts"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

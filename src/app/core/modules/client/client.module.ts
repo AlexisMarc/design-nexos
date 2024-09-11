@@ -7,6 +7,8 @@ import {
   ClientComponent,
   ClientDynamicFormComponent,
   ClientLoginComponent,
+  ClientQrComponent,
+  ClientSignComponent,
   ClientUnitComponent,
 } from '@client';
 import { NxToggleSwitchComponent } from '@shared';
@@ -17,7 +19,9 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     ClientLoginComponent,
     ClientDynamicFormComponent,
     ClientCertificateComponent,
-    ClientUnitComponent
+    ClientUnitComponent,
+    ClientSignComponent,
+    ClientQrComponent
   ],
   imports: [
     NgScrollbarModule,

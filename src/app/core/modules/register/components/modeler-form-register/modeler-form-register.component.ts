@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { registerForm } from '@models';
+import { RegisterForm } from '@models';
 
 @Component({
   selector: 'app-modeler-form-register',
@@ -27,7 +27,7 @@ export class ModelerFormRegisterComponent implements OnInit {
     },
   ];
 
-  formModeler: registerForm = {
+  formModeler: RegisterForm = {
     meeting_id: 1,
     name: 'Formulario de Ejemplo',
     description: 'Descripción del formulario',

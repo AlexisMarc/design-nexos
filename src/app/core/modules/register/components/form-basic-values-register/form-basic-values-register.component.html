@@ -1,8 +1,11 @@
-<form class="w-full h-fit grid grid-cols-2 gap-4">
-    <nx-file-field class="row-span-2"></nx-file-field>
+<form [formGroup]="form" class="w-full h-fit grid grid-cols-2 gap-4" (ngSubmit)="saveForm()">
+    <div class="row-span-2">
+        <nx-file-field formControlName="file"></nx-file-field>
+    </div>
+
     <label for="event-name" class="container-field">
         <span>Nombre</span>
-        <input id="event-name" type="text" class="peer">
+        <input id="event-name" formControlName="name" type="text" class="peer">
         <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
         </div>
     </label>
@@ -16,14 +19,14 @@
         <nx-toggle-switch [values]="values"></nx-toggle-switch>
         <span class="font-bold text-neutral-400">Credenciales al iniciar sesión</span>
     </div>
-    <nx-dropdown-field [items]="options" label="Plantilla de WhatsApp"></nx-dropdown-field>
-    <nx-dropdown-field [items]="options" label="Plantilla de Email"></nx-dropdown-field>
+    <nx-dropdown-field [items]="templateEmail" label="Plantilla de WhatsApp"></nx-dropdown-field>
+    <nx-dropdown-field [items]="templateEmail" label="Plantilla de Email"></nx-dropdown-field>
     <div class="mt-4 flex gap-2 col-span-2">
         <div class="flex gap-2 items-center flex-1">
             <nx-toggle-switch [values]="values"></nx-toggle-switch>
             <span class="font-bold text-neutral-400">Personalizar</span>
         </div>
         <button class="b-secondary px-4 py-2 b-fit">Cancelar</button>
-        <button class="b-primary px-4 py-2 b-fit">Siguiente</button>
+        <button type="submit" class="b-primary px-4 py-2 b-fit">Siguiente</button>
     </div>
 </form>

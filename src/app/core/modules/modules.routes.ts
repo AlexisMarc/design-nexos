@@ -72,7 +72,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'client',
+    redirectTo: 'register',
     pathMatch: 'full',
   },
 ];

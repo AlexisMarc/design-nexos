@@ -67,10 +67,33 @@ export interface registerField {
   validations: registerValidation[];
 }
 
-export interface registerForm {
+export interface RegisterForm {
   meeting_id: number;
   name: string;
   description: string;
   view: string;
   fields: registerField[];
+}
+
+export interface RegisterDataConfig {
+  file: string;
+  name: string;
+  status: boolean;
+  meeting_time: string;
+  login_with_credentials: boolean;
+  email_template_id: string;
+  whatsapp_id: string;
+  upload_database: boolean;
+}
+
+export interface RegisterDataCustomize {
+  shall_ask_representation_document: boolean;
+  label_name_owner: string;
+  label_name_agent: string;
+  limit_raising_by_customer: number;
+}
+
+export interface RegisterDataDesign {
+  color: string;
+  welcome_message: string;
 }

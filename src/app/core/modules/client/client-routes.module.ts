@@ -1,6 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientCertificateComponent, ClientComponent, ClientDynamicFormComponent, ClientLoginComponent, ClientUnitComponent } from '@client';
+import {
+  ClientCertificateComponent,
+  ClientComponent,
+  ClientDynamicFormComponent,
+  ClientLoginComponent,
+  ClientQrComponent,
+  ClientUnitComponent,
+} from '@client';
 
 export const routes: Routes = [
   {
@@ -9,27 +16,30 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: ClientLoginComponent
+        component: ClientLoginComponent,
       },
       {
         path: 'form',
-        component: ClientDynamicFormComponent
+        component: ClientDynamicFormComponent,
       },
       {
         path: 'unit',
-        component: ClientUnitComponent
+        component: ClientUnitComponent,
       },
       {
         path: 'certificate',
-        component: ClientCertificateComponent
-      }
-    ]
-  }
+        component: ClientCertificateComponent,
+      },
+      {
+        path: 'qr',
+        component: ClientQrComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
-  })
-  export class ClientRouterModule {
-  }
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class ClientRouterModule {}
