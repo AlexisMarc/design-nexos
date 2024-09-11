@@ -25,7 +25,8 @@
       "@store": ["./src/app/core/store/store.index.ts"],
       "@constants": ["./src/app/core/utils/constants/constants.index.ts"],
       "@helpers": ["./src/app/core/utils/helpers/helpers.index.ts"],
-      "@directives": ["./src/app/core/directives/directives.index.ts"]
+      "@directives": ["./src/app/core/directives/directives.index.ts"],
+      "@resolver": ["./src/app/core/resolvers/Auth.interceptor.ts"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

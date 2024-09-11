@@ -1,9 +1,9 @@
 import { Component, inject, type OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NxValidators } from '@helpers';
-import { AppStore, basicValue, itemsProgressBar } from '@models';
+import { AppStore, basicValue } from '@models';
 import { Store } from '@ngrx/store';
-import { EmailService } from '@services';
+import { NxToastService } from '@shared';
 import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-form-basic-values-register',
@@ -27,19 +27,40 @@ export class FormBasicValuesRegisterComponent implements OnInit {
   });
   private _subscription = new Subscription();
   private _store: Store<AppStore> = inject(Store<AppStore>);
+  private _serviceMessage = inject(NxToastService);
 
   ngOnInit(): void {
     this._subscription.add(
       this._store.select('register').subscribe({
         next: (value) => {
-          console.log(value);
+          if (value) {
+            this.templateEmail = value.emailTemplate ?? [];
+            this.templateWhatsApp = value.whatsAppTemplate ?? [];
+          }
         },
       })
     );
   }
 
+  initSubscription() {
+    this._subscription.add(
+      this._store.select('register').subscribe({
+        next: (value) => {},
+        error: () => {},
+      })
+    );
+  }
+
   saveForm() {
-    this.form.markAllAsTouched();
-    console.log('submit');
+    if (this.form.invalid) {
+      this._serviceMessage.addMessage({
+        type: 'warning',
+        message: 'Por favor, completar todos los campos requeridos',
+        life: 4000,
+      });
+      this.form.markAllAsTouched();
+      return;
+    }
+    console.log(this.form.value)
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { emailTemplate } from '@models';
+import { emailTemplate, RespData } from '@models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,9 +16,9 @@ export class EmailService {
     return this.http.get(this.api + '/email/list/active');
   }
 
-  public getTemplateEmail(): Observable<emailTemplate[]> {
+  public getTemplateEmail(): Observable<RespData<emailTemplate[]>> {
     return this.http.get(
-      'https://apiasambleas.grupoempresarialnexos.com/app-preregistro/ApiEmailContent/getAllEmailContent?key=GiUBniR9UtmfKDaeOc9tXKt16lk=&user_id=49'
-    ) as Observable<emailTemplate[]>;
+      this.api + '/email/list/actives'
+    ) as Observable<RespData<emailTemplate[]>>;
   }
 }

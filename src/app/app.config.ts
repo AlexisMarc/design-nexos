@@ -9,10 +9,11 @@ import {
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { RootStore } from '@store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { authInterceptor } from '@resolver';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +26,9 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding()
     ),
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
     provideStore(RootStore),
     provideStoreDevtools({
       maxAge: 25,

@@ -1,5 +1,4 @@
-<label [for]="fileInput"
-[ngClass]="{'shadow-inner shadow-neutral-100': isDisabled, 'shadow': !isDisabled}"
+<label [for]="fileInput" [ngClass]="{'shadow-inner shadow-neutral-100': isDisabled, 'shadow': !isDisabled}"
     class="h-full w-full flex flex-col gap-1 items-center justify-center bg-neutral-50 rounded-2xl p-4 text-neutral-900">
     @if (value) {
     <svg class="fill-neutral-900 w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -14,14 +13,20 @@
     </svg>
     }
 
-
     <span class="text-xs font-extrabold">{{title()}}</span>
     <div class="flex gap-1">
         <span class="text-xs text-neutral-500">{{message()}} </span>
         <span class="text-xs font-extrabold">{{size()}}</span>
     </div>
-    <button [disabled]="isDisabled" type="button" (click)="value ? resetValue() :fileInput.click()"
-        class="b-primary b-fit py-1 px-8 mt-2">{{value?'Borrar':'Subir'}}</button>
+    @if (!value) {
+    <button [disabled]="isDisabled" type="button" (click)="fileInput.click()"
+        class="b-primary b-fit py-1 px-8 mt-2">{{'Subir'}}</button>
+    } @else {
+    <button [disabled]="isDisabled" type="button" (click)="resetValue()"
+        class="b-primary b-fit py-1 px-8 mt-2">{{'Borrar'}}</button>
+    }
+
+
     <input #fileInput [disabled]="isDisabled" class="hidden" type="file" [id]="id" [accept]="allowedFileTypes"
-        (change)="changeValue($event)">
+        (input)="changeValue($event)" (change)="changeValue($event)">
 </label>

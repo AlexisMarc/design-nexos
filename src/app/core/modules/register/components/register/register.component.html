@@ -16,7 +16,7 @@
     <div class="flex-1 flex flex-col bg-white rounded-2xl border-2 border-neutral-100 p-8 gap-8">
         <div class="w-full flex gap-2 items-center">
             <nx-search-resident class="flex-1" [selectedResident]="resident"
-                (emitResident)="resident=$event"></nx-search-resident>
+                (emitResident)="setResident($event)"></nx-search-resident>
             <button class="b-secondary px-4 py-2 b-fit">Clonar</button>
             <button class="b-primary px-4 py-2 b-fit">Editar</button>
         </div>

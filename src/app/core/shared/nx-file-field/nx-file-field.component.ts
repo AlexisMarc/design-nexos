@@ -78,6 +78,7 @@ export class NxFileFieldComponent implements OnInit, ControlValueAccessor {
   ngOnInit(): void {}
 
   async changeValue(event: Event) {
+    debugger
     if (this.isDisabled) return;
     const input = event.target as HTMLInputElement;
     const files: FileList | null = input.files;
@@ -97,11 +98,13 @@ export class NxFileFieldComponent implements OnInit, ControlValueAccessor {
     }
     this.value = values;
     this.onChange(values);
+    this.onTouched();
   }
 
   resetValue() {
     this.value = undefined;
     this.onChange(undefined);
+    this.onTouched();
   }
 
   private convertFileToBase64(file: File) {

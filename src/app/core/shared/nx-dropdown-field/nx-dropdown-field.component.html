@@ -1,11 +1,11 @@
 <div #dropdown [id]="id" for="select" (click)="showBox($event)"
-    [ngClass]="{'rounded-b-2xl border-b-2': positionOption==='top' && isShowBox, 'rounded-t-2xl border-t-2': positionOption==='bottom' && isShowBox, 'rounded-2xl': !isShowBox, 'shadow':!isShowBox && !isDisabled,  'border-x-2 border-brand-orange-500': isShowBox, 'shadow-inner': isDisabled}"
+    [ngClass]="{'rounded-b-2xl ring-2': positionOption==='top' && isShowBox, 'rounded-t-2xl ring-2': positionOption==='bottom' && isShowBox, 'rounded-2xl': !isShowBox, 'shadow':!isShowBox && !isDisabled,  'ring-2 ring-brand-orange-500': isShowBox, 'shadow-inner': isDisabled}"
     class="relative transition-all h-fit w-full flex flex-col gap-0.5 bg-neutral-50 p-4 text-neutral-900 peer-focus-visible:bg-brand-red-50">
     <span class="text-xs relative z-10 font-bold text-neutral-500">{{label()}}</span>
     <div class="w-full font-medium flex py-0.5">
         <span class="flex-1">{{value && itemsObjet[value]? itemsObjet[value].label : 'Seleccione...'}}</span>
-        <svg [ngClass]="{'rotate-180': !isShowBox}" class=" fill-neutral-900 w-6 h-6"
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <svg [ngClass]="{'rotate-180': !isShowBox}" class=" fill-neutral-900 w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960">
             <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
         </svg>
     </div>
@@ -14,27 +14,27 @@
         (@overlayAnimation.start)="startAnimation($event)"
         class="absolute z-50 border-b-2 border-x-2 border-brand-orange-500 rounded-b-2xl pb-3 bg-neutral-50 shadow top-full w-box -left-0.5">
         @if (withFilter()) {
-            <div class="p-3">
-                <label for="input-group-search" class="sr-only">Buscar</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
-                    </div>
-                    <input #filter type="text" id="input-group-search" [(ngModel)]="valueFilter" (input)="onFilterValue()"
-                        class="block w-full p-2 ps-10 text-sm text-neutral-900 border border-neutral-300 rounded-2xl focus-visible:outline-brand-orange-500 bg-neutral-50 focus:ring-brand-orange-500 focus:border-brand-orange-500"
-                        placeholder="Buscar">
+        <div class="p-3">
+            <label for="input-group-search" class="sr-only">Buscar</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
                 </div>
+                <input #filter type="text" id="input-group-search" [(ngModel)]="valueFilter" (input)="onFilterValue()"
+                    class="block w-full p-2 ps-10 text-sm text-neutral-900 border border-neutral-300 rounded-2xl focus-visible:outline-brand-orange-500 bg-neutral-50 focus:ring-brand-orange-500 focus:border-brand-orange-500"
+                    placeholder="Buscar">
             </div>
-    
+        </div>
         }
         <ul class="h-fit max-h-48 px-3 overflow-y-auto text-sm text-neutral-700">
             @for (item of itemsFilter; track $index) {
             <li>
-                <div [ngClass]="item.value===value ? 'bg-brand-orange-50 font-bold shadow': 'hover:bg-neutral-100'" class="flex items-center ps-4 rounded-2xl select-none cursor-pointer">
+                <div [ngClass]="item.value===value ? 'bg-brand-orange-50 font-bold shadow': 'hover:bg-neutral-100'"
+                    class="flex items-center ps-4 rounded-2xl select-none cursor-pointer">
                     <input [id]="'value-'+$index" type="checkbox" [checked]="item.value===value"
                         (change)="changeChecked(item.value)"
                         class=" hidden w-4 h-4 text-brand-orange-600 bg-neutral-100 border-neutral-300 rounded focus:ring-brand-orange-500 focus:ring-2">

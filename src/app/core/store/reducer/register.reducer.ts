@@ -1,16 +1,29 @@
 import { StatusRegister } from '@models';
 import { createReducer, on } from '@ngrx/store';
-import { DataConfig } from '@store';
+import { DataConfig, DataTemplate, DataResident } from '@store';
 
 export const initialState: StatusRegister = {
-  residential_id: undefined,
+  residential: undefined,
   config: undefined,
   customize: undefined,
   design: undefined,
   dynamicForm: undefined,
+  emailTemplate: undefined,
+  whatsAppTemplate: undefined,
 };
 
 export const registerReducer = createReducer(
   initialState,
-  on(DataConfig, (state, { data }) => (state.config = data))
+  on(DataConfig, (state, { data }) => (state.config = data)),
+  on(DataTemplate, (state, { data }) => {
+    console.log(data);
+    switch (data.type) {
+      case 'email':
+        return { ...state, emailTemplate: data.list };
+
+      case 'whatsApp':
+        return { ...state, whatsAppTemplate: data.list };
+    }
+  }),
+  on(DataResident, (state, { resident }) => ({ ...state, residential: resident }))
 );

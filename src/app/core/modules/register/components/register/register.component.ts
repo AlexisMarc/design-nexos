@@ -1,8 +1,10 @@
-import { basicValue, itemsProgressBar, resident } from '@models';
+import { AppStore, basicValue, itemsProgressBar, resident } from '@models';
 import { Component, inject, OnInit } from '@angular/core';
 import { NxToastService } from '@shared';
-import { EmailService } from '@services';
+import { EmailService, WhatsAppServiceService } from '@services';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { DataResident, DataTemplate } from '@store';
 
 @Component({
   selector: 'app-register',
@@ -40,10 +42,11 @@ export class RegisterComponent implements OnInit {
   ];
 
   resident?: resident;
-  templateEmail: basicValue[] = [];
 
   private _subscription = new Subscription();
+  private _store: Store<AppStore> = inject(Store<AppStore>);
   private _serviceEmail = inject(EmailService);
+  private _serviceWhatsApp = inject(WhatsAppServiceService);
   private _serviceMessage = inject(NxToastService);
 
   ngOnInit(): void {
@@ -58,25 +61,85 @@ export class RegisterComponent implements OnInit {
 
   initData() {
     this._subscription.add(
+      this._store.select('register').subscribe({
+        next: (value) => {
+          if (value) {
+            this.resident = value.residential;
+            console.log(value.residential);
+          }
+        },
+        error: () => {},
+      })
+    );
+
+    this._subscription.add(
       this._serviceEmail.getTemplateEmail().subscribe({
         next: (value) => {
-          this._serviceMessage.addMessage({
-            type: 'success',
-            message: 'Plantillas consultadas',
-          });
-          if (value && value.length) {
-            this.templateEmail = value.map((value) => {
-              return { label: value.name_email, value: value.id.toString() };
+          if (value.success) {
+            if (value.content && value.content.length) {
+              const list = value.content.map((value) => {
+                return { label: value.name_email, value: value.id.toString() };
+              });
+              this.saveTemplate(list, 'email');
+            }
+          } else {
+            this._serviceMessage.addMessage({
+              type: 'error',
+              message: 'Ocurrió un error al consultar las platillas de email',
+              life: 5000,
             });
           }
         },
         error: () => {
           this._serviceMessage.addMessage({
             type: 'error',
-            message: 'Error al consultar plantillas consultadas',
+            message: 'Error al consultar plantillas de email',
           });
         },
       })
     );
+
+    this._subscription.add(
+      this._serviceWhatsApp.getTemplateWhatsApp().subscribe({
+        next: (value) => {
+          if (value.success) {
+            if (value.content && value.content.length) {
+              const list = value.content.map((value) => {
+                return {
+                  label: value.name_content,
+                  value: value.id.toString(),
+                };
+              });
+              this.saveTemplate(list, 'whatsApp');
+            }
+          } else {
+            this._serviceMessage.addMessage({
+              type: 'error',
+              message:
+                'Ocurrió un error al consultar las platillas de whatsApp',
+              life: 5000,
+            });
+          }
+        },
+        error: () => {
+          this._serviceMessage.addMessage({
+            type: 'error',
+            message: 'Error al consultar plantillas de WhatsApp',
+          });
+        },
+      })
+    );
+  }
+
+  private saveTemplate(list: basicValue[], type: 'whatsApp' | 'email') {
+    this._store.dispatch(
+      DataTemplate({
+        data: { list, type },
+      })
+    );
+  }
+
+  setResident(resident: resident | undefined) {
+    this._store.dispatch(DataResident({ resident }));
   }
 }
