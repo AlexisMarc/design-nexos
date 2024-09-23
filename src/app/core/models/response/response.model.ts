@@ -1,6 +1,7 @@
 export interface RespData<T> {
     success: boolean;
     message: string;
+    event_id?: number;
     content: T;
   }
 

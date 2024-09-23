@@ -27,7 +27,6 @@ export class NxToggleSwitchComponent<T = boolean>
     OneValue: T;
     TwoValue: T;
   }>();
-  public checked: boolean = false;
   public isDisabled: boolean = false;
   public value!: T;
 
@@ -39,13 +38,13 @@ export class NxToggleSwitchComponent<T = boolean>
   private onTouched: () => void = () => {};
 
   writeValue(obj: T): void {
-    if (obj) {
+    if (obj === this.values().OneValue) {
       this.value = obj;
     } else {
       this.value = this.values().TwoValue;
     }
-    this.checked = this.value === this.values().OneValue;
     this.onValue.emit(this.value);
+    this.onTouched();
   }
 
   registerOnChange(fn: (value: T) => void): void {
@@ -70,7 +69,6 @@ export class NxToggleSwitchComponent<T = boolean>
         ? this.values().OneValue
         : this.values().TwoValue;
     this.onChange(this.value);
-    console.log(this.value)
     this.onTouched();
     this.onValue.emit(this.value);
   }

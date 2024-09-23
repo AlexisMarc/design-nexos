@@ -1,0 +1,5 @@
+input[type="radio"] {
+    -webkit-appearance:none;
+  box-shadow: inset 1px 1px 1px #000000;
+  background:#fff;
+}

@@ -30,3 +30,28 @@ export interface adminResident {
   email: string;
   phone: string;
 }
+
+export interface meeting {
+  meeting_id: number;
+  meeting_time: string;
+  email_template_id: string;
+  whatsapp_id: string;
+  login_with_credentials: boolean;
+  upload_database: boolean;
+}
+
+export interface meetingSettings {
+  shall_ask_representation_document: boolean;
+  label_name_owner: string;
+  label_name_agent: string;
+  limit_raising_by_customer: number;
+  color: string;
+  welcome_message: string;
+}
+
+export interface meetingDataAll extends meeting, meetingSettings {}
+
+export interface events {
+  name: string,
+  status: string,
+}

@@ -14,16 +14,29 @@
         <nx-progress-bar [items]="items" (emitSelect)="selectSection($event)"></nx-progress-bar>
     </div>
     <div class="flex-1 flex flex-col bg-white rounded-2xl border-2 border-neutral-100 p-8 gap-8">
+        @if (!selectedSection) {
         <div class="w-full flex gap-2 items-center">
             <nx-search-resident class="flex-1" [selectedResident]="resident"
                 (emitResident)="setResident($event)"></nx-search-resident>
-            <button class="b-secondary px-4 py-2 b-fit">Clonar</button>
+            @if(resident && viewButtons){
+            <button class="b-tertiary p-2 b-fit">
+                <svg class="fill-brand-orange-500 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                </svg>
+            </button>
+            <!-- <button class="b-secondary px-4 py-2 b-fit">Clonar</button> -->
             <button class="b-primary px-4 py-2 b-fit">Editar</button>
+            }
         </div>
+        }
         @switch (selectedSection) {
-        @case (0) {<app-form-basic-values-register></app-form-basic-values-register>}
-        @case (1) {<app-form-customize-register></app-form-customize-register>}
-        @case (2) {<app-form-design-register></app-form-design-register>}
+        @case (0) {<register-form-config (onNext)="NextOrAfter(true, 0)" (onCustomize)="setCustomize($event)"
+            (onAfter)="NextOrAfter(false, 0)" [statusCustomize]="statusCustomize"
+            [disabled]="disabled"></register-form-config>}
+        @case (1) {<register-form-customize (onNext)="NextOrAfter(true, 1)"
+            (onAfter)="NextOrAfter(false, 0)"></register-form-customize>}
+        @case (2) {<register-form-design (onNext)="NextOrAfter(true, 2)"
+            (onAfter)="NextOrAfter(false, 0)"></register-form-design>}
         }
     </div>
     <!--  -->
@@ -44,19 +57,3 @@
         </div>
     </label> -->
 </div>
-<!-- <app-modeler-form-register></app-modeler-form-register> -->
-<!-- <div
-    class=" flex gap-2 w-80 fixed z-[1000000] p-4 bg-white border-2 rounded-md border-neutral-200 right-8 top-4 shadow-2xl text-neutral-500">
-    <div>
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
-        </svg>
-    </div>
-    <span class="flex-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit voluptatibus magnam, maiores nemo
-        quibusdam ab, qui excepturi maxime labore porro exercitationem nulla illo illum vitae. Architecto minima quo
-        nulla minus.</span>
-    <button class="b-fit">
-
-    </button>
-
-</div> -->

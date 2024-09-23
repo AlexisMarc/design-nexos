@@ -16,9 +16,9 @@ export class EmailService {
     return this.http.get(this.api + '/email/list/active');
   }
 
-  public getTemplateEmail(): Observable<RespData<emailTemplate[]>> {
-    return this.http.get(
+  public getTemplateEmail() {
+    return this.http.get<RespData<emailTemplate[]>>(
       this.api + '/email/list/actives'
-    ) as Observable<RespData<emailTemplate[]>>;
+    );
   }
 }

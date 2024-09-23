@@ -30,10 +30,12 @@
 
     <div class="mt-4 flex gap-2 col-span-2">
         <div class="flex gap-2 items-center flex-1">
-            <nx-toggle-switch [values]="values"></nx-toggle-switch>
+            <nx-toggle-switch [values]="values" (onValue)="setCustomize($event)"
+                [formControl]="controlCustomize"></nx-toggle-switch>
             <span class="font-bold text-neutral-400">Personalizar</span>
         </div>
-        <button class="b-secondary px-4 py-2 b-fit">Cancelar</button>
-        <button type="submit" class="b-primary px-4 py-2 b-fit">Siguiente</button>
+        <button [disabled]="form.disabled" type="submit" class="b-primary px-4 py-2 b-fit">
+            {{statusCustomize()? 'Siguiente': 'Guardar'}}
+        </button>
     </div>
 </form>

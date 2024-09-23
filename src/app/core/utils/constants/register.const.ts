@@ -1,0 +1,28 @@
+import { registerField } from '@models';
+
+export const FIELD_DATA_DEFAULT: registerField = {
+  label_name: 'Campo',
+  field_name: 'campo_id',
+  placeholder: 'Campo por defecto',
+  type: 'input',
+  type_input: 'text',
+  required: true,
+  readonly: false,
+  disabled: false,
+  maxlength: 150,
+  minlength: 1,
+  min: 0,
+  max: 0,
+  step: 0,
+  pattern: '',
+  autofocus: false,
+  autocomplete: 'off',
+  multiple: false,
+  size: 100,
+  alt: '',
+  rows: 1,
+  cols: 1,
+  wrap: 'soft',
+  options: [],
+  validations: [],
+};

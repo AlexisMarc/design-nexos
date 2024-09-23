@@ -1,6 +1,6 @@
 @if (!viewValues()) {
 <div class="flex gap-2 items-center select-none">
-    <input [disabled]="isDisabled" class="hidden peer" type="checkbox" [id]="id" [checked]="checked"
+    <input [disabled]="isDisabled" class="hidden peer" type="checkbox" [id]="id" [checked]="value===values().OneValue"
         (change)="setChecked()" />
     <label [for]='id' [ngClass]="{'shadow-inner shadow-neutral-100': isDisabled, 'shadow': !isDisabled}"
         class="after:left-1 bg-neutral-200 peer-checked:bg-brand-orange-500 peer-checked:after:left-8 w-12 h-5 after:w-3 after:h-3 inline-block rounded-full relative cursor-pointer peer-disabled:cursor-not-allowed after:block after:bg-neutral-50 after:rounded after:rotate-45 after:absolute after:top-1 after:duration-200 ">
@@ -14,13 +14,15 @@
         <label [for]="id+'_1'"
             [ngClass]="value===values().TwoValue?'bg-brand-orange-500 text-white' : 'text-neutral-500'"
             class="transition-all cursor-pointer text-xs font-medium py-1 px-4 rounded-full text-nowrap flex gap-2">
-            <input class="hidden" [id]="id+'_1'" [name]="id" type="radio" [checked]="!checked" (change)="setChecked()">
+            <input class="hidden" [id]="id+'_1'" [name]="id" type="radio" [checked]="value===values().OneValue"
+                (change)="setChecked()">
             <span>{{values().TwoValue}}</span>
         </label>
         <label [for]="id+'_2'"
             [ngClass]="value===values().OneValue?'bg-brand-orange-500 text-white' : 'text-neutral-500'"
             class="transition-all cursor-pointer text-xs font-medium py-1 px-4 rounded-full text-nowrap flex gap-2">
-            <input class="hidden" [id]="id+'_2'" [name]="id" type="radio" [checked]="checked" (change)="setChecked()">
+            <input class="hidden" [id]="id+'_2'" [name]="id" type="radio" [checked]="value===values().TwoValue"
+                (change)="setChecked()">
             <span>{{values().OneValue}}</span>
         </label>
     </div>

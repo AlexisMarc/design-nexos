@@ -76,7 +76,12 @@ export class NxDropdownFieldComponent implements OnInit, OnChanges {
   private onTouched: () => void = () => {};
 
   writeValue(obj: string | undefined | null): void {
-    this.value = obj;
+    if (this.items().find((val) => val.value == obj)) {
+      this.value = obj;
+      return;
+    }
+    this.value = undefined;
+    this.onChange(undefined);
   }
 
   registerOnChange(fn: (value: string | undefined | null) => void): void {
@@ -104,11 +109,11 @@ export class NxDropdownFieldComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   private initObjetItems() {
-     this.itemsObjet = {};
-     this.items().forEach((item) => {
-       this.itemsObjet[item.value] = { label: item.label, select: false };
-     });
-   }
+    this.itemsObjet = {};
+    this.items().forEach((item) => {
+      this.itemsObjet[item.value] = { label: item.label, select: false };
+    });
+  }
 
   private filterItems(): void {
     if (this.valueFilter === '') {
@@ -132,6 +137,8 @@ export class NxDropdownFieldComponent implements OnInit, OnChanges {
     // };
     this.value = value;
     this.onChange(this.value);
+    this.isShowBox = false;
+    this._cd.markForCheck();
   }
 
   public showBox(event: MouseEvent): void {

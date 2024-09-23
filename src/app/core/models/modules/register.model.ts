@@ -1,8 +1,8 @@
 export interface registerOption {
   value: string;
   label: string;
-  selected: number;
-  disabled: number;
+  selected: boolean;
+  disabled: boolean;
 }
 
 export interface registerValidation {
@@ -91,9 +91,12 @@ export interface RegisterDataCustomize {
   label_name_owner: string;
   label_name_agent: string;
   limit_raising_by_customer: number;
+  mails_to_send_documents: string;
+  quality_care_selection: boolean;
 }
 
 export interface RegisterDataDesign {
+  logo: string;
   color: string;
   welcome_message: string;
 }

@@ -1,21 +1,21 @@
-import { basicValue, resident } from '@models';
+import { basicValue, RegisterDataConfig, RegisterDataCustomize, RegisterDataDesign, RegisterForm, resident } from '@models';
 import { createAction, props } from '@ngrx/store';
 
 export const DataConfig = createAction(
   '[Register] data config',
-  props<{ data: any }>()
+  props<{ data: RegisterDataConfig }>()
 );
 export const DataCustomize = createAction(
   '[Register] data customize',
-  props<{ data: any }>()
+  props<{ data: RegisterDataCustomize }>()
 );
 export const DataDesign = createAction(
   '[Register] data design',
-  props<{ data: any }>()
+  props<{ data: RegisterDataDesign }>()
 );
 export const DataDynamicForm = createAction(
   '[Register] data dynamic Form',
-  props<{ data: any }>()
+  props<{ data: RegisterForm }>()
 );
 
 export const DataTemplate = createAction(

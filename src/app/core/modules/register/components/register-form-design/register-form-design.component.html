@@ -1,8 +1,10 @@
-<form class="w-full h-fit grid grid-cols-2 gap-4">
-    <nx-file-field class="row-span-2"></nx-file-field>
+<form [formGroup]="formDesign" (ngSubmit)="saveForm()" class="w-full h-fit grid grid-cols-2 gap-4">
+    <div class="row-span-2 flex flex-col gap-2">
+        <nx-file-field formControlName="logo"></nx-file-field>
+    </div>
     <label for="textarea" class="container-field row-span-2">
         <span>Mensaje de bienvenida</span>
-        <textarea id="textarea" class="peer" cols="20"></textarea>
+        <textarea id="textarea" class="peer" cols="20" formControlName="welcome_message"></textarea>
         <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
         </div>
     </label>
@@ -35,7 +37,7 @@
 
 
     <div class="mt-4 flex gap-2 col-span-2 justify-end">
-        <button class="b-secondary px-4 py-2 b-fit">Cancelar</button>
-        <button class="b-primary px-4 py-2 b-fit">Siguiente</button>
+        <button type="button" class="b-secondary px-4 py-2 b-fit">Cancelar</button>
+        <button type="submit" class="b-primary px-4 py-2 b-fit">Siguiente</button>
     </div>
 </form>

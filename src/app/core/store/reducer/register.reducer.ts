@@ -1,6 +1,12 @@
 import { StatusRegister } from '@models';
 import { createReducer, on } from '@ngrx/store';
-import { DataConfig, DataTemplate, DataResident } from '@store';
+import {
+  DataConfig,
+  DataTemplate,
+  DataResident,
+  DataDynamicForm,
+  DataCustomize,
+} from '@store';
 
 export const initialState: StatusRegister = {
   residential: undefined,
@@ -14,7 +20,7 @@ export const initialState: StatusRegister = {
 
 export const registerReducer = createReducer(
   initialState,
-  on(DataConfig, (state, { data }) => (state.config = data)),
+  on(DataConfig, (state, { data }) => ({ ...state, config: data })),
   on(DataTemplate, (state, { data }) => {
     console.log(data);
     switch (data.type) {
@@ -25,5 +31,10 @@ export const registerReducer = createReducer(
         return { ...state, whatsAppTemplate: data.list };
     }
   }),
-  on(DataResident, (state, { resident }) => ({ ...state, residential: resident }))
+  on(DataResident, (state, { resident }) => ({
+    ...state,
+    residential: resident,
+  })),
+  on(DataDynamicForm, (state, { data }) => ({ ...state, dynamicForm: data })),
+  on(DataCustomize, (state, { data }) => ({ ...state, customize: data }))
 );
