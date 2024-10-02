@@ -39,7 +39,6 @@ export class NxToastComponent implements OnInit {
   ngOnInit() {
     this._service.messages$.subscribe({
       next: (value) => {
-        console.log(value)
         this.list = [...value];
       },
     });

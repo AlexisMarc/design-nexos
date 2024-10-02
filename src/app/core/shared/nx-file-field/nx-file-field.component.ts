@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  ElementRef,
   forwardRef,
   Input,
   input,
+  viewChild,
   type OnInit,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -25,6 +27,8 @@ import { v4 as uuidv4 } from 'uuid';
   ],
 })
 export class NxFileFieldComponent implements OnInit, ControlValueAccessor {
+  private inputFile =
+    viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
   public id = uuidv4();
   private _allowedFileTypes: FileType[] = ['text/csv'];
   public title = input<string>('Cargar archivo');
@@ -77,10 +81,9 @@ export class NxFileFieldComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit(): void {}
 
-  async changeValue(event: Event) {
-    debugger
+  async changeValue() {
     if (this.isDisabled) return;
-    const input = event.target as HTMLInputElement;
+    const input = this.inputFile().nativeElement;
     const files: FileList | null = input.files;
     let values: string | string[] | null | undefined;
     if (!files) return;
@@ -103,6 +106,7 @@ export class NxFileFieldComponent implements OnInit, ControlValueAccessor {
 
   resetValue() {
     this.value = undefined;
+    this.inputFile().nativeElement.value = '';
     this.onChange(undefined);
     this.onTouched();
   }
@@ -115,7 +119,6 @@ export class NxFileFieldComponent implements OnInit, ControlValueAccessor {
         const base64 = reader.result;
         if (typeof base64 === 'string') {
           value = base64;
-          console.log(value);
           resolver(value);
         }
       };

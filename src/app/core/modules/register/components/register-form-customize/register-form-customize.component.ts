@@ -16,6 +16,7 @@ export class CustomizeRegisterComponent implements OnInit {
   onNext = output<void>();
   onAfter = output<void>();
   values = { OneValue: true, TwoValue: false };
+  valuesNumber = { OneValue: 1, TwoValue: 0 };
   viewModeler = false;
   viewFields = {
     emailArray: false,
@@ -23,7 +24,7 @@ export class CustomizeRegisterComponent implements OnInit {
     countUnit: false,
     form: false,
   };
-
+  public formName: string = 'Formulario de registro';
   editFormModeler = false;
 
   private _subscription = new Subscription();
@@ -36,18 +37,88 @@ export class CustomizeRegisterComponent implements OnInit {
   ]);
 
   public form = new FormGroup({
-    shall_ask_representation_document: new FormControl(false),
+    shall_ask_representation_document: new FormControl(0),
     label_name_owner: new FormControl('Propietario', NxValidators.required()),
     label_name_agent: new FormControl('Apoderado', NxValidators.required()),
     limit_raising_by_customer: new FormControl(0),
-    quality_care_selection: new FormControl(false),
+    quality_care_selection: new FormControl(0),
     mails_to_send_documents: new FormControl(''),
+    authority_granted: new FormControl(0),
+    signature_module: new FormControl(0),
   });
-  ngOnInit(): void {}
 
-  addEmailInput() {
+  ngOnInit(): void {
+    this.initSubscription();
+  }
+
+  private initSubscription() {
+    this._subscription.add(
+      this._store.select('register').subscribe({
+        next: (value) => {
+          this.viewFields = {
+            emailArray: false,
+            rolesFun: false,
+            countUnit: false,
+            form: false,
+          };
+          if (value.dynamicForm) {
+            this.formName = value.dynamicForm.name;
+            this.viewFields.form = true;
+          }
+          if (value.customize) {
+            this.setValues(value.customize);
+            return;
+          }
+          this.form.patchValue({
+            shall_ask_representation_document: 0,
+            label_name_owner: 'Propietario',
+            label_name_agent: 'Apoderado',
+            limit_raising_by_customer: 0,
+            quality_care_selection: 0,
+            mails_to_send_documents: '',
+          });
+        },
+      })
+    );
+  }
+
+  private setValues({
+    shall_ask_representation_document,
+    label_name_owner,
+    label_name_agent,
+    limit_raising_by_customer,
+    mails_to_send_documents,
+    quality_care_selection,
+    signature_module,
+    authority_granted
+  }: RegisterDataCustomize) {
+    this.form.patchValue({
+      shall_ask_representation_document,
+      label_name_owner,
+      label_name_agent,
+      limit_raising_by_customer,
+      mails_to_send_documents,
+      quality_care_selection,
+      signature_module,
+      authority_granted
+    });
+
+    if (mails_to_send_documents && mails_to_send_documents !== '') {
+      debugger;
+      this.setEmailArrayFormDefault(true);
+      mails_to_send_documents.split(',').forEach((email) => {
+        this.addEmailInput(email);
+      });
+      this.viewFields.emailArray = true;
+    }
+    if (limit_raising_by_customer) this.viewFields.countUnit = true;
+    if (label_name_owner !== 'Propietario' || label_name_agent !== 'Apoderado')
+      this.viewFields.rolesFun = true;
+  }
+
+  addEmailInput(value: string = '') {
     this.formEmails.push(
-      new FormControl('', NxValidators.email('Correo electrónico invalido'))
+      new FormControl(value, NxValidators.email('Correo electrónico invalido'))
     );
   }
 
@@ -77,16 +148,7 @@ export class CustomizeRegisterComponent implements OnInit {
     switch (type) {
       case 'email-array':
         if (!this.viewFields.emailArray) {
-          this.formEmails = new FormArray([
-            new FormControl(
-              '',
-              NxValidators.email('Correo electrónico invalido')
-            ),
-            new FormControl(
-              '',
-              NxValidators.email('Correo electrónico invalido')
-            ),
-          ]);
+          this.setEmailArrayFormDefault();
         } else {
           this.formEmails;
         }
@@ -114,6 +176,17 @@ export class CustomizeRegisterComponent implements OnInit {
     }
   }
 
+  private setEmailArrayFormDefault(isVoid: boolean = false) {
+    if (isVoid) {
+      this.formEmails = new FormArray<FormControl<string | null>>([]);
+      return;
+    }
+    this.formEmails = new FormArray([
+      new FormControl('', NxValidators.email('Correo electrónico invalido')),
+      new FormControl('', NxValidators.email('Correo electrónico invalido')),
+    ]);
+  }
+
   saveForm() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -138,7 +211,7 @@ export class CustomizeRegisterComponent implements OnInit {
     );
 
     const data = this.form.getRawValue() as RegisterDataCustomize;
-    this._store.dispatch(DataCustomize({data}));
+    this._store.dispatch(DataCustomize({ data }));
     this.onNext.emit();
   }
 
@@ -149,7 +222,7 @@ export class CustomizeRegisterComponent implements OnInit {
       })
       .filter((email) => email !== null)
       .join(',');
-
+    if (emails == ',') return '';
     return emails;
   }
 }

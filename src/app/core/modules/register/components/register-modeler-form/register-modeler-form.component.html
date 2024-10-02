@@ -1,5 +1,5 @@
 @if (!edit()) {
-<div class="w-full h-svh bg-neutral-900/50 fixed top-0 left-0 z-50 flex items-center justify-center">
+<div class="w-full h-svh backdrop-blur fixed top-0 left-0 z-50 flex items-center justify-center">
     <div class="p-8 rounded w-full h-fit bg-neutral-100 max-w-4xl max-h-svh shadow relative">
         <button (click)="onClose.emit(false)" class="b-primary p-2 b-fit shadow absolute z-10 top-4 left-4">
             <svg class="w-6 h-6 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -17,16 +17,12 @@
                 <ng-container [ngTemplateOutlet]="fielView"
                     [ngTemplateOutletContext]="{field, index: $index}"></ng-container>
                 }
-                <div class="mt-2 flex gap-2 col-span-2 justify-end">
-                    <button class="b-secondary px-4 py-2 b-fit">Cancelar</button>
-                    <button class="b-primary px-4 py-2 b-fit">Siguiente</button>
-                </div>
             </div>
         </ng-scrollbar>
     </div>
 </div>
 } @else {
-<div class="fixed flex p-4 gap-4 top-0 left-0 bg-neutral-100 w-full h-svh z-50">
+<div class="fixed flex p-4 gap-4 top-0 left-0 bg-neutral-100 w-full h-svh z-50 justify-center">
     <div [ngClass]="{'hidden': !fieldSelect}" class="flex-1 h-full bg-white rounded-lg max-w-80 overflow-hidden shadow">
         <ng-scrollbar [orientation]="'vertical'" style="max-height: 95svh;">
             <form [formGroup]="formField" class="w-full h-full flex flex-col gap-4 p-4">
@@ -268,7 +264,7 @@
             </form>
         </ng-scrollbar>
     </div>
-    <div class="flex-1 h-full bg-white rounded-lg relative">
+    <div class="flex-1 h-full bg-white rounded-lg relative max-w-5xl">
         <button (click)="onClose.emit(false)" class="b-primary p-2 b-fit shadow absolute z-10 -top-2 -left-2">
             <svg class="w-6 h-6 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                 <path
@@ -286,7 +282,7 @@
                     <img class="w-36" src="/assets/img/LOGO-NEXOSPH-SIN-JIRAFAS-140X40.png" alt="icon-form">
                 </div>
                 <div class="col-span-2">
-                    <button class="b-primary b-fit px-6 py-2 flex gap-2 items-center">
+                    <button (click)="createField()" class="b-primary b-fit px-6 py-2 flex gap-2 items-center">
                         <div>
                             <svg class="h-4 w-4 fill-neutral-50" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 -960 960 960">

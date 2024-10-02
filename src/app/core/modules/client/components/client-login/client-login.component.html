@@ -1,36 +1,41 @@
 <div class="w-full max-w-xl rounded-2xl px-16 py-8 bg-white/50 backdrop-blur-md shadow">
     <div class="w-full h-fit flex items-center gap-4">
-        <div class="w-2 h-6 rounded-full bg-brand-orange-500"></div>
+        <div [ngStyle]="{backgroundColor: colors.primary}" class="w-2 h-6 rounded-full"></div>
         <div class="flex flex-col">
-            <span class="text-xl font-black text-neutral-900">Nombre del cliente</span>
-            <span class="text-xs font-medium text-neutral-600">{{requerid? 'Iniciar sesión': 'Aceptar términos y condiciones'}}</span>
+            <span class="text-xl font-black text-neutral-900">{{this.welcome?.residential_name}}</span>
+            <span class="text-xs font-medium text-neutral-600">
+                {{requerid? 'Iniciar sesión': 'Aceptar términos y condiciones'}}
+            </span>
         </div>
     </div>
-    <form class="w-full flex flex-col gap-4 mt-8">
-        @if (requerid) {
-        <label for="username" class="container-field">
-            <span>Usuario</span>
-            <input id="username" type="text" class="peer">
+    <form [formGroup]="form" (ngSubmit)="saveLogin()" class="w-full flex flex-col gap-4 mt-8">
+        <label for="document_number" class="container-field">
+            <span>Número de identificación</span>
+            <input id="document_number" type="text" class="peer" formControlName="document_number">
             <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
             </div>
         </label>
+@if (requerid) {
         <label for="password" class="container-field">
             <span>Contraseña</span>
-            <input id="password" type="password" class="peer">
+            <input id="password" type="password" class="peer" formControlName="password">
             <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
             </div>
         </label>
         }
-
+        
         <img class="h-20 w-fit" src="assets/img/recatcha.png" alt="recatcha">
         <div class="w-full flex gap-2 items-center">
-            <nx-toggle-switch [values]="values"></nx-toggle-switch>
-            <p class="text-xs">Acepto los <a class="text-brand-orange-500 font-bold hover:underline"
-                    href="http://">Términos y
-                    condiciones del servicio</a> y las <a class="text-brand-orange-500 font-bold hover:underline"
-                    href="http://">Políticas de privacidad</a> de <a
-                    class="text-brand-orange-500 font-bold hover:underline" href="http://">Nexos SAS</a></p>
+            <nx-toggle-switch [values]="values" formControlName="accept_polity"></nx-toggle-switch>
+            <p class="text-xs">Acepto los
+                <a [ngStyle]="{color: colors.primary}" class=" font-bold hover:underline" href="http://">Términos y
+                    condiciones del servicio</a> y las <a [ngStyle]="{color: colors.primary}"
+                    class="font-bold hover:underline" href="http://">Políticas de privacidad</a> de <a
+                    [ngStyle]="{color: colors.primary}" class="font-bold hover:underline" href="http://">Nexos SAS</a>
+            </p>
         </div>
-        <button class="b-primary py-2 px-4">{{requerid? 'Iniciar sesión': 'Ingresar'}}</button>
+        <button type="submit" [ngStyle]="{backgroundColor: colors.primary}" class="b-primary py-2 px-4">{{requerid?
+            'Iniciar sesión':
+            'Ingresar'}}</button>
     </form>
 </div>

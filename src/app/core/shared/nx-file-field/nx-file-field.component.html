@@ -28,5 +28,5 @@
 
 
     <input #fileInput [disabled]="isDisabled" class="hidden" type="file" [id]="id" [accept]="allowedFileTypes"
-        (input)="changeValue($event)" (change)="changeValue($event)">
+        (input)="changeValue()" (change)="changeValue()">
 </label>

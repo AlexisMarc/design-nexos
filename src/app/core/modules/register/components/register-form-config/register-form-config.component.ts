@@ -3,6 +3,7 @@ import {
   inject,
   input,
   OnChanges,
+  OnDestroy,
   output,
   SimpleChanges,
   type OnInit,
@@ -19,49 +20,58 @@ import { Subscription } from 'rxjs';
   templateUrl: './register-form-config.component.html',
   styleUrl: './register-form-config.component.css',
 })
-export class FormBasicValuesRegisterComponent implements OnInit, OnChanges {
-  onNext = output<void>();
-  onAfter = output<void>();
+export class FormBasicValuesRegisterComponent
+  implements OnInit, OnChanges, OnDestroy
+{
+  onNext = output<boolean>();
   onCustomize = output<boolean>();
   statusCustomize = input.required<boolean>();
   controlCustomize = new FormControl(false);
   values = { OneValue: true, TwoValue: false };
   templateEmail: basicValue[] = [];
   templateWhatsApp: basicValue[] = [];
+  typesEvent: basicValue[] = [];
   disabled = input.required<boolean>();
 
   dataConfig: RegisterDataConfig = {
     file: '',
     name: '',
-    status: true,
     meeting_time: '',
     login_with_credentials: false,
     email_template_id: '',
     whatsapp_id: '',
     upload_database: false,
+    event_type_id: 0,
   };
 
   form = new FormGroup({
     file: new FormControl('', [NxValidators.required()]),
     name: new FormControl('', [NxValidators.required()]),
-    status: new FormControl(true, [NxValidators.required()]),
     meeting_time: new FormControl('', [NxValidators.required()]),
     login_with_credentials: new FormControl(false),
     email_template_id: new FormControl('', [NxValidators.required()]),
     whatsapp_id: new FormControl('', [NxValidators.required()]),
-    upload_database: new FormControl(false),
+    upload_database: new FormControl(true),
+    event_type_id: new FormControl(0, [NxValidators.required()]),
   });
   private _subscription = new Subscription();
   private _store: Store<AppStore> = inject(Store<AppStore>);
   private _serviceMessage = inject(NxToastService);
 
   ngOnInit(): void {
-    this.form.disable();
-    this.controlCustomize.disable();
+    this.validEnabled();
     this.initSubscription();
   }
 
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
+
   ngOnChanges(_: SimpleChanges): void {
+    this.validEnabled();
+  }
+
+  private validEnabled() {
     this.controlCustomize.setValue(this.statusCustomize());
     if (!this.disabled()) {
       this.form.enable();
@@ -79,9 +89,22 @@ export class FormBasicValuesRegisterComponent implements OnInit, OnChanges {
           if (value) {
             this.templateEmail = value.emailTemplate ?? [];
             this.templateWhatsApp = value.whatsAppTemplate ?? [];
+            this.typesEvent = value.typesEvent ?? [];
             if (value.config) {
               this.dataConfig = structuredClone(value.config);
               this.setValues();
+            } else {
+              this.dataConfig = {
+                file: '',
+                name: '',
+                meeting_time: '',
+                login_with_credentials: false,
+                email_template_id: '',
+                whatsapp_id: '',
+                upload_database: false,
+                event_type_id: 0,
+              };
+              this.form.reset(this.dataConfig);
             }
           }
         },
@@ -101,11 +124,11 @@ export class FormBasicValuesRegisterComponent implements OnInit, OnChanges {
     }
     const data = this.form.getRawValue() as RegisterDataConfig;
     this._store.dispatch(DataConfig({ data }));
-    this.onNext.emit();
+    this.onNext.emit(!this.statusCustomize());
   }
 
   private setValues() {
-    this.form.setValue(this.dataConfig);
+    this.form.patchValue(this.dataConfig);
     if (this.dataConfig.upload_database) {
       this.form.get('file')?.setValue('file');
     }

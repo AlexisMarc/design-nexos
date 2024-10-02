@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ResidentService {
-  private api = 'https://apiasambleas.grupoempresarialnexos.com';
+  private api = 'https://apiasambleas.grupogift.com';
   private http = inject(HttpClient);
   constructor() {}
 

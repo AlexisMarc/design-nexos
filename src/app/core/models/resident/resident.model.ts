@@ -32,26 +32,62 @@ export interface adminResident {
 }
 
 export interface meeting {
+  name: string;
   meeting_id: number;
   meeting_time: string;
   email_template_id: string;
   whatsapp_id: string;
   login_with_credentials: boolean;
   upload_database: boolean;
+  event_type_id: number;
 }
 
 export interface meetingSettings {
-  shall_ask_representation_document: boolean;
+  mails_to_send_documents?: string;
+  shall_ask_representation_document: number;
   label_name_owner: string;
   label_name_agent: string;
   limit_raising_by_customer: number;
   color: string;
   welcome_message: string;
+  quality_care_selection: number;
+  signature_module: number;
+  authority_granted: number;
+}
+
+export interface MeetingWelcome {
+  success: boolean;
+  residential_id: number;
+  meeting_name: string;
+  meeting_time: string;
+  welcome_message: string;
+  color: string;
+  logo: string | null;
+  residential_name: string;
+  content_type: string | null;
+  event_type_name: string;
 }
 
 export interface meetingDataAll extends meeting, meetingSettings {}
 
 export interface events {
-  name: string,
-  status: string,
+  id: number;
+  name: string;
+  status: 'active' | 'inactive';
+}
+
+export interface unit {
+  id: number
+  name: string;
+  number: string;
+  created_at: string;
+  updated_at: string;
+  building_id: number;
+  coefficient: string;
+  aporte: string;
+  validation_user: string;
+  validation_password: string;
+  voter_profile_id: number;
+  can_vote: number;
+  meeting_id: number;
 }

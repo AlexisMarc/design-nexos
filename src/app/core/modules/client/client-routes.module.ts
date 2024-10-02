@@ -5,7 +5,9 @@ import {
   ClientComponent,
   ClientDynamicFormComponent,
   ClientLoginComponent,
+  ClientPreviewComponent,
   ClientQrComponent,
+  ClientScannerComponent,
   ClientUnitComponent,
 } from '@client';
 
@@ -33,6 +35,18 @@ export const routes: Routes = [
       {
         path: 'qr',
         component: ClientQrComponent,
+      },
+      {
+        path: 'scanner',
+        component: ClientScannerComponent,
+      },
+      {
+        path: '',
+        component: ClientPreviewComponent,
+      },
+      {
+        path: ':id',
+        component: ClientPreviewComponent,
       },
     ],
   },

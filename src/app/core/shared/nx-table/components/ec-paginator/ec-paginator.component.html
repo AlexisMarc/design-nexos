@@ -1,0 +1,20 @@
+<div class="flex items-center gap-8 p-2">
+  <button (click)="backPage()" [disabled]="_currentPagination === 1" class="b-fit b-tertiary" type="button">
+    <svg class="w-6 h-6 fill-brand-orange-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+    </svg>
+  </button>
+
+  <p class="block font-sans text-base font-normal leading-relaxed text-neutral-700">
+    Mostrando <strong class="text-neutral-900">{{limitLeftPagination}}</strong> a
+    <strong class="text-neutral-900">{{limitRightPagination}}</strong> de
+    <strong class="text-neutral-900">{{totalRecords}}</strong>
+  </p>
+
+  <button (click)="nextPage()" [disabled]="limitRightPagination === totalRecords" class="b-fit b-tertiary"
+    type="button">
+    <svg class="w-6 h-6 fill-brand-orange-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+    </svg>
+  </button>
+</div>

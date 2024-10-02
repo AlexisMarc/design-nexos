@@ -16,6 +16,8 @@ export interface registerValidation {
 }
 
 export interface registerField {
+  id?: number;
+  form_id?: number,
   label_name: string;
   field_name: string;
   placeholder: string;
@@ -68,6 +70,7 @@ export interface registerField {
 }
 
 export interface RegisterForm {
+  id?: number,
   meeting_id: number;
   name: string;
   description: string;
@@ -78,21 +81,23 @@ export interface RegisterForm {
 export interface RegisterDataConfig {
   file: string;
   name: string;
-  status: boolean;
   meeting_time: string;
   login_with_credentials: boolean;
   email_template_id: string;
   whatsapp_id: string;
   upload_database: boolean;
+  event_type_id?: number
 }
 
 export interface RegisterDataCustomize {
-  shall_ask_representation_document: boolean;
+  shall_ask_representation_document: number;
   label_name_owner: string;
   label_name_agent: string;
   limit_raising_by_customer: number;
-  mails_to_send_documents: string;
-  quality_care_selection: boolean;
+  mails_to_send_documents?: string;
+  quality_care_selection: number;
+  signature_module: number;
+  authority_granted: number
 }
 
 export interface RegisterDataDesign {

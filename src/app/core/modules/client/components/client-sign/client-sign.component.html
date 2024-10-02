@@ -1,15 +1,31 @@
-<div class="w-full h-svh fixed top-0 left-0 flex justify-center items-center bg-neutral-900/70">
-    <div class="w-full md:max-w-2xl h-full md:max-h-96 rounded-2xl bg-neutral-50 shadow px-4 py-8 flex flex-col gap-4">
-        <div class="flex gap-4 items-center pt-4">
-            <div class="w-4 h-10 rounded-full bg-brand-orange-500"></div>
+<div class="w-full h-svh fixed z-20 top-0 left-0 flex justify-center items-center bg-neutral-900/70">
+    <div
+        class="w-full md:w-fit md:max-w-2xl h-full md:h-fit md:rounded-2xl bg-neutral-50 shadow px-4 py-8 flex flex-col items-center gap-4">
+        <div class="flex gap-4 items-center pt-4 w-full">
+            <div [ngStyle]="{backgroundColor: colors.primary}" class="w-4 h-10 rounded-full"></div>
             <div class="flex flex-col flex-1">
                 <span class="text-2xl text-neutral-900 font-black">Manuscrito / Firma</span>
                 <span class="text-xs font-medium text-neutral-600">Nombre del cliente</span>
             </div>
         </div>
-        <div class="w-full flex-1 bg-neutral-200 rounded-2xl"></div>
-        <div class="w-full flex justify-end">
-            <button class="b-primary px-8 py-2">Enviar</button>
+        <signature-pad #sign class="w-fit h-fit bg-neutral-200 rounded-2xl" [options]="signaturePadOptions"
+            (onEndEvent)="drawComplete()"></signature-pad>
+        <div class="w-full flex">
+            <button [ngStyle]="{borderColor: colors.primary, color: colors.primary}" type="button" (click)="clearSign()"
+                class="b-tertiary px-8 py-2">Borrar</button>
+            <div class="flex flex-1 justify-end gap-4">
+                <button 
+                    class="hidden b-secondary !bg-neutral-100 px-2 py-1 gap-2 items-center flex-1 md:flex-none justify-center">
+                    <svg class="w-6 h-6 fill-neutral-700" viewBox="0 0 24 25" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M6.5 20.5C4.98333 20.5 3.6875 19.975 2.6125 18.925C1.5375 17.875 1 16.5917 1 15.075C1 13.775 1.39167 12.6167 2.175 11.6C2.95833 10.5833 3.98333 9.93333 5.25 9.65C5.66667 8.11667 6.5 6.875 7.75 5.925C9 4.975 10.4167 4.5 12 4.5C13.95 4.5 15.6042 5.17917 16.9625 6.5375C18.3208 7.89583 19 9.55 19 11.5C20.15 11.6333 21.1042 12.1292 21.8625 12.9875C22.6208 13.8458 23 14.85 23 16C23 17.25 22.5625 18.3125 21.6875 19.1875C20.8125 20.0625 19.75 20.5 18.5 20.5H13C12.45 20.5 11.9792 20.3042 11.5875 19.9125C11.1958 19.5208 11 19.05 11 18.5V13.35L9.4 14.9L8 13.5L12 9.5L16 13.5L14.6 14.9L13 13.35V18.5H18.5C19.2 18.5 19.7917 18.2583 20.275 17.775C20.7583 17.2917 21 16.7 21 16C21 15.3 20.7583 14.7083 20.275 14.225C19.7917 13.7417 19.2 13.5 18.5 13.5H17V11.5C17 10.1167 16.5125 8.9375 15.5375 7.9625C14.5625 6.9875 13.3833 6.5 12 6.5C10.6167 6.5 9.4375 6.9875 8.4625 7.9625C7.4875 8.9375 7 10.1167 7 11.5H6.5C5.53333 11.5 4.70833 11.8417 4.025 12.525C3.34167 13.2083 3 14.0333 3 15C3 15.9667 3.34167 16.7917 4.025 17.475C4.70833 18.1583 5.53333 18.5 6.5 18.5H9V20.5H6.5Z" />
+                    </svg>
+                    <span class="md:hidden text-neutral-700">Escanear</span>
+                </button>
+                <button [ngStyle]="{backgroundColor: colors.primary}" (click)="saveSign()" type="button"
+                    class="b-primary px-8 py-2">Enviar</button>
+            </div>
         </div>
     </div>
 </div>

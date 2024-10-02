@@ -1,0 +1,81 @@
+<div class="flex backdrop-blur-sm bg-white/30 gap-8 p-4 flex-col-reverse items-center lg:justify-center lg:flex-row relative max-w-2xl lg:max-w-4xl rounded-lg">
+    <div class="absolute -top-16 md:-top-32 left-0 -z-10">
+        <svg [ngStyle]="{fill: colors.dark_default}" class="h-16 w-16 blur-sm" version="1.1" id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="-18.48 -18.48 221.71 221.71" xml:space="preserve" stroke-width="0.0018475100000000001">
+            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                <path transform="translate(-18.48, -18.48), scale(13.856875)"
+                    d="M9.166.33a2.25 2.25 0 00-2.332 0l-5.25 3.182A2.25 2.25 0 00.5 5.436v5.128a2.25 2.25 0 001.084 1.924l5.25 3.182a2.25 2.25 0 002.332 0l5.25-3.182a2.25 2.25 0 001.084-1.924V5.436a2.25 2.25 0 00-1.084-1.924L9.166.33z"
+                    strokewidth="0"></path>
+            </g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+                stroke-width="0.369502"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z"></path>
+            </g>
+        </svg>
+    </div>
+    @if(welcome){
+    <div class="flex flex-col gap-8 flex-1">
+        <div class="flex flex-col">
+            <span [ngStyle]="{color: colors.dark_tertiary}" class="text-2xl md:text-4xl font-bold">{{welcome.residential_name}}</span>
+            <span class="text-xl md:text-2xl font-medium">{{welcome.welcome_message}}</span>
+        </div>
+        <div class="flex items-center justify-center w-full gap-6 count-down-main">
+            <div class="timer">
+                <div [ngStyle]="{backgroundColor: colors.light_tertiary}"
+                    class="rounded-lg pr-1.5 pl-2 relative w-max before:contents-[''] before:absolute before:h-full before:w-0.5 before:top-0 before:left-1/2 before:-translate-x-1/2 before:z-10 ">
+                    <h3 [ngStyle]="{color: colors.dark_tertiary}"
+                        class="countdown-element days font-manrope font-semibold text-2xl tracking-[15.36px] max-w-[44px] text-center relative z-20">
+                        {{days}}
+                    </h3>
+
+                </div>
+                <p class="text-sm font-normal text-neutral-900 mt-1 text-center w-full">Días</p>
+            </div>
+            <div class="timer">
+                <div [ngStyle]="{backgroundColor: colors.light_tertiary}"
+                    class="rounded-lg pr-1.5 pl-2 relative w-max before:contents-[''] before:absolute before:h-full before:w-0.5 before:top-0 before:left-1/2 before:-translate-x-1/2 before:z-10 ">
+                    <h3 [ngStyle]="{color: colors.dark_tertiary}"
+                        class="countdown-element hours font-manrope font-semibold text-2xl tracking-[15.36px] max-w-[44px] text-center relative z-20">
+                        {{hours}}
+                    </h3>
+
+                </div>
+                <p class="text-sm font-normal text-neutral-900 mt-1 text-center w-full">Horas</p>
+            </div>
+            <div class="timer">
+                <div [ngStyle]="{backgroundColor: colors.light_tertiary}"
+                    class="rounded-lg pr-1.5 pl-2 relative w-max before:contents-[''] before:absolute before:h-full before:w-0.5 before:top-0 before:left-1/2 before:-translate-x-1/2 before:z-10 ">
+                    <h3 [ngStyle]="{color: colors.dark_tertiary}"
+                        class="countdown-element minutes font-manrope font-semibold text-2xl tracking-[15.36px] max-w-[44px] text-center relative z-20">
+                        {{minutes}}
+                    </h3>
+
+                </div>
+                <p class="text-sm font-normal text-neutral-900 mt-1 text-center w-full">Minutos</p>
+            </div>
+            <div class="timer">
+                <div [ngStyle]="{backgroundColor: colors.light_tertiary}"
+                    class="rounded-lg pr-1.5 pl-2 relative w-max before:contents-[''] before:absolute before:h-full before:w-0.5 before:top-0 before:left-1/2 before:-translate-x-1/2 before:z-10 ">
+                    <h3 [ngStyle]="{color: colors.dark_tertiary}"
+                        class="countdown-element seconds font-manrope font-semibold text-2xl tracking-[15.36px] max-w-[44px] text-center relative z-20">
+                        {{seconds}}
+                    </h3>
+
+                </div>
+                <p class="text-sm font-normal text-neutral-900 mt-1 text-center w-full">Segundos</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-64 md:w-80">
+        @if (welcome.logo) {
+        <img class="w-full h-fit" [src]="'data:image/jpeg;base64,'+welcome.logo" [alt]="welcome.residential_name">
+        } @else {
+        <img class="w-full h-fit" src="./assets/img/LOGO-FULL-BLACK.png" alt="LOGO-FULL-BLACK">
+        }
+
+    </div>
+    }
+</div>

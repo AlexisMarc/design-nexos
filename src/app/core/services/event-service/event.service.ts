@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { events, RespData } from '@models';
-import { Observable } from 'rxjs';
 
-interface ReqDataEvent {
+export interface ReqDataEvent {
   name: string;
   status: 'active' | 'inactive';
 }
@@ -22,14 +21,22 @@ export class EventService {
   }
 
   getEventTypesActive() {
-    return this.http.get<RespData<events>>(this.api + '/events/active');
+    return this.http.get<RespData<events[]>>(this.api + '/events/active');
   }
 
   createEvent(data: ReqDataEvent) {
     return this.http.post<RespData<string>>(this.api + '/events/create', data);
   }
+  
 
-  editEvent(id:string, data: ReqDataEvent){
-    return this.http.post<RespData<string>>(this.api + '/events/update/'+id, data);
+  editEvent(id: string, data: ReqDataEvent) {
+    return this.http.post<RespData<string>>(
+      this.api + '/events/update/' + id,
+      data
+    );
+  }
+
+  getEventById(id: number) {
+    return this.http.get<RespData<events | undefined>>(`${this.api}/events/${id}`);
   }
 }

@@ -1,0 +1,7 @@
+.nx-table {
+    @apply bg-neutral-50 rounded-lg
+}
+
+.nx-table table tbody tr {
+    @apply odd:bg-neutral-100/20 text-neutral-800
+}

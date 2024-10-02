@@ -15,4 +15,12 @@ export class NxProgressBarComponent implements OnInit {
   public emitSelect = output<number>();
 
   ngOnInit(): void {}
+
+  emitSelected(
+    index: number,
+    status: 'success' | 'select' | 'select-success' | 'pending' | 'loading'
+  ) {
+    if (status === 'success' || status === 'select-success')
+      this.emitSelect.emit(index);
+  }
 }

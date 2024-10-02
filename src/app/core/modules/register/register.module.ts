@@ -8,6 +8,7 @@ import {
   FormDesignRegisterComponent,
   ModelerFormRegisterComponent,
   RegisterComponent,
+  RegisterUnitComponent,
 } from '@register';
 import {
   NxColorFieldComponent,
@@ -15,6 +16,7 @@ import {
   NxFileFieldComponent,
   NxProgressBarComponent,
   NxSearchResidentComponent,
+  NxTableModule,
   NxToggleSwitchComponent,
 } from '@shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +29,7 @@ import { ControlErrorsDirective, FormSubmitDirective } from '@directives';
     CustomizeRegisterComponent,
     FormDesignRegisterComponent,
     ModelerFormRegisterComponent,
+    RegisterUnitComponent
   ],
   imports: [
     NxFileFieldComponent,
@@ -42,7 +45,8 @@ import { ControlErrorsDirective, FormSubmitDirective } from '@directives';
     ReactiveFormsModule,
     NgScrollbarModule,
     FormSubmitDirective,
-    ControlErrorsDirective
+    ControlErrorsDirective,
+    NxTableModule
   ],
 })
 export class RegisterModule {}

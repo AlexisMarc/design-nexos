@@ -1,8 +1,15 @@
+import { RegisterForm } from "@models";
+
 export interface RespData<T> {
     success: boolean;
     message: string;
     event_id?: number;
+    meeting_id?: number; 
+    id_customer:number; 
     content: T;
+    form?: RegisterForm;
+    task_queu_id: number;
+    form_response_id: number
   }
 
   export interface RespAuth {

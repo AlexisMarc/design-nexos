@@ -1,53 +1,133 @@
-<div class="w-full flex-1 min-w-[56rem] rounded-2xl p-8 bg-white/50 backdrop-blur-md shadow">
-    <div class="flex gap-4 items-center">
-        <div class="w-4 h-10 rounded-full bg-brand-orange-500"></div>
-        <div class=" flex flex-col flex-1">
-            <span class="text-2xl text-neutral-900 font-black">Formulario de registro</span>
-            <span class="text-xs font-medium text-neutral-600">Nombre del cliente</span>
-        </div>
-        <div class="w-48">
-            <img src="assets/img/LOGO-FULL-BLACK.png" alt="">
-        </div>
+@if(form){
+    <div class="w-full flex-1 min-w-[56rem] rounded-2xl p-8 bg-white/50 backdrop-blur-md shadow">
+        <ng-scrollbar [orientation]="'vertical'" style="max-height: 80svh;">
+            <div class="w-full h-fit p-8 rounded-2xl bg-white grid grid-cols-2 gap-8">
+                <div class="col-span-2 flex gap-4 items-center">
+                    <span class="text-neutral-900 font-bold text-3xl flex-1">{{form.name}}</span>
+                    <img class="w-36" src="/assets/img/LOGO-NEXOSPH-SIN-JIRAFAS-140X40.png" alt="icon-form">
+                </div>
+                @for (field of form.fields; track $index) {
+                <ng-container [ngTemplateOutlet]="fielView"
+                    [ngTemplateOutletContext]="{field, index: $index}"></ng-container>
+                }
+                <div class="col-span-2 flex justify-end mt-6">
+                    <button class="px-8 py-2 b-primary" [ngStyle]="{backgroundColor: colors.primary}" (click)="saveForm()" type="button">Guardar</button>
+                </div>
+            </div>
+        </ng-scrollbar>
     </div>
-    <div class="w-full grid grid-cols-2 gap-4 mt-4">
-        <label for="field-1" class="container-field">
-            <span>Campo 1</span>
-            <input id="field-1" type="text" class="peer">
-            <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
-            </div>
-        </label>
-        <label for="field-2" class="container-field">
-            <span>Campo 2</span>
-            <input id="field-2" type="text" class="peer">
-            <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
-            </div>
-        </label>
-        <label for="field-3" class="container-field">
-            <span>Campo 3</span>
-            <input id="field-3" type="text" class="peer">
-            <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
-            </div>
-        </label>
-        <label for="field-4" class="container-field">
-            <span>Campo 4</span>
-            <input id="field-4" type="text" class="peer">
-            <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
-            </div>
-        </label>
-        <label for="field-5" class="container-field">
-            <span>Campo 5</span>
-            <input id="field-5" type="text" class="peer">
-            <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
-            </div>
-        </label>
-        <label for="field-6" class="container-field">
-            <span>Campo 6</span>
-            <input id="field-6" type="text" class="peer">
-            <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
-            </div>
-        </label>
-        <div class="col-span-2 flex justify-end mt-4">
-            <button class="b-primary px-8 py-2">Enviar</button>
+}
+
+<ng-template #fielView let-field="field" let-index="index">
+    @switch (field.type) {
+    @case ('input') {
+    <label [for]="'field_'+index" [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" class="container-field">
+        <span>{{field.label_name}}</span>
+        @switch (field.type_input) {
+        @case ('text') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="text"
+            class="peer">
+        }
+        @case ('password') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="password"
+            class="peer">
+        }
+        @case ('email') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="email"
+            class="peer">
+        }
+        @case ('number') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="number"
+            class="peer">
+        }
+        @case ('datetime-local') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="datetime-local"
+            class="peer">
+        }
+        @case ('date') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="date"
+            class="peer">
+        }
+        @case ('month') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="month"
+            class="peer">
+        }
+        @case ('week') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="week"
+            class="peer">
+        }
+        @case ('time') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="time"
+            class="peer">
+        }
+        @case ('tel') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="tel" class="peer">
+        }
+        @case ('url') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="url" class="peer">
+        }
+        @case ('color') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="color"
+            class="peer">
+        }
+        @case ('range') {
+        <input [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [id]="'field_'+index" type="range"
+            class="peer">
+        }
+        }
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
         </div>
+    </label>
+    }
+    @case ('select') {<nx-dropdown-field [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}"
+        [items]="field.options"></nx-dropdown-field>}
+    @case ('textarea') {
+    <label for="textarea" [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" class="container-field">
+        <span>{{field.label_name}}</span>
+        <textarea [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" id="textarea" class="peer"
+            cols="30"></textarea>
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </label>
+    }
+    @case ('toggle-swish') {
+        <!-- <nx-toggle-switch [values]="valuesBoolean"></nx-toggle-switch> -->
+    }
+    @case ('radio') {
+    <div [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" class="container-field">
+        <span>{{field.label_name}}</span>
+        @for (option of field.options; track $index) {
+        <div
+            class="relative flex gap-1 px-2 py-0.5 mt-1 rounded-2xl text-neutral-500 hover:text-brand-orange-500 hover:bg-brand-orange-50">
+            <input [id]="'field_'+index+'_'+$index" [name]="'field_'+index" type="radio">
+            <label class="text-sm " [for]="'field_'+index+'_'+$index">{{option.label}}</label>
+        </div>
+        }
     </div>
-</div>
+    }
+    @case ('checkbox') {
+    <label [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [for]="'field_'+index" class="container-field">
+        <span>{{field.label_name}}</span>
+        <input [id]="'field_'+index" type="checkbox" class="peer">
+        <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
+        </div>
+    </label>
+    }
+    @case ('file') {
+    
+    }
+    @case ('button') {
+    <input type="button" class="b-primary b-fit px-4 py-2" value="Botón">
+    }
+    @case ('submit') {
+    <input type="submit" class="b-primary b-fit px-4 py-2" value="Botón">
+    }
+    @case ('reset') {
+    <input type="reset" class="b-primary b-fit px-4 py-2" value="Botón">
+    }
+    @case ('image') {
+    
+    }
+    @case ('hidden') {}
+    }
+</ng-template>

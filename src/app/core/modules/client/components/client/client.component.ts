@@ -1,4 +1,6 @@
-import {Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { colorsDynamic, ColorServiceService } from '@services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-client',
@@ -7,6 +9,21 @@ import {Component, OnInit } from '@angular/core';
 })
 export class ClientComponent implements OnInit {
   values = { OneValue: true, TwoValue: false };
-  ngOnInit(): void { }
+  public colors!: colorsDynamic;
+  private _subscription = new Subscription();
+  private _serviceColors = inject(ColorServiceService);
 
+  ngOnInit(): void {
+    this.initSubscription();
+  }
+
+  private initSubscription() {
+    this._subscription.add(
+      this._serviceColors.messages$.subscribe({
+        next: (colors) => {
+          this.colors = { ...colors };
+        },
+      })
+    );
+  }
 }

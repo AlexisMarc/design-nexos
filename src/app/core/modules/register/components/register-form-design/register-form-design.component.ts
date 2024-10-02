@@ -1,34 +1,62 @@
-import { DataDesign } from './../../../../store/actions/register.actions';
-import { Component, inject, output, type OnInit } from '@angular/core';
+import { Component, inject, input, OnDestroy, output, type OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NxValidators } from '@helpers';
 import { AppStore } from '@models';
 import { Store } from '@ngrx/store';
 import { NxToastService } from '@shared';
+import { DataDesign } from '@store';
 import { ColorTranslator } from 'colortranslator';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'register-form-design',
   templateUrl: './register-form-design.component.html',
   styleUrl: './register-form-design.component.css',
 })
-export class FormDesignRegisterComponent implements OnInit {
-  onNext = output<void>();
+export class FormDesignRegisterComponent implements OnInit, OnDestroy {
+  onNext = output<boolean>();
   onAfter = output<void>();
+  statusProcess = input.required<'pending' | 'create' | 'edit' | 'clone'>();
   color: string = '#FF7300';
   darkerColors: string[] = ['#F06C00', '#D15E00', '#A34A00', '#662E00'];
   lighterColors: string[] = ['#FF7B0F', '#FF8C2E', '#FFA55C', '#FFC799'];
 
   formDesign = new FormGroup({
-    logo: new FormControl('', [NxValidators.required()]),
+    logo: new FormControl(''),
     welcome_message: new FormControl('', [NxValidators.required()]),
   });
 
+  private _subscription = new Subscription();
   private _serviceMessage = inject(NxToastService);
   private _store: Store<AppStore> = inject(Store<AppStore>);
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initSubscription();
+  }
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
 
+  private initSubscription() {
+    this._subscription.add(
+      this._store.select('register').subscribe({
+        next: (value) => {
+          if (value.design) {
+            this.setColors(value.design.color);
+            this.formDesign.patchValue({
+              ...value.design,
+            });
+          } else {
+            this.setColors('');
+            this.formDesign.reset({
+              logo: '',
+              welcome_message: '',
+            });
+          }
+        },
+      })
+    );
+  }
   generateColor() {
     const colorTranslator1: ColorTranslator = new ColorTranslator(this.color);
     const colorTranslator2: ColorTranslator = new ColorTranslator(this.color);
@@ -76,7 +104,7 @@ export class FormDesignRegisterComponent implements OnInit {
     this._store.dispatch(
       DataDesign({ data: { welcome_message, color: this.getColors(), logo } })
     );
-    this.onNext.emit();
+    this.onNext.emit(true);
   }
 
   private getColors() {
@@ -84,5 +112,18 @@ export class FormDesignRegisterComponent implements OnInit {
       ','
     )},${this.darkerColors.join(',')}`;
     return colors;
+  }
+
+  private setColors(color: string) {
+    const colors = color.split(',');
+    if (colors.length === 9) {
+      this.lighterColors = [...colors.slice(1, 5)];
+      this.darkerColors = [...colors.slice(5)];
+      this.color = colors[0];
+    } else {
+      this.color = '#FF7300';
+      this.darkerColors = ['#F06C00', '#D15E00', '#A34A00', '#662E00'];
+      this.lighterColors = ['#FF7B0F', '#FF8C2E', '#FFA55C', '#FFC799'];
+    }
   }
 }

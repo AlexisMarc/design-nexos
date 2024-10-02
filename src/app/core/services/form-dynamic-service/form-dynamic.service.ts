@@ -11,17 +11,17 @@ export class FormDynamicService {
 
   constructor() {}
 
-  getDynamicForm(id_form: string) {
+  getDynamicForm(meeting_id: number) {
     return this.http.get<RespData<RegisterForm | undefined>>(
-      `${this.api}/forms/${id_form}`
+      `${this.api}/forms/${meeting_id}`
     );
   }
 
   createDynamicForm(data: RegisterForm) {
     return this.http.post<RespData<any>>(`${this.api}/forms/create`, data);
   }
-  updateDynamicForm(id: string, data: RegisterForm) {
-    //const form = data.fields.map((field)=>{return {...field, form_id }})
+
+  updateDynamicForm(id: number, data: RegisterForm) {
     return this.http.put<RespData<any>>(`${this.api}/forms/edit/${id}`, {
       ...data,
       to_delete: {
@@ -30,5 +30,11 @@ export class FormDynamicService {
         validations: [],
       },
     });
+  }
+
+  createFormResponse(data: any){
+    return this.http.post<RespData<any>>(
+      `${this.api}/forms/formResponse/create`, data
+    );
   }
 }

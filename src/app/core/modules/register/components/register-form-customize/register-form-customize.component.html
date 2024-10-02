@@ -1,16 +1,24 @@
 <form [formGroup]="form" (ngSubmit)="saveForm()" class="w-full h-fit flex flex-col gap-8">
     <div class="flex gap-2 items-center flex-1">
-        <nx-toggle-switch [values]="values" formControlName="shall_ask_representation_document"></nx-toggle-switch>
+        <nx-toggle-switch [values]="valuesNumber" formControlName="shall_ask_representation_document"></nx-toggle-switch>
         <span class="font-bold text-neutral-400">Selección de calidad de asistencia</span>
     </div>
     <div class="flex gap-2 items-center flex-1">
-        <nx-toggle-switch [values]="values" formControlName="quality_care_selection"></nx-toggle-switch>
+        <nx-toggle-switch [values]="valuesNumber" formControlName="quality_care_selection"></nx-toggle-switch>
         <span class="font-bold text-neutral-400">Escaneo y envió de poderes</span>
+    </div>
+    <div class="flex gap-2 items-center flex-1">
+        <nx-toggle-switch [values]="valuesNumber" formControlName="authority_granted"></nx-toggle-switch>
+        <span class="font-bold text-neutral-400">Entregas en físico y posteriores de poderes</span>
+    </div>
+    <div class="flex gap-2 items-center flex-1">
+        <nx-toggle-switch [values]="valuesNumber" formControlName="signature_module"></nx-toggle-switch>
+        <span class="font-bold text-neutral-400">Solicitud de firma</span>
     </div>
     <div class="flex flex-col gap-2 justify-center flex-1">
         <div class="flex gap-2 items-center flex-1">
-            <nx-toggle-switch [values]="values"
-                (onValue)="viewFields.emailArray=$event; changeSwish('email-array')"></nx-toggle-switch>
+            <nx-toggle-switch [values]="values" [(ngModel)]="viewFields.emailArray"
+                [ngModelOptions]="{standalone: true}" (onValue)="changeSwish('email-array')"></nx-toggle-switch>
             <span class="font-bold text-neutral-400">Envió de registros de poderes</span>
         </div>
         @if (viewFields.emailArray){
@@ -45,8 +53,8 @@
     </div>
     <div class="flex gap-2 items-center flex-1">
         <div class="flex gap-2 items-center flex-1">
-            <nx-toggle-switch [values]="values"
-                (onValue)="viewFields.countUnit=$event; changeSwish('count-init')"></nx-toggle-switch>
+            <nx-toggle-switch [values]="values" [(ngModel)]="viewFields.countUnit" [ngModelOptions]="{standalone: true}"
+                (onValue)="changeSwish('count-init')"></nx-toggle-switch>
             <span class="font-bold text-neutral-400">Cantidad de registro de unidades que puede seleccionar</span>
         </div>
         @if (viewFields.countUnit){
@@ -62,8 +70,8 @@
     </div>
     <div class="flex flex-col gap-2 justify-center flex-1">
         <div class="flex gap-2 items-center flex-1">
-            <nx-toggle-switch [values]="values"
-                (onValue)="viewFields.rolesFun=$event; changeSwish('roles-fun')"></nx-toggle-switch>
+            <nx-toggle-switch [values]="values" [(ngModel)]="viewFields.rolesFun" [ngModelOptions]="{standalone: true}"
+                (onValue)="changeSwish('roles-fun')"></nx-toggle-switch>
             <span class="font-bold text-neutral-400">Editar roles de calidad de asistencia</span>
         </div>
         @if (viewFields.rolesFun){
@@ -84,14 +92,15 @@
     </div>
     <div class="flex flex-col gap-2 justify-center flex-1">
         <div class="flex gap-2 items-center flex-1">
-            <nx-toggle-switch [values]="values" (onValue)="viewFields.form=$event"></nx-toggle-switch>
+            <nx-toggle-switch [values]="values" [(ngModel)]="viewFields.form"
+                [ngModelOptions]="{standalone: true}"></nx-toggle-switch>
             <span class="font-bold text-neutral-400">Formulario a diligenciar en el registro</span>
         </div>
         @if (viewFields.form) {
         <div class="w-full h-fit flex gap-4 bg-neutral-100 rounded-2xl px-8 py-4">
             <div class="flex flex-col flex-1">
                 <span class="font-bold text-xs text-neutral-500">Nombre de formulario</span>
-                <span class="font-semibold text-lg text-neutral-900">Formulario de registro </span>
+                <span class="font-semibold text-lg text-neutral-900">{{formName}}</span>
             </div>
             <button type="button" (click)="modelerFormDynamic()" class="b-primary b-fit p-3">
                 <svg class="w-4 h-4 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -110,7 +119,7 @@
     </div>
 
     <div class="mt-4 flex gap-2 justify-end">
-        <button type="button" class="b-secondary px-4 py-2 b-fit">Cancelar</button>
+        <button (click)="onAfter.emit()" type="button" class="b-secondary px-4 py-2 b-fit">Anterior</button>
         <button type="submit" class="b-primary px-4 py-2 b-fit">Siguiente</button>
     </div>
 </form>

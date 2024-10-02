@@ -1,5 +1,37 @@
 <ng-scrollbar [orientation]="'vertical'" style="height: 100svh; width: 100%;">
-    <div class="w-full bg-neutral-50 flex justify-center items-center p-4 min-h-svh">
+    <div class="fixed -top-48 -right-32">
+        <svg [ngStyle]="{fill: colors.light_primary}" class="h-96 md:h-[32rem] w-96 md:w-[32rem] blur-lg" version="1.1"
+            id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="-18.48 -18.48 221.71 221.71" xml:space="preserve" stroke-width="0.0018475100000000001">
+            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                <path transform="translate(-18.48, -18.48), scale(13.856875)"
+                    d="M9.166.33a2.25 2.25 0 00-2.332 0l-5.25 3.182A2.25 2.25 0 00.5 5.436v5.128a2.25 2.25 0 001.084 1.924l5.25 3.182a2.25 2.25 0 002.332 0l5.25-3.182a2.25 2.25 0 001.084-1.924V5.436a2.25 2.25 0 00-1.084-1.924L9.166.33z"
+                    strokewidth="0"></path>
+            </g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+                stroke-width="0.369502"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z"></path>
+            </g>
+        </svg>
+    </div>
+    <div class="fixed -bottom-64 -left-32">
+        <svg [ngStyle]="{fill: colors.light_secondary}" class="h-96 md:h-[32rem] bg-opacity-50 w-96 md:w-[32rem] blur-xl"
+            version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="-18.48 -18.48 221.71 221.71" xml:space="preserve" stroke-width="0.0018475100000000001">
+            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                <path transform="translate(-18.48, -18.48), scale(13.856875)"
+                    d="M9.166.33a2.25 2.25 0 00-2.332 0l-5.25 3.182A2.25 2.25 0 00.5 5.436v5.128a2.25 2.25 0 001.084 1.924l5.25 3.182a2.25 2.25 0 002.332 0l5.25-3.182a2.25 2.25 0 001.084-1.924V5.436a2.25 2.25 0 00-1.084-1.924L9.166.33z"
+                    strokewidth="0"></path>
+            </g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+                stroke-width="0.369502"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path d="M0,92.375l46.188-80h92.378l46.185,80l-46.185,80H46.188L0,92.375z"></path>
+            </g>
+        </svg>
+    </div>
+    <div class="w-full flex justify-center items-center p-4 min-h-svh relative">
         <router-outlet></router-outlet>
     </div>
 </ng-scrollbar>

@@ -5,3 +5,5 @@ export * from './client-unit/client-unit.component';
 export * from './client-certificate/client-certificate.component';
 export * from './client-sign/client-sign.component';
 export * from './client-qr/client-qr.component';
+export * from './client-scanner/client-scanner.component'
+export * from './client-preview/client-preview.component'

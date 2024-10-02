@@ -1,9 +1,9 @@
 <div class="w-full h-fit flex flex-col">
-    <div class="flex gap-4 items-center py-8">
-        <div class="w-4 h-10 rounded-full bg-brand-orange-500"></div>
+    <div class="flex gap-4 items-center py-8 w-full">
+        <div [ngStyle]="{backgroundColor: colors.primary}" class="w-4 h-10 rounded-full"></div>
         <div class="flex flex-col flex-1">
             <span class="text-3xl text-neutral-900 font-black">Código QR</span>
-            <span class="hidden text-xs font-medium text-neutral-600">Nombre del cliente</span>
+            <span class="hidden text-xs font-medium text-neutral-600">{{welcome?.meeting_name}}</span>
         </div>
     </div>
     <div class="w-full flex flex-col gap-4 max-w-lg">
@@ -32,7 +32,27 @@
                     </svg>
                 </button>
             </div>
-            <button class="b-primary px-16 py-2">Enviar</button>
+            <button [ngStyle]="{backgroundColor: colors.primary}" class="b-primary px-16 py-2">Enviar</button>
         </div>
     </div>
+    <ng-scrollbar style="max-width: 42rem; width: 100%;">
+        <div class="w-full flex gap-8 max-w-2xl mt-8 select-none">
+            @if(false){<div class="w-fit min-w-fit rounded-lg p-8 relative h-fit flex gap-4 overflow-hidden bg-neutral-50">
+                <img class="w-24 relative z-10 rounded-lg"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKQAAACkAQAAAAAxzrjsAAABYElEQVR4nO2WO47kQAxDnwzn1A36/sfyDagTcILu2WA+C6yhYDEYRVUMHugqSuUKn2uOL0T4VW+pVdXd1T1TXVW9wSVRIoNQiBLFO19RTctwDU31DcLnOt8XbVqhbzn7VtWFmun7hA91AqFdbqOC0BvcCgX6sx+QF/rthAA0E9o3CN/mDCIBxCJoJWcVyqDmAhqNvDF3SIwERMHa6gsSRUaObILZ4wakWETOGjcmtmRJjpM1v5ZxILLiLW5si9hxpEW/Mo4gttBaHmIiJc9r005fHFCiLqYRdDPe6+Ngy8HJXs6kIFkCwVIeToA24hLzQJV/JPzt3p4xCE6krZw5CYZgeTFnwpITpMDS/D3AkYch0Modwtd+AUXi9XDs5OEAJQxjRGMeK35PoAQTekwXs8J9qZ0aR4C8yaWkGQDvnMMBxCB40JLqrrMP9cyDjDHCsDUfnpENIbx2/8kf/w9Q3wAakg5HOANUMgAAAABJRU5ErkJggg=="
+                    alt="QR">
+                <div class="flex flex-col relative z-10 gap-8">
+                    <span class="font-bold text-lg text-neutral-50">Nombre de unidad</span>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-neutral-400 font-medium">Nombre del usuario</span>
+                        <span class="font-black text-sm">Nombre del usuario</span>
+                    </div>
+                </div>
+                <div [ngStyle]="{backgroundColor: colors.primary}" class="absolute top-0 left-0 w-full h-20"></div>
+            </div>}
+        </div>
+    </ng-scrollbar>
 </div>
+@if (viewSign) {
+<client-sign (onClose)="viewSign=false"></client-sign>
+}

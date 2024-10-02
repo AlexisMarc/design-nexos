@@ -8,6 +8,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import {
+  DYNAMIC_FIELD_DATA_DEFAULT,
+  DYNAMIC_FORM_DATA_DEFAULT,
+} from '@constants';
 import { NxValidators } from '@helpers';
 import {
   AppStore,
@@ -133,100 +137,7 @@ export class ModelerFormRegisterComponent implements OnInit {
     },
   ];
 
-  formModeler: RegisterForm = {
-    meeting_id: 3,
-    name: 'Formulario de Ejemplo',
-    description: 'Descripción del formulario',
-    view: 'register',
-    fields: [
-      {
-        label_name: 'Campo 1',
-        field_name: 'Input campo',
-        placeholder: 'Campo1',
-        type: 'select',
-        type_input: 'text',
-        required: true,
-        readonly: false,
-        disabled: false,
-        maxlength: 255,
-        minlength: 0,
-        min: 0,
-        max: 100,
-        step: 1,
-        pattern: '',
-        autofocus: false,
-        autocomplete: 'on',
-        multiple: false,
-        size: 20,
-        alt: '',
-        rows: 1,
-        cols: 2,
-        wrap: 'soft',
-        options: [
-          {
-            value: 'opcion1',
-            label: 'Opción 1',
-            selected: false,
-            disabled: false,
-          },
-          {
-            value: 'opcion2',
-            label: 'Opción 2',
-            selected: false,
-            disabled: false,
-          },
-        ],
-        validations: [
-          {
-            validation_type: 'numeric',
-          },
-        ],
-      },
-      {
-        label_name: 'Campo 2',
-        field_name: 'Input campo2',
-        placeholder: 'Campo2',
-        type: 'radio',
-        type_input: 'email',
-        required: true,
-        readonly: false,
-        disabled: false,
-        maxlength: 255,
-        minlength: 5,
-        min: 0,
-        max: 100,
-        step: 1,
-        pattern: '',
-        autofocus: false,
-        autocomplete: 'on',
-        multiple: false,
-        size: 20,
-        alt: '',
-        rows: 1,
-        cols: 2,
-        wrap: 'soft',
-        options: [
-          {
-            value: 'opcion3',
-            label: 'Opción 3',
-            selected: false,
-            disabled: false,
-          },
-          {
-            value: 'opcion4',
-            label: 'Opción 4',
-            selected: false,
-            disabled: false,
-          },
-        ],
-        validations: [
-          {
-            validation_type: 'email',
-          },
-        ],
-      },
-    ],
-  };
+  formModeler: RegisterForm = DYNAMIC_FORM_DATA_DEFAULT;
 
   inputTitle = new FormControl('', [
     NxValidators.required(),
@@ -271,8 +182,8 @@ export class ModelerFormRegisterComponent implements OnInit {
       NxValidators.required(),
       NxValidators.pattern(/^\d+(\.\d+)?$/, 'Solo números positivos'),
       NxValidators.pattern(
-        /^(?:[1-9]\d{0,8}|0)$/,
-        'En número máximo es 999.999.999'
+        /^(?:[1-9]\d{0,12}|0)$/,
+        'En número máximo es 999.999.999.999'
       ),
     ]),
     minlength: new FormControl(1, [
@@ -310,10 +221,7 @@ export class ModelerFormRegisterComponent implements OnInit {
     cols: new FormControl(1, [NxValidators.required()]),
     wrap: new FormControl('soft', [NxValidators.required()]),
     options: new FormControl<registerOption[]>([], [NxValidators.required()]),
-    validations: new FormControl<registerValidation[]>(
-      [],
-      [NxValidators.required()]
-    ),
+    validations: new FormControl<registerValidation[]>([]),
   });
 
   optionsFieldSelect: registerOption[] = [];
@@ -342,7 +250,6 @@ export class ModelerFormRegisterComponent implements OnInit {
   private _subscription = new Subscription();
   private _serviceMessage = inject(NxToastService);
   private _store: Store<AppStore> = inject(Store<AppStore>);
-  private _serviceForm = inject(FormDynamicService);
 
   constructor() {
     this.inputSubject.pipe(debounceTime(300)).subscribe(() => {
@@ -352,18 +259,16 @@ export class ModelerFormRegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.initSubscription();
-    this._serviceForm.getDynamicForm('3').subscribe({
-      
-    })
   }
 
   private initSubscription() {
     this._subscription.add(
       this._store.select('register').subscribe({
         next: (value) => {
-          if (value.dynamicForm) {
+          if (value.dynamicForm)
             this.formModeler = structuredClone(value.dynamicForm);
-          }
+          else this.formModeler = DYNAMIC_FORM_DATA_DEFAULT;
+          this.inputTitle.setValue(this.formModeler.name);
         },
       })
     );
@@ -474,7 +379,7 @@ export class ModelerFormRegisterComponent implements OnInit {
   }
 
   deleteField() {
-    if (!this.formModeler.fields.length) {
+    if (this.formModeler.fields.length === 1) {
       this._serviceMessage.addMessage({
         type: 'warning',
         message: 'El formulario debe tener como mínimo un campo',
@@ -482,58 +387,25 @@ export class ModelerFormRegisterComponent implements OnInit {
       });
       return;
     }
-    const fields = this.formModeler.fields.splice(this.indexFieldSelect, 1);
+    const fields = this.formModeler.fields.filter(
+      (_, index) => index !== this.indexFieldSelect
+    );
     this.indexFieldSelect = -1;
     this.fieldSelect = undefined;
     this.formModeler.fields = [...fields];
     this.viewListOptions = false;
+    this._serviceMessage.addMessage({
+      type: 'success',
+      message: '¡El campo fue eliminado exitosamente!',
+      life: 5000,
+    });
   }
 
   createField() {
-    const field: registerField = {
-      label_name: 'Campo',
-      field_name: 'campo',
-      placeholder: 'Campo',
-      type: 'input',
-      type_input: 'text',
-      required: true,
-      readonly: false,
-      disabled: false,
-      maxlength: 50,
-      minlength: 3,
-      min: 0,
-      max: 100,
-      step: 1,
-      pattern: '',
-      autofocus: false,
-      autocomplete: 'on',
-      multiple: false,
-      size: 20,
-      alt: '',
-      rows: 1,
-      cols: 1,
-      wrap: 'soft',
-      options: [
-        {
-          value: 'opcion1',
-          label: 'Opción 1',
-          selected: false,
-          disabled: false,
-        },
-        {
-          value: 'opcion2',
-          label: 'Opción 2',
-          selected: false,
-          disabled: false,
-        },
-      ],
-      validations: [
-        {
-          validation_type: 'numeric',
-        },
-      ],
-    };
-    this.formModeler.fields = [...this.formModeler.fields, field];
+    this.formModeler.fields = [
+      ...this.formModeler.fields,
+      DYNAMIC_FIELD_DATA_DEFAULT,
+    ];
     this._serviceMessage.addMessage({
       type: 'success',
       message: '!Campo agregado correctamente!',
@@ -559,8 +431,11 @@ export class ModelerFormRegisterComponent implements OnInit {
       this.inputTitle.markAsTouched();
       return;
     }
-    this._serviceForm.updateDynamicForm('3', this.formModeler).subscribe()
-    this._store.dispatch(DataDynamicForm({ data: this.formModeler }));
+    this._store.dispatch(
+      DataDynamicForm({
+        data: { ...this.formModeler, name: this.inputTitle.getRawValue()! },
+      })
+    );
     this._serviceMessage.addMessage({
       type: 'success',
       message: '¡Formulario guardado correctamente!',

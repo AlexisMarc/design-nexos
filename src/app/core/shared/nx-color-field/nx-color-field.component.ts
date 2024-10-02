@@ -34,6 +34,7 @@ export class NxColorFieldComponent implements OnInit, ControlValueAccessor {
 
   writeValue(obj: string | undefined | null): void {
     this.value = obj;
+    this.onTouched();
   }
 
   registerOnChange(fn: (value: string | undefined | null) => void): void {

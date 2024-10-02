@@ -1,14 +1,17 @@
 <div class="w-full h-fit flex flex-col gap-4">
     <div class="flex gap-4 items-center py-8">
-        <div class="w-4 h-10 rounded-full bg-brand-orange-500"></div>
+        <div [ngStyle]="{backgroundColor: colors.primary}" class="w-4 h-10 rounded-full"></div>
         <div class="flex flex-col flex-1">
             <span class="text-2xl text-neutral-900 font-black">Unidades</span>
-            <span class="text-xs font-medium text-neutral-600">Nombre del cliente</span>
+            <span class="text-xs font-medium text-neutral-600">{{welcome?.residential_name}}</span>
         </div>
     </div>
-    <div class="w-full px-2 flex justify-between items-center">
-        <span class="text-sm text-neutral-300 font-bold">Unidades seleccionadas</span>
-        <div>
+    <div class="w-full px-2 flex md:items-center gap-4 md:flex-row flex-col-reverse">
+        <span class="text-sm text-neutral-300 font-bold flex flex-1">Unidades seleccionadas</span>
+        <button [disabled]="!this.unitsSelect.length" (click)="confirmSaveRelated()"
+            [ngStyle]="{borderColor: colors.primary, color: colors.primary}"
+            class="b-tertiary px-4 py-1 w-full md:w-fit">Siguiente</button>
+        <div class="w-full md:w-fit">
             <label for="input-group-search" class="sr-only">Buscar</label>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -28,22 +31,34 @@
         <ng-scrollbar [orientation]="'vertical'" style="max-height: calc(100svh - 24rem);">
             <table class="w-full table-fixed">
                 <tbody class="odd:bg-neutral-50">
+                    @for (select of unitsSelect; track $index) {
                     <tr class="rounded even:bg-neutral-100/25">
                         <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
+                            <div class="flex gap-2 items-center w-full p-1">
+                                <div [ngStyle]="{backgroundColor: colors.primary}" class="w-2 h-2 rounded-full"></div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm text-neutral-700">{{select.name}}</span>
+                                    <span class="hidden text-xs text-neutral-500 md:block">Seleccionado</span>
+                                </div>
                             </div>
+                            @if (shall_ask_representation_document) {
+                            <div class="mb-2 md:hidden">
+                                <nx-toggle-switch [viewValues]="true" [values]="values" (onValue)="shallAskRepresentationDocument($event,$index)"></nx-toggle-switch>
+                            </div>
+                            }
                         </td>
                         <td class="pr-4">
                             <div class="flex gap-4 items-center justify-end p-1">
-                                <div class="flex gap-2 text-neutral-600 text-sm">
-                                    <span>Propietario</span>
-                                    <nx-toggle-switch [values]="values"></nx-toggle-switch>
-                                    <span>Apoderado</span>
+                                @if (shall_ask_representation_document) {
+                                <div class="gap-2 text-neutral-600 text-sm hidden md:flex">
+                                    <span>{{values.TwoValue}}</span>
+                                    <nx-toggle-switch [values]="values"
+                                        (onValue)="shallAskRepresentationDocument($event,$index)"></nx-toggle-switch>
+                                    <span>{{values.OneValue}}</span>
                                 </div>
-                                <button class="b-tertiary px-4 py-2">Seleccionado</button>
-                                <button class="b-primary p-2">
+                                }
+                                <button (click)="clearUnit($index)" type="button"
+                                    [ngStyle]="{backgroundColor: colors.primary}" class="b-primary p-2">
                                     <svg class="w-4 h-4 fill-neutral-50" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 -960 960 960">
                                         <path
@@ -53,31 +68,13 @@
                             </div>
                         </td>
                     </tr>
+                    } @empty {
                     <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <div class="flex gap-2 text-neutral-600 text-sm">
-                                    <span>Propietario</span>
-                                    <nx-toggle-switch [values]="values"></nx-toggle-switch>
-                                    <span>Apoderado</span>
-                                </div>
-                                <button class="b-tertiary px-4 py-2">Seleccionado</button>
-                                <button class="b-primary p-2">
-                                    <svg class="w-4 h-4 fill-neutral-50" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 -960 960 960">
-                                        <path
-                                            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                                    </svg>
-                                </button>
-                            </div>
+                        <td class="pl-4 text-center" [colSpan]="2">
+                            <span class="text-sm text-neutral-500 p-2">Sin unidades seleccionadas....</span>
                         </td>
                     </tr>
+                    }
                 </tbody>
             </table>
         </ng-scrollbar>
@@ -89,281 +86,31 @@
         <ng-scrollbar [orientation]="'vertical'" style="max-height: calc(100svh - 24rem);">
             <table class="w-full table-fixed">
                 <tbody class="odd:bg-neutral-50">
+                    @for (unit of units; track $index) {
+                    @if (validAdd(unit)) {
                     <tr class="rounded even:bg-neutral-100/25">
                         <td class="pl-4">
                             <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
+                                <div [ngStyle]="{backgroundColor: colors.primary}" class="w-2 h-2 rounded-full"></div>
+                                <span class="text-sm text-neutral-700">{{unit.name}}</span>
                             </div>
                         </td>
                         <td class="pr-4">
                             <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
+                                <button (click)="addUnit($index)" [ngStyle]="{backgroundColor: colors.primary}"
+                                    class="b-primary px-4 py-2">Seleccionar</button>
                             </div>
                         </td>
                     </tr>
+                    }
+                    }
+                    @empty {
                     <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
+                        <td class="pl-4 text-center" [colSpan]="2">
+                            Sin unidades....
                         </td>
                     </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr class="rounded even:bg-neutral-100/25">
-                        <td class="pl-4">
-                            <div class="flex gap-2 items-center w-ful p-1">
-                                <div class="w-2 h-2 bg-brand-orange-400 rounded-full"></div>
-                                <span class="text-sm text-neutral-700">Nombre de la unidad</span>
-                            </div>
-                        </td>
-                        <td class="pr-4">
-                            <div class="flex gap-4 items-center justify-end p-1">
-                                <button class="b-primary px-4 py-2">Seleccionar</button>
-                            </div>
-                        </td>
-                    </tr>
+                    }
                 </tbody>
             </table>
         </ng-scrollbar>

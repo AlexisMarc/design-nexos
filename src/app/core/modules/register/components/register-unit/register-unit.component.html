@@ -1,0 +1,22 @@
+<div class="w-full h-fit">
+    <nx-table [dataSource]="data" [paginator]="true" [rows]="10" columnSelectedForSearch="name">
+        <div ecColumnDef="option">
+            <th ec-header-cell *ecHeaderCellDef>
+                key
+            </th>
+            <td *ecCellDef="let item">
+                {{item.name}}
+            </td>
+        </div>
+        <div ecColumnDef="name">
+            <th ec-header-cell *ecHeaderCellDef>
+                Opciones
+            </th>
+            <td *ecCellDef="let item">
+                {{item.number}}
+            </td>
+        </div>
+    </nx-table>
+
+
+</div>

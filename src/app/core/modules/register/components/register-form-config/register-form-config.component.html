@@ -1,8 +1,7 @@
-<form [formGroup]="form" class="w-full h-fit grid grid-cols-2 gap-4" (ngSubmit)="saveForm()">
-    <div class="row-span-2 flex flex-col gap-2">
-        <nx-file-field formControlName="file"></nx-file-field>
+<form [formGroup]="form" class="w-full h-fit grid md:grid-cols-2 gap-4" (ngSubmit)="saveForm()">
+    <div class="row-span-3 flex flex-col gap-2">
+        <nx-file-field class="h-full" formControlName="file"></nx-file-field>
     </div>
-
     <label for="event-name" class="container-field">
         <span>Nombre</span>
         <input id="event-name" formControlName="name" type="text" class="peer">
@@ -15,7 +14,11 @@
         <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
         </div>
     </label>
-    <div class="flex gap-2 items-center flex-1 col-span-2">
+    <div class="flex flex-col gap-2">
+        <nx-dropdown-field [items]="typesEvent" formControlName="event_type_id"
+            label="Tipo de evento"></nx-dropdown-field>
+    </div>
+    <div class="flex gap-2 items-center flex-1 md:col-span-2">
         <nx-toggle-switch [values]="values" formControlName="login_with_credentials"></nx-toggle-switch>
         <span class="font-bold text-neutral-400">Credenciales al iniciar sesión</span>
     </div>
@@ -28,7 +31,7 @@
             label="Plantilla de WhatsApp"></nx-dropdown-field>
     </div>
 
-    <div class="mt-4 flex gap-2 col-span-2">
+    <div class="mt-4 flex gap-2 md:col-span-2">
         <div class="flex gap-2 items-center flex-1">
             <nx-toggle-switch [values]="values" (onValue)="setCustomize($event)"
                 [formControl]="controlCustomize"></nx-toggle-switch>

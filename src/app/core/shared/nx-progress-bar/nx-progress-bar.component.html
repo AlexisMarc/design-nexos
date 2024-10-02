@@ -10,7 +10,7 @@
 
 
 <ng-template #cardProgressBar let-value="value" let-index="index">
-    <a (click)="'emitSelect.emit(index)'" class="group flex gap-4 items-center w-full h-fit px-4 py-2 rounded-2xl"
+    <a (click)="emitSelected(index, value.status)" class="group flex gap-4 items-center w-full h-fit px-4 py-2 rounded-2xl"
         [ngClass]="{'opacity-50 cursor-not-allowed shadow-inner': value.disabled, 'hover:bg-neutral-50 hover:shadow cursor-pointer':!value.disabled}">
 
         @switch (value.status) {
