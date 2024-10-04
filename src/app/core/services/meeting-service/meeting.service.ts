@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class MeetingService {
 
-  private api = 'http://127.0.0.1:8000/';
+  private api = 'https://s84lfjkm-8000.use2.devtunnels.ms/';
   private http = inject(HttpClient);
   constructor() { }
 

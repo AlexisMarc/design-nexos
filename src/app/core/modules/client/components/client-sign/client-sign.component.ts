@@ -92,11 +92,13 @@ export class ClientSignComponent implements OnInit, OnDestroy {
       return;
     }
     this._loading.view(true);
-    const base64 = this.signaturePad.toDataURL();
+    const base64 = this.signaturePad
+      .toDataURL()
+      .replace('data:image/png;base64', 'data:image/jpeg;base64');
     this._subscription.add(
       this._serviceDoc
-        .saveDocumentCertificate(
-          [base64],
+        .saveDocumentSign(
+          base64,
           this.customer_id!,
           this.meeting!.meeting_id.toString()
         )
@@ -122,6 +124,7 @@ export class ClientSignComponent implements OnInit, OnDestroy {
               type: 'error',
               message: 'Error en el guardado de la firma...',
             });
+            this._loading.view(false);
           },
         })
     );

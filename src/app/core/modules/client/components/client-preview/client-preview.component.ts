@@ -111,7 +111,7 @@ export class ClientPreviewComponent implements OnInit, OnDestroy {
     const diff = this.dest - now;
 
     if (diff <= 0) {
-      this.dest = new Date().getTime() + 10000;
+      this.dest = new Date().getTime() + 5000;
     }
 
     this.intervalId = setInterval(() => {

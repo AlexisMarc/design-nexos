@@ -1,6 +1,7 @@
 import { Component, inject, OnDestroy, type OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NxValidators } from '@helpers';
 import {
   AppStore,
   meetingDataAll,
@@ -12,10 +13,8 @@ import {
   colorsDynamic,
   ColorServiceService,
   FormDynamicService,
-  MeetingDataService,
 } from '@services';
 import { NxToastService, NxLoadingService } from '@shared';
-import { FormResponseId } from '@store';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -28,7 +27,7 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
   public welcome?: MeetingWelcome;
   public form?: RegisterForm;
   private customer_id?: string;
-  public formGroup = new FormGroup({});
+  public formGroup?: FormGroup<{ [key: string]: FormControl<string> }>;
 
   public colors!: colorsDynamic;
   private _subscription = new Subscription();
@@ -94,6 +93,7 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
           this._loading.view(false);
           if (value.form) {
             this.form = value.form;
+            this.initFormDynamic(this.form);
             return;
           }
         } else {
@@ -112,39 +112,59 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  private initFormDynamic(form: RegisterForm) {
+    const formGroup = new FormGroup({});
+    form.fields.forEach((field) => {
+      formGroup.addControl(
+        field.field_name,
+        new FormControl('', field.required ? [NxValidators.required()] : [])
+      );
+    });
+    this.formGroup = formGroup;
+  }
+
   saveForm() {
-    this._loading.view(true);
-    this._serviceForm
-      .createFormResponse({
-        form_id: this.form?.id!,
-        user_id: this.customer_id!,
-        customer_id: this.customer_id!,
-        field_responses: this.form!.fields.map((field) => {
-          return { field_id: field.id!, response_value: 'Marcos' };
-        }),
-      })
-      .subscribe({
-        next: (value) => {
-          if (value.success) {
-            this._serviceMessage.addMessage({
-              type: 'success',
-              message: 'Formulario guardado exitosamente',
-            });
-            this._store.dispatch(
-              FormResponseId({ form_response_id: value.form_response_id })
-            );
-          } else {
-            this._serviceMessage.addMessage({
-              type: 'error',
-              message: 'Error al guardar el formulario',
-            });
-          }
-          this._loading.view(false);
-          this.redirectUnit();
-        },
-        error: () => {
-          this.redirectUnit();
-        },
+    if (this.formGroup?.invalid) {
+      this._serviceMessage.addMessage({
+        type: 'warning',
+        message: 'Por favor, completar todos los campos requeridos',
       });
+      return;
+    }
+
+    this._loading.view(true);
+
+    const formResponse = {
+      form_id: this.form?.id!,
+      user_id: this.customer_id!,
+      customer_id: this.customer_id!,
+      field_responses: this.form!.fields.map((field) => {
+        return {
+          field_id: field.id!,
+          response_value:
+            this.formGroup?.controls[field.field_name].getRawValue() || ' . ',
+        };
+      }),
+    };
+    this._serviceForm.createFormResponse(formResponse).subscribe({
+      next: (value) => {
+        if (value.success) {
+          this._serviceMessage.addMessage({
+            type: 'success',
+            message: 'Formulario guardado exitosamente',
+          });
+        } else {
+          this._serviceMessage.addMessage({
+            type: 'error',
+            message: 'Error al guardar el formulario',
+          });
+        }
+        this._loading.view(false);
+        this.redirectUnit();
+      },
+      error: () => {
+        this.redirectUnit();
+      },
+    });
   }
 }

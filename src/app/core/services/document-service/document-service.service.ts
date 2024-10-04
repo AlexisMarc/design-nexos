@@ -6,7 +6,7 @@ import { RespData } from '@models';
   providedIn: 'root',
 })
 export class DocumentServiceService {
-  private api = 'http://127.0.0.1:8000/management/api';
+  private api = 'https://s84lfjkm-8000.use2.devtunnels.ms/management/api';
   private http = inject(HttpClient);
 
   cutImage(data: {
@@ -21,11 +21,7 @@ export class DocumentServiceService {
     );
   }
 
-  saveDocumentSign(
-    signature: string[],
-    customer_id: string,
-    meeting_id: string
-  ) {
+  saveDocumentSign(signature: string, customer_id: string, meeting_id: string) {
     return this.http.post<RespData<any>>(`${this.api}/units/save-signature`, {
       signature,
       customer_id,
@@ -60,7 +56,33 @@ export class DocumentServiceService {
 
   createQr(id_customer: string) {
     return this.http.post<
-      RespData<{ nombre: string; img: string; documento: string }>
+      RespData<{ nombre: string; img: string; documento: string }[]>
     >(`${this.api}/qr/create/${id_customer}`, {});
+  }
+
+  sentQr(
+    task_queu_id: number,
+    data: {
+      task_destination: string;
+      task_addressee: string;
+    }
+  ) {
+    return this.http.put<RespData<void>>(
+      `${this.api}/qr/update/${task_queu_id}`,
+      data
+    );
+  }
+
+  createPdfQr(
+    task_queu_id: number
+  ) {
+    return this.http.post<RespData<void>>(
+      `${this.api}/qr/create/pdf/${task_queu_id}`,
+      {}
+    );
+  }
+
+  downloadPDF(url: string) {
+    return this.http.get<Blob>(url);
   }
 }

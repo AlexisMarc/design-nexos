@@ -10,6 +10,7 @@ export interface RespData<T> {
     form?: RegisterForm;
     task_queu_id: number;
     form_response_id: number
+    url_pdf: string
   }
 
   export interface RespAuth {

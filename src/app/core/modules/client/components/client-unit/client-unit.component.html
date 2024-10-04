@@ -21,7 +21,8 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input #filter type="text" id="input-group-search"
+                <input #filterInput type="text" id="input-group-search" [(ngModel)]="filter"
+                (input)="onFilterValue()"
                     class="block w-full p-2 ps-10 text-sm text-neutral-900 bg-neutral-50 shadow rounded-2xl focus-visible:outline-brand-orange-500 focus:ring-brand-orange-500 focus:border-brand-orange-500"
                     placeholder="Buscar...">
             </div>
@@ -86,7 +87,7 @@
         <ng-scrollbar [orientation]="'vertical'" style="max-height: calc(100svh - 24rem);">
             <table class="w-full table-fixed">
                 <tbody class="odd:bg-neutral-50">
-                    @for (unit of units; track $index) {
+                    @for (unit of filterUnits; track $index) {
                     @if (validAdd(unit)) {
                     <tr class="rounded even:bg-neutral-100/25">
                         <td class="pl-4">

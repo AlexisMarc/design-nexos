@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, output } from '@angular/core';
 import {
   Subject,
   Observable,
@@ -9,6 +9,7 @@ import {
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 import { DocumentServiceService } from '@services';
 import { NxConfirmDialogService } from '@shared';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'client-scanner',
@@ -22,6 +23,9 @@ export class ClientScannerComponent implements OnInit, AfterViewInit {
   public deviceId: string = '';
   public errors: WebcamInitError[] = [];
   private _serviceConfirm = inject(NxConfirmDialogService);
+
+  public onClose = output<void>();
+  public onSave = output<string>();
 
   public webcamImage: WebcamImage | null = null;
 
@@ -248,6 +252,6 @@ export class ClientScannerComponent implements OnInit, AfterViewInit {
   }
 
   saveImage() {
-    console.log(this.webcamImage?.imageAsBase64)
+    this.onSave.emit(`data:image/jpeg;base64,${this.webcamImage!.imageAsBase64}`)
   }
 }

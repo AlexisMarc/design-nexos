@@ -1,4 +1,4 @@
-<div class="w-full h-fit">
+<div class="w-full h-svh fixed z-20 top-0 left-0 flex justify-center items-center backdrop-blur">
     <div class="w-full flex justify-center">
         @if (showWebcam) {
         <webcam [height]="height" [width]="width" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"

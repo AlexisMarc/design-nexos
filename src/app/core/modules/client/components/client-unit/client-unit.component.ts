@@ -14,7 +14,7 @@ import {
   NxConfirmDialogService,
 } from '@shared';
 import { DataSelectUnit, DataUnits } from '@store';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-client-unit',
@@ -22,12 +22,15 @@ import { Subscription } from 'rxjs';
   styleUrl: './client-unit.component.css',
 })
 export class ClientUnitComponent implements OnInit, OnDestroy {
+  filter: string = '';
+  private inputSubject: Subject<string> = new Subject<string>();
   values = { OneValue: 'Propietario', TwoValue: 'Apoderado' };
   public meeting?: meetingDataAll;
   public welcome?: MeetingWelcome;
   public id_customer?: string;
   public units: unit[] = [];
   public unitsSelect: unit[] = [];
+  public filterUnits: unit[] = [];
   public shall_ask_representation_document: boolean = false;
   public limit_raising_by_customer: number = -1;
   public unitCertificate: { [key: string]: boolean } = {};
@@ -52,6 +55,11 @@ export class ClientUnitComponent implements OnInit, OnDestroy {
 
   private initSubscription() {
     this._subscription.add(
+      this.inputSubject.pipe(debounceTime(500)).subscribe(() => {
+        this.filterUnit();
+      })
+    );
+    this._subscription.add(
       this._serviceColors.messages$.subscribe({
         next: (colors) => {
           this.colors = { ...colors };
@@ -66,6 +74,7 @@ export class ClientUnitComponent implements OnInit, OnDestroy {
             this.welcome = value.welcome;
             this.id_customer = value.id_customer;
             this.units = structuredClone(value.units) ?? [];
+            this.filterUnit();
             if (this.meeting) {
               if (this.meeting.shall_ask_representation_document) {
                 this.shall_ask_representation_document = true;
@@ -92,6 +101,21 @@ export class ClientUnitComponent implements OnInit, OnDestroy {
         })
       )
     );
+  }
+
+  onFilterValue() {
+    this.inputSubject.next('');
+  }
+
+  private filterUnit() {
+    if (this.filter === '') {
+      this.filterUnits = [...this.units];
+      return;
+    }
+    const filter = this.units.filter((unit) =>
+      unit.name.toUpperCase().includes(this.filter.toUpperCase())
+    );
+    this.filterUnits = [...filter];
   }
 
   private async redirectReset() {

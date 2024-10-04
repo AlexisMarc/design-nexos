@@ -15,7 +15,11 @@ import {
   DocumentServiceService,
   unitRelated,
 } from '@services';
-import { NxLoadingService, NxToastService } from '@shared';
+import {
+  NxConfirmDialogService,
+  NxLoadingService,
+  NxToastService,
+} from '@shared';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -27,7 +31,7 @@ export class ClientCertificateComponent implements OnInit {
   public meeting?: meetingDataAll;
   public welcome?: MeetingWelcome;
   public customer_id?: string;
-  private documents: { [key: string]: string } = {};;
+  private documents: { [key: string]: string } = {};
 
   values = { TwoValue: 'Entregado', OneValue: 'Entrega después' };
   private _store: Store<AppStore> = inject(Store<AppStore>);
@@ -42,6 +46,10 @@ export class ClientCertificateComponent implements OnInit {
   private _serviceColors = inject(ColorServiceService);
   private _serviceMessage = inject(NxToastService);
   private _loading = inject(NxLoadingService);
+  private _serviceConfirm = inject(NxConfirmDialogService);
+
+  public idUnit = 0;
+  public showScanner = false;
 
   ngOnInit(): void {
     this.initSubscription();
@@ -86,7 +94,7 @@ export class ClientCertificateComponent implements OnInit {
     );
     this.unitsSelect = [...filter];
     this.certificate = {};
-    if (! this.unitsSelect.length) this.redirectQr();
+    if (!this.unitsSelect.length) this.redirectQr();
     this.unitsSelect.forEach((unit) => {
       this.certificate[unit.id] = false;
     });
@@ -119,39 +127,45 @@ export class ClientCertificateComponent implements OnInit {
       });
       return;
     }
-    const docs: string [] = []
+    const docs: string[] = [];
     for (const key in this.documents) {
       if (this.documents.hasOwnProperty(key)) {
-        docs.push(this.documents[key])
+        docs.push(this.documents[key]);
       }
     }
+    this._loading.view(true);
     this._subscription.add(
-      this._serviceDoc.saveDocumentCertificate(docs, this.customer_id!,
-        this.meeting!.meeting_id.toString()).subscribe({
-        next: (value) => {
-          if (value.success) {
-            this._serviceMessage.addMessage({
-              type: 'success',
-              message: 'Poderes guardados exitosamente!',
-            });
-            this._loading.view(false);
-            this.redirectQr();
-          } else {
+      this._serviceDoc
+        .saveDocumentCertificate(
+          docs,
+          this.customer_id!,
+          this.meeting!.meeting_id.toString()
+        )
+        .subscribe({
+          next: (value) => {
+            if (value.success) {
+              this._serviceMessage.addMessage({
+                type: 'success',
+                message: 'Poderes guardados exitosamente!',
+              });
+              this._loading.view(false);
+              this.redirectQr();
+            } else {
+              this._serviceMessage.addMessage({
+                type: 'error',
+                message: 'Error en el guardar los poderes...',
+              });
+              this._loading.view(false);
+            }
+          },
+          error: () => {
             this._serviceMessage.addMessage({
               type: 'error',
               message: 'Error en el guardar los poderes...',
             });
             this._loading.view(false);
-          }
-        },
-        error: () => {
-          this._serviceMessage.addMessage({
-            type: 'error',
-            message: 'Error en el guardar los poderes...',
-          });
-          this._loading.view(false);
-        },
-      })
+          },
+        })
     );
   }
 
@@ -162,5 +176,36 @@ export class ClientCertificateComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  public scannerCertificate(id: number, reset: boolean = false) {
+    if (reset) {
+      this.idUnit = -1;
+      this.showScanner = false;
+      return;
+    }
+    this.idUnit = id;
+    this.showScanner = true;
+  }
+
+  public saveScanner(certificate: string) {
+    this.certificate[this.idUnit.toString()] = true;
+    this.documents[this.idUnit.toString()] = certificate;
+    this.scannerCertificate(0, true);
+  }
+
+  public clearCertificate(id: number) {
+    this._serviceConfirm.addConfirmDialog({
+      type: 'warning',
+      title: 'Confirmación de borrado',
+      message: 'Se perderá los datos subidos, ¿Esta seguro de continuar?',
+      buttons: {
+        primary: 'Aceptar',
+        secondary: 'Cancelar',
+      },
+      next: () => {
+        this.certificate[id.toString()] = false;
+      },
+    });
   }
 }

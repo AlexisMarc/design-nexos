@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { StatusClientRegister } from '@models';
 import { createReducer, on } from '@ngrx/store';
 import {
@@ -6,8 +5,8 @@ import {
   DataSelectUnit,
   DataUnits,
   DataWelcome,
-  FormResponseId,
   SetIdCustomer,
+  TaskQueuid,
 } from '@store';
 
 const initialState: StatusClientRegister = {
@@ -16,7 +15,7 @@ const initialState: StatusClientRegister = {
   id_customer: undefined,
   units: undefined,
   selectUnit: undefined,
-  form_response_id: undefined,
+  task_queu_id: undefined,
 };
 
 export const clientReducer = createReducer(
@@ -26,8 +25,8 @@ export const clientReducer = createReducer(
   on(SetIdCustomer, (state, { id_customer }) => ({ ...state, id_customer })),
   on(DataUnits, (state, { units }) => ({ ...state, units })),
   on(DataSelectUnit, (state, { selectUnit }) => ({ ...state, selectUnit })),
-  on(FormResponseId, (state, { form_response_id }) => ({
+  on(TaskQueuid, (state, { task_queu_id }) => ({
     ...state,
-    form_response_id,
+    task_queu_id,
   }))
 );

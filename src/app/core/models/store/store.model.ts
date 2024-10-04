@@ -33,5 +33,5 @@ export interface StatusClientRegister {
   id_customer: string | undefined;
   units: unit[] | undefined;
   selectUnit: ArrayUnits[] | undefined,
-  form_response_id: number | undefined
+  task_queu_id: number | undefined
 }

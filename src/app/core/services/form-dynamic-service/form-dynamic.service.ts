@@ -6,7 +6,7 @@ import { RegisterForm, RespData } from '@models';
   providedIn: 'root',
 })
 export class FormDynamicService {
-  private api = 'http://127.0.0.1:8000/management/api';
+  private api = 'https://s84lfjkm-8000.use2.devtunnels.ms/management/api';
   private http = inject(HttpClient);
 
   constructor() {}

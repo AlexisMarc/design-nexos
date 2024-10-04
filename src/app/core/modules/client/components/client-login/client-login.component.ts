@@ -146,6 +146,7 @@ export class ClientLoginComponent implements OnInit, OnChanges {
           message: 'Error al iniciar sesión en el evento...',
           life: 5000,
         });
+        this._loading.view(false);
       },
     });
   }

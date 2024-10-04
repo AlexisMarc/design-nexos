@@ -38,6 +38,7 @@ export class ControlErrorsDirective implements OnInit, OnDestroy {
       this.blurEvent$,
       this.ngControl.statusChanges!,
     ];
+    if(this.ngControl.statusChanges)
     merge(...observables)
       .pipe(takeUntil(this.destroy$))
       .subscribe(this._handleErrorSetText.bind(this));

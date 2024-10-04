@@ -6,50 +6,55 @@
             <span class="hidden text-xs font-medium text-neutral-600">{{welcome?.meeting_name}}</span>
         </div>
     </div>
-    <div class="w-full flex flex-col gap-4 max-w-lg">
+    <form [formGroup]="form" (ngSubmit)="sentQr()" class="w-full flex flex-col gap-4 max-w-lg">
         <span class="font-medium text-neutral-600">
             Por favor, seleccione el método de envío a través del cual recibirá el resumen de su preregistro y el código
             QR para la entrega presencial del dispositivo.
         </span>
-        <nx-toggle-switch [viewValues]="true" [values]="values"></nx-toggle-switch>
+        <nx-toggle-switch formControlName="task_destination" [viewValues]="true" [values]="values"></nx-toggle-switch>
         <label for="field-1" class="container-field">
-            <input id="field-1" type="text" class="peer">
+            <input formControlName="task_addressee" id="field-1" type="text" class="peer">
             <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
             </div>
         </label>
         <div class="flex gap-8 justify-between">
             <div class="flex gap-2 flex-1">
-                <button class="b-secondary !bg-neutral-100 p-2 b-fit">
+                <button (click)="downloadPdfQr(true)" type="button" class="b-secondary !bg-neutral-100 p-2 b-fit">
                     <svg class="w-6 h-6 fill-neutral-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                         <path
                             d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
                     </svg>
                 </button>
-                <button class="b-secondary !bg-neutral-100 p-2 b-fit">
+                <button (click)="downloadPdfQr(false)" type="button" class="b-secondary !bg-neutral-100 p-2 b-fit">
                     <svg class="w-6 h-6 fill-neutral-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                         <path
                             d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z" />
                     </svg>
                 </button>
             </div>
-            <button [ngStyle]="{backgroundColor: colors.primary}" class="b-primary px-16 py-2">Enviar</button>
+            <button type="submit" [ngStyle]="{backgroundColor: colors.primary}"
+                class="b-primary px-16 py-2">Enviar</button>
         </div>
-    </div>
-    <ng-scrollbar style="max-width: 42rem; width: 100%;">
+    </form>
+    <ng-scrollbar orientation="vertical" visibility="hover" style="max-width: 42rem; width: 100%;">
         <div class="w-full flex gap-8 max-w-2xl mt-8 select-none">
-            @if(false){<div class="w-fit min-w-fit rounded-lg p-8 relative h-fit flex gap-4 overflow-hidden bg-neutral-50">
-                <img class="w-24 relative z-10 rounded-lg"
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKQAAACkAQAAAAAxzrjsAAABYElEQVR4nO2WO47kQAxDnwzn1A36/sfyDagTcILu2WA+C6yhYDEYRVUMHugqSuUKn2uOL0T4VW+pVdXd1T1TXVW9wSVRIoNQiBLFO19RTctwDU31DcLnOt8XbVqhbzn7VtWFmun7hA91AqFdbqOC0BvcCgX6sx+QF/rthAA0E9o3CN/mDCIBxCJoJWcVyqDmAhqNvDF3SIwERMHa6gsSRUaObILZ4wakWETOGjcmtmRJjpM1v5ZxILLiLW5si9hxpEW/Mo4gttBaHmIiJc9r005fHFCiLqYRdDPe6+Ngy8HJXs6kIFkCwVIeToA24hLzQJV/JPzt3p4xCE6krZw5CYZgeTFnwpITpMDS/D3AkYch0Modwtd+AUXi9XDs5OEAJQxjRGMeK35PoAQTekwXs8J9qZ0aR4C8yaWkGQDvnMMBxCB40JLqrrMP9cyDjDHCsDUfnpENIbx2/8kf/w9Q3wAakg5HOANUMgAAAABJRU5ErkJggg=="
-                    alt="QR">
+            @for (qr of qrArray; track $index) {
+            <div class="w-fit min-w-fit rounded-lg p-8 relative h-fit flex gap-4 overflow-hidden bg-neutral-50">
+                <img class="w-40 h-40 min-w-40 relative z-10 rounded-lg" [src]="qr.img" alt="QR">
                 <div class="flex flex-col relative z-10 gap-8">
-                    <span class="font-bold text-lg text-neutral-50">Nombre de unidad</span>
+                    <span class="font-bold text-lg text-neutral-50">{{qr.nombre}}</span>
                     <div class="flex flex-col">
                         <span class="text-xs text-neutral-400 font-medium">Nombre del usuario</span>
-                        <span class="font-black text-sm">Nombre del usuario</span>
+                        <span class="font-black text-sm">{{qr.nombre}}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-neutral-400 font-medium">Número de identificació</span>
+                        <span class="font-black text-sm">{{qr.documento}}</span>
                     </div>
                 </div>
                 <div [ngStyle]="{backgroundColor: colors.primary}" class="absolute top-0 left-0 w-full h-20"></div>
-            </div>}
+            </div>
+            }
         </div>
     </ng-scrollbar>
 </div>
