@@ -16,7 +16,7 @@
                 </div>
                 }
                 @case ('warning') {
-                <div
+                <div [ngStyle]="style"
                     class="rounded-full bg-brand-orange-500 flex items-center justify-center w-12 h-12 flex-shrink-0 mx-auto">
                     <svg class="w-6 h-6 fill-neutral-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                         <path
@@ -63,7 +63,7 @@
                     {{message.buttons.secondary}}
                 </button>
                 }
-                <button (click)="clickButton('primary')" id="confirm-delete-btn"
+                <button [ngStyle]="style" (click)="clickButton('primary')" id="confirm-delete-btn"
                     class="px-4 py-1 w-full md:w-fit b-primary">
                     {{message.buttons.primary}}
                 </button>

@@ -11,6 +11,7 @@ export interface RespData<T> {
     task_queu_id: number;
     form_response_id: number
     url_pdf: string
+    pdf_base64: string
   }
 
   export interface RespAuth {

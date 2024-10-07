@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, inject, OnInit, output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  output,
+} from '@angular/core';
 import {
   Subject,
   Observable,
@@ -7,22 +14,25 @@ import {
   fromEvent,
 } from 'rxjs';
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
-import { DocumentServiceService } from '@services';
+import { colorsDynamic, ColorServiceService } from '@services';
 import { NxConfirmDialogService } from '@shared';
-import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'client-scanner',
   templateUrl: './client-scanner.component.html',
   styleUrl: './client-scanner.component.css',
 })
-export class ClientScannerComponent implements OnInit, AfterViewInit {
+export class ClientScannerComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   public width = 300;
   public height = 700;
   public showWebcam = true;
   public deviceId: string = '';
+  public colors!: colorsDynamic;
   public errors: WebcamInitError[] = [];
   private _serviceConfirm = inject(NxConfirmDialogService);
+  private _serviceColors = inject(ColorServiceService);
 
   public onClose = output<void>();
   public onSave = output<string>();
@@ -52,7 +62,11 @@ export class ClientScannerComponent implements OnInit, AfterViewInit {
     boolean | string
   >();
   private _subscription = new Subscription();
-  private _serviceDoc = inject(DocumentServiceService);
+  //private _serviceDoc = inject(DocumentServiceService);
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
 
   public ngOnInit(): void {
     this.setInnerSizes();
@@ -66,6 +80,13 @@ export class ClientScannerComponent implements OnInit, AfterViewInit {
         .subscribe(() => {
           this.setInnerSizes();
         })
+    );
+    this._subscription.add(
+      this._serviceColors.messages$.subscribe({
+        next: (colors) => {
+          this.colors = { ...colors };
+        },
+      })
     );
   }
 
@@ -248,10 +269,13 @@ export class ClientScannerComponent implements OnInit, AfterViewInit {
         this.showWebcam = true;
         this.webcamImage = null;
       },
+      style: { backgroundColor: this.colors.primary },
     });
   }
 
   saveImage() {
-    this.onSave.emit(`data:image/jpeg;base64,${this.webcamImage!.imageAsBase64}`)
+    this.onSave.emit(
+      `data:image/jpeg;base64,${this.webcamImage!.imageAsBase64}`
+    );
   }
 }

@@ -13,6 +13,7 @@ export interface messageConfirmDialog {
   next: () => void;
   cancel?: () => void;
   exit?: () => void;
+  style?: { [klass: string]: string }
 }
 
 @Injectable({

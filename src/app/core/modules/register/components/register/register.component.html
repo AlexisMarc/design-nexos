@@ -13,7 +13,7 @@
         </div>
         <nx-progress-bar [items]="items" (emitSelect)="selectSection($event)"></nx-progress-bar>
     </div>
-    <div class="flex-1 flex flex-col bg-white rounded-2xl border-2 border-neutral-100 p-4 md:p-8 gap-8">
+    <div class="flex-1 flex flex-col bg-white rounded-2xl border-2 border-neutral-100 p-4 md:p-4 gap-2">
         @if (!selectedSection) {
         <div class="w-full flex gap-2 items-center">
             <nx-search-resident class="flex-1" [selectedResident]="resident"
@@ -24,14 +24,39 @@
                     <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
                 </svg>
             </button>
-            <button type="button" (click)="settingsRegister('clone')" class="b-secondary px-4 py-2 b-fit">Clonar</button>
+            <button type="button" (click)="settingsRegister('clone')"
+                class="b-secondary px-4 py-2 b-fit hidden">Clonar</button>
             <button type="button" (click)="settingsRegister('edit')" class="b-primary px-4 py-2 b-fit">Editar</button>
             }
         </div>
         }
+        @if(statusProcess!=='pending' && selectedSection===0){
+        <div class="flex items-center text-xs text-brand-orange-400 rounded-lg px-2" role="alert">
+            <svg class="flex-shrink-0 fill-brand-orange-500 inline w-4 h-4 me-2" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div class="flex gap-1">
+                <span class="font-black">Importante:</span>
+                @switch (statusProcess) {
+                @case ('create') {
+                <span>Se encuentra realizando un proceso de creando</span>
+                }
+                @case ('edit') {
+                <span>Se encuentra realizando un proceso de edición</span>
+                }
+                @case ('clone') {
+                <span>Se encuentra realizando un proceso de clonación</span>
+                }
+                }
+            </div>
+        </div>
+        }
         @switch (selectedSection) {
-        @case (0) {<register-form-config (onNext)="NextOrAfter(true, 0)" (onCustomize)="setCustomize($event)" [statusCustomize]="statusCustomize"
-            [disabled]="disabled"></register-form-config>}
+        @case (0) {<register-form-config (onNext)="NextOrAfter(true, 0)" (onCustomize)="setCustomize($event)"
+            [statusCustomize]="statusCustomize" [disabled]="disabled"></register-form-config>}
         @case (1) {<register-form-customize (onNext)="NextOrAfter(true, 1)"
             (onAfter)="NextOrAfter(false, 1)"></register-form-customize>}
         @case (2) {<register-form-design [statusProcess]="statusProcess" (onNext)="NextOrAfter(true, 2, $event)"

@@ -6,7 +6,7 @@ import { RespData } from '@models';
   providedIn: 'root',
 })
 export class DocumentServiceService {
-  private api = 'https://s84lfjkm-8000.use2.devtunnels.ms/management/api';
+  private api = 'https://1ztx4msj-8000.use2.devtunnels.ms/management/api';
   private http = inject(HttpClient);
 
   cutImage(data: {
@@ -56,7 +56,9 @@ export class DocumentServiceService {
 
   createQr(id_customer: string) {
     return this.http.post<
-      RespData<{ nombre: string; img: string; documento: string }[]>
+      RespData<
+        { nombre: string; img: string; documento: string; unidad: string }[]
+      >
     >(`${this.api}/qr/create/${id_customer}`, {});
   }
 
@@ -73,16 +75,56 @@ export class DocumentServiceService {
     );
   }
 
-  createPdfQr(
-    task_queu_id: number
-  ) {
+  createPdfQr(task_queu_id: number) {
     return this.http.post<RespData<void>>(
       `${this.api}/qr/create/pdf/${task_queu_id}`,
       {}
     );
   }
 
-  downloadPDF(url: string) {
-    return this.http.get<Blob>(url);
+  downloadBase64PDF(base64: string, filename: string) {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  printBase64PDF(base64: string) {
+    try {
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = url;
+      document.body.appendChild(iframe);
+
+      iframe.onload = function () {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+      };
+    } catch (error) {
+      console.error('Error al intentar imprimir el archivo PDF:', error);
+    }
   }
 }

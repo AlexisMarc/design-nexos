@@ -1,9 +1,9 @@
 @if(form&&formGroup){
-<div class="w-full flex-1 min-w-[56rem] rounded-2xl p-8 bg-white/50 backdrop-blur-md shadow">
-    <ng-scrollbar [orientation]="'vertical'" style="max-height: 80svh;">
+<div class="w-full flex-1 md:min-w-[56rem] rounded-2xl p-8 bg-white/50 backdrop-blur-md shadow">
+    <ng-scrollbar [orientation]="'vertical'" style="max-height: 85svh;">
         <form [formGroup]="formGroup" (ngSubmit)="saveForm()"
-            class="w-full h-fit p-8 rounded-2xl bg-white grid grid-cols-2 gap-8">
-            <div class="col-span-2 flex gap-4 items-center">
+            class="w-full h-fit p-8 rounded-2xl bg-white grid md:grid-cols-2 gap-8">
+            <div class="md:col-span-2 flex gap-4 items-center">
                 <span class="text-neutral-900 font-bold text-3xl flex-1">{{form.name}}</span>
                 <img class="w-36" src="/assets/img/LOGO-NEXOSPH-SIN-JIRAFAS-140X40.png" alt="icon-form">
             </div>
@@ -71,8 +71,8 @@
                 </div>
             </label>
             }
-            @case ('select') {<nx-dropdown-field [formControlName]="field.field_name"
-                [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [items]="field.options"></nx-dropdown-field>}
+            @case ('select') {<div class="w-full h-fit"><nx-dropdown-field [formControlName]="field.field_name"
+                [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" [items]="field.options"></nx-dropdown-field></div>}
             @case ('textarea') {
             <label for="textarea" [ngClass]="{'!bg-brand-orange-100': field.wrap == 'hard'}" class="container-field">
                 <span>{{field.label_name}}</span>
@@ -126,7 +126,7 @@
             @case ('hidden') {}
             }
             }
-            <div class="col-span-2 flex justify-end mt-6">
+            <div class="md:col-span-2 flex justify-end mt-6">
                 <button class="px-8 py-2 b-primary" [ngStyle]="{backgroundColor: colors.primary}"
                     type="submit">Guardar</button>
             </div>

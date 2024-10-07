@@ -4,8 +4,8 @@
         <div class="flex gap-4 items-center pt-4 w-full">
             <div [ngStyle]="{backgroundColor: colors.primary}" class="w-4 h-10 rounded-full"></div>
             <div class="flex flex-col flex-1">
-                <span class="text-2xl text-neutral-900 font-black">Manuscrito / Firma</span>
-                <span class="text-xs font-medium text-neutral-600">Nombre del cliente</span>
+                <span class="text-2xl text-neutral-900 font-black">Firma</span>
+                <span class="text-xs font-medium text-neutral-600">{{meeting?.name}}</span>
             </div>
         </div>
         <signature-pad #sign class="w-fit h-fit bg-neutral-200 rounded-2xl" [options]="signaturePadOptions"

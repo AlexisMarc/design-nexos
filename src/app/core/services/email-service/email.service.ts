@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmailService {
-  private api = 'https://s84lfjkm-8000.use2.devtunnels.ms/management/api';
+  private api = 'https://1ztx4msj-8000.use2.devtunnels.ms/management/api';
   private http = inject(HttpClient);
 
   constructor() {}
@@ -19,6 +19,13 @@ export class EmailService {
   public getTemplateEmail() {
     return this.http.get<RespData<emailTemplate[]>>(
       this.api + '/email/list/actives'
+    );
+  }
+
+  public sendEmail(data: {email: string, file_path: string}) {
+    const file_name = data.file_path.split('/').at(-1);
+    return this.http.post<RespData<emailTemplate[]>>(
+      this.api + '/qr/sendEmail', {...data, file_name}
     );
   }
 }

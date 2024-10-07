@@ -292,6 +292,20 @@ export class ModelerFormRegisterComponent implements OnInit {
   }
 
   selectedField(field: registerField, index: number) {
+    const array = [
+      'primer_nombre',
+      'segundo_nombre',
+      'primer_apellido',
+      'segundo_apellido',
+      'numero_documento',
+    ];
+    if (array.includes(field.field_name)) {
+      this._serviceMessage.addMessage({
+        type: 'warning',
+        message: 'Este campo no es editable...',
+      });
+      return;
+    }
     this.formField.patchValue({ ...field });
     this.fieldSelect = field;
     this.indexFieldSelect = index;

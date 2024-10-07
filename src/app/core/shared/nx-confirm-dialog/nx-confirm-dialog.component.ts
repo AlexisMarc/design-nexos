@@ -1,10 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import {
   messageConfirmDialog,
   NxConfirmDialogService,
@@ -31,12 +26,14 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ],
 })
 export class NxConfirmDialogComponent implements OnInit {
+  style?: { [klass: string]: string };
   private _service = inject(NxConfirmDialogService);
   message?: messageConfirmDialog;
   ngOnInit(): void {
     this._service.messages$.subscribe({
       next: (value) => {
         this.message = value;
+        this.style = value?.style;
       },
     });
   }

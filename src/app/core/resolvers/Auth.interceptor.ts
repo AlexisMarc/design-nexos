@@ -2,7 +2,7 @@ import type { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authToken =
-    'z3f2wyXekQzkahwiX2PD80W6D2c4g7fe36kXGTcF2sZhPuuSynEqfTeKGEHM';
+    'WBcNqtUc82n4rcesdq55feoRWKrAhxzI354n8QaChGPxMDriLaJyqvsQcaZP';
 
   if (req.url.includes('/management/api')) {
     const authReq = req.clone({

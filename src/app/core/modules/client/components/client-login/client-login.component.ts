@@ -46,9 +46,10 @@ export class ClientLoginComponent implements OnInit, OnChanges {
       NxValidators.minLength(5),
       NxValidators.maxLength(15),
     ]),
+    recaptcha: new FormControl('')
   });
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(_: SimpleChanges): void {}
 
   ngOnInit(): void {
     this.initSubscription();
@@ -80,10 +81,6 @@ export class ClientLoginComponent implements OnInit, OnChanges {
   private initValues({ login_with_credentials }: meetingDataAll) {
     this.requerid = login_with_credentials!!;
     if (this.requerid) this.setValidationsForm();
-    else
-      this.form.controls['document_number'].addValidators(
-        NxValidators.required()
-      );
   }
 
   private setValidationsForm() {
@@ -123,6 +120,10 @@ export class ClientLoginComponent implements OnInit, OnChanges {
     value.document_number = document_number!;
     if (this.requerid) {
       value.password = password!;
+    } else {
+      this._loading.view(false);
+      this.redirectForm();
+      return;
     }
     this._serviceMeeting.loginMeeting(value).subscribe({
       next: (result) => {

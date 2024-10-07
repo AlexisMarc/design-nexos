@@ -35,7 +35,7 @@ export interface loginMeeting {
   providedIn: 'root',
 })
 export class MeetingDataService {
-  private api = 'https://s84lfjkm-8000.use2.devtunnels.ms/management/api';
+  private api = 'https://1ztx4msj-8000.use2.devtunnels.ms/management/api';
   private http = inject(HttpClient);
 
   constructor() {}

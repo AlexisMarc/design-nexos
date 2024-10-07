@@ -19,6 +19,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import {WebcamModule} from 'ngx-webcam';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ControlErrorsDirective, FormSubmitDirective } from '@directives';
+import { RecaptchaModule } from "ng-recaptcha-2";
 @NgModule({
   declarations: [
     ClientComponent,
@@ -44,6 +45,7 @@ import { ControlErrorsDirective, FormSubmitDirective } from '@directives';
     FormSubmitDirective,
     ControlErrorsDirective,
     SignaturePadModule,
+    RecaptchaModule
   ],
 })
 export class CLientModule {}

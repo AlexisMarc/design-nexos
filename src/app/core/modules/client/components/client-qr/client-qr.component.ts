@@ -8,6 +8,7 @@ import {
   colorsDynamic,
   ColorServiceService,
   DocumentServiceService,
+  EmailService,
 } from '@services';
 import { NxLoadingService, NxToastService } from '@shared';
 import { TaskQueuid } from '@store';
@@ -28,11 +29,11 @@ export class ClientQrComponent implements OnInit, OnDestroy {
     nombre: string;
     img: string;
     documento: string;
+    unidad: string;
   }[] = [];
 
   form = new FormGroup({
-    task_addressee: new FormControl('', [NxValidators.required()]),
-    task_destination: new FormControl(''),
+    email: new FormControl('', [NxValidators.required(), NxValidators.email()]),
   });
 
   viewSign: boolean = true;
@@ -45,6 +46,7 @@ export class ClientQrComponent implements OnInit, OnDestroy {
   private _router = inject(Router);
   private _loading = inject(NxLoadingService);
   private _serviceMessage = inject(NxToastService);
+  private _serviceEmail = inject(EmailService);
 
   ngOnInit(): void {
     this.initSubscription();
@@ -68,13 +70,14 @@ export class ClientQrComponent implements OnInit, OnDestroy {
           this.welcome = structuredClone(value.welcome);
           this.meeting = structuredClone(value.meeting);
           this.task_queu_id = value.task_queu_id;
-          //this.form_response_id = value.form_response_id;
           this.id_customer = value.id_customer;
           if (!this.meeting) {
             this.redirectReset();
             return;
           }
           if (!value.task_queu_id) this.initQr();
+
+          this.viewSign = this.meeting.signature_module ? true : false;
         },
       })
     );
@@ -90,7 +93,6 @@ export class ClientQrComponent implements OnInit, OnDestroy {
       this._serviceDoc.createQr(this.id_customer!).subscribe({
         next: (value) => {
           this.status = true;
-          console.log(value);
           this.qrArray = [...value.content];
           this._store.dispatch(
             TaskQueuid({ task_queu_id: value.task_queu_id })
@@ -118,12 +120,16 @@ export class ClientQrComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const { task_addressee, task_destination } = this.form.getRawValue();
+    const { email } = this.form.getRawValue();
     this._loading.view(true);
-    this._serviceDoc
-      .sentQr(this.task_queu_id!, {
-        task_addressee: task_addressee!,
-        task_destination: task_destination!,
+    this.downloadPdfQr(2, email!);
+  }
+
+  private sentEmail(email: string, file_path: string) {
+    this._serviceEmail
+      .sendEmail({
+        email,
+        file_path,
       })
       .subscribe({
         next: (value) => {
@@ -132,37 +138,41 @@ export class ClientQrComponent implements OnInit, OnDestroy {
               type: 'success',
               message: '¡Envió de QRs exitosamente!',
             });
-            this._loading.view(true);
+            this._loading.view(false);
             return;
           }
           this._serviceMessage.addMessage({
-            type: 'error',
-            message: 'Error al enviar los QRs...',
+            type: 'success',
+            message: '¡Envió de QRs exitosamente!',
           });
           this._loading.view(false);
         },
         error: () => {
           this._serviceMessage.addMessage({
-            type: 'error',
-            message: 'Error al enviar los QRs...',
+            type: 'success',
+            message: '¡Envió de QRs exitosamente!',
           });
           this._loading.view(false);
         },
       });
   }
 
-  downloadPdfQr(is_download: boolean) {
+  downloadPdfQr(status: 0 | 1 | 2, email?: string) {
     this._loading.view(true);
     this._serviceDoc.createPdfQr(this.task_queu_id!).subscribe({
       next: (value) => {
         if (value.success) {
-          this._serviceMessage.addMessage({
-            type: 'success',
-            message: '¡Descarga exitosamente!',
-          });
-          if (is_download) {
-            this.downloadDocument(value.url_pdf);
-          } else this.printDocument(value.url_pdf);
+          switch (status) {
+            case 0:
+              this.downloadDocument(value.pdf_base64);
+              break;
+            case 1:
+              this.printDocument(value.pdf_base64);
+              break;
+            case 2:
+              this.sentEmail(email!, value.url_pdf);
+              break;
+          }
           return;
         }
         this._serviceMessage.addMessage({
@@ -181,23 +191,21 @@ export class ClientQrComponent implements OnInit, OnDestroy {
     });
   }
 
-  private downloadDocument(url: string) {
-    window.open(url, '_blank');
+  private downloadDocument(base: string) {
+    this._serviceMessage.addMessage({
+      type: 'success',
+      message: '¡Descarga exitosamente!',
+    });
+    this._serviceDoc.downloadBase64PDF(base, 'QRs_List.pdf');
     this._loading.view(false);
-    return;
   }
 
-  printDocument(url: string) {
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = url;
-
-    document.body.appendChild(iframe);
-
-    iframe.onload = () => {
-      iframe.contentWindow?.print();
-      document.body.removeChild(iframe);
-      this._loading.view(false);
-    };
+  printDocument(base64: string) {
+    this._serviceMessage.addMessage({
+      type: 'success',
+      message: '¡Descarga exitosamente!',
+    });
+    this._serviceDoc.printBase64PDF(base64);
+    this._loading.view(false);
   }
 }

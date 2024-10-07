@@ -9,13 +9,14 @@
         </div>
     </div>
     <form [formGroup]="form" (ngSubmit)="saveLogin()" class="w-full flex flex-col gap-4 mt-8">
+
+        @if (requerid) {
         <label for="document_number" class="container-field">
             <span>Número de identificación</span>
             <input id="document_number" type="text" class="peer" formControlName="document_number">
             <div class="focus-field peer-focus-visible:border-brand-orange-500 peer-focus-visible:border-2">
             </div>
         </label>
-@if (requerid) {
         <label for="password" class="container-field">
             <span>Contraseña</span>
             <input id="password" type="password" class="peer" formControlName="password">
@@ -23,8 +24,9 @@
             </div>
         </label>
         }
-        
-        <img class="h-20 w-fit" src="assets/img/recatcha.png" alt="recatcha">
+        <div class="w-full">
+            <re-captcha formControlName="recaptcha" siteKey="6LfSkGQgAAAAAMRE2X1FxuhhGu0meHn7uF4NSJav"></re-captcha>
+        </div>
         <div class="w-full flex gap-2 items-center">
             <nx-toggle-switch [values]="values" formControlName="accept_polity"></nx-toggle-switch>
             <p class="text-xs">Acepto los

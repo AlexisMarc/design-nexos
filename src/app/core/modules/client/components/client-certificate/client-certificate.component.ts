@@ -118,8 +118,7 @@ export class ClientCertificateComponent implements OnInit {
       this.documents[index.toString()] = doc;
     }
   }
-
-  public saveCertificate() {
+  public confirmSaveCertificate() {
     if (!this.validCertificate()) {
       this._serviceMessage.addMessage({
         type: 'warning',
@@ -127,6 +126,21 @@ export class ClientCertificateComponent implements OnInit {
       });
       return;
     }
+    this._serviceConfirm.addConfirmDialog({
+      type: 'warning',
+      title: 'Confirmación de envió',
+      message: '¿Está seguro de enviar los poderes cargados?',
+      buttons: {
+        primary: 'Aceptar',
+        secondary: 'Cancelar'
+      }, 
+      next: ()=>{
+        this.saveCertificate();
+      },
+      style: {backgroundColor: this.colors.primary}
+    })
+  }
+  private saveCertificate() {
     const docs: string[] = [];
     for (const key in this.documents) {
       if (this.documents.hasOwnProperty(key)) {
@@ -206,6 +220,7 @@ export class ClientCertificateComponent implements OnInit {
       next: () => {
         this.certificate[id.toString()] = false;
       },
+      style: {backgroundColor: this.colors.primary}
     });
   }
 }

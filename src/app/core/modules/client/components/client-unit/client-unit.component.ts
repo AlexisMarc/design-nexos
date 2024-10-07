@@ -156,7 +156,7 @@ export class ClientUnitComponent implements OnInit, OnDestroy {
     );
 
     this._subscription.add(
-      this._serviceUnit.getUnitsByMeetingIdByCustomer(meeting_id, 9).subscribe({
+      this._serviceUnit.getUnitsByMeetingIdByCustomer(meeting_id, this.id_customer!).subscribe({
         next: (value) => {
           if (value.success) {
             if (value.content && value.content.length) {
@@ -195,6 +195,7 @@ export class ClientUnitComponent implements OnInit, OnDestroy {
         const units = this.unitsSelect.filter((_, index) => unit !== index);
         this.unitsSelect = [...units];
       },
+      style: {backgroundColor: this.colors.primary}
     });
   }
 
@@ -234,6 +235,7 @@ export class ClientUnitComponent implements OnInit, OnDestroy {
       next: () => {
         this.saveRelated();
       },
+      style: {backgroundColor: this.colors.primary}
     });
   }
 

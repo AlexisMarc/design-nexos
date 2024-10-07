@@ -16,7 +16,7 @@ export interface ArrayUnits {
   providedIn: 'root',
 })
 export class UnitServiceService {
-  private api = 'https://s84lfjkm-8000.use2.devtunnels.ms/management/api';
+  private api = 'https://1ztx4msj-8000.use2.devtunnels.ms/management/api';
   private http = inject(HttpClient);
   constructor() {}
 
@@ -26,7 +26,7 @@ export class UnitServiceService {
 
   public getUnitsByMeetingIdByCustomer(
     meeting_id: string,
-    customize_id: number
+    customize_id: string
   ) {
     return this.http.get<RespData<unit[]>>(
       `${this.api}/units/meeting/${meeting_id}/${customize_id}`

@@ -13,8 +13,10 @@ import {
   colorsDynamic,
   ColorServiceService,
   FormDynamicService,
+  MeetingDataService,
 } from '@services';
 import { NxToastService, NxLoadingService } from '@shared';
+import { SetIdCustomer } from '@store';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -27,6 +29,7 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
   public welcome?: MeetingWelcome;
   public form?: RegisterForm;
   private customer_id?: string;
+  private login_with_credentials = false;
   public formGroup?: FormGroup<{ [key: string]: FormControl<string> }>;
 
   public colors!: colorsDynamic;
@@ -35,9 +38,9 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
   private _router = inject(Router);
   private _store: Store<AppStore> = inject(Store<AppStore>);
   private _serviceMessage = inject(NxToastService);
-  //private _serviceMeeting = inject(MeetingDataService);
   private _loading = inject(NxLoadingService);
   private _serviceForm = inject(FormDynamicService);
+  private _serviceMeeting = inject(MeetingDataService);
 
   ngOnInit(): void {
     this.initSubscription();
@@ -63,7 +66,10 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
           this.welcome = value.welcome;
           this.customer_id = value.id_customer;
           if (this.meeting) {
-            this.initDynamicForm(this.meeting.meeting_id);
+            this.initDynamicForm(
+              this.meeting.meeting_id,
+              this.meeting.login_with_credentials
+            );
           } else {
             this.redirectReset();
           }
@@ -80,7 +86,8 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
     await this._router.navigate(['client/unit']);
   }
 
-  private initDynamicForm(meeting_id: number) {
+  private initDynamicForm(meeting_id: number, login_with_credentials: boolean) {
+    this.login_with_credentials = login_with_credentials!!;
     this._loading.view(true);
     if (this.form) {
       this._loading.view(false);
@@ -146,6 +153,51 @@ export class ClientDynamicFormComponent implements OnInit, OnDestroy {
         };
       }),
     };
+    debugger
+    if (!this.login_with_credentials) {
+      const document_number =
+        this.formGroup?.controls['numero_documento'].getRawValue() || '';
+      this.loginMeeting(document_number, formResponse);
+
+      return;
+    }
+    this.registerForm(formResponse);
+  }
+
+  private loginMeeting(document_number: string, formResponse: any) {
+    this._serviceMeeting.loginMeeting({ document_number }).subscribe({
+      next: (result) => {
+        if (result.success && result.id_customer) {
+          this._store.dispatch(
+            SetIdCustomer({ id_customer: result.id_customer.toString() })
+          );
+          this.registerForm({
+            ...formResponse,
+            user_id: result.id_customer.toString(),
+            customer_id: result.id_customer.toString(),
+          });
+          return;
+        } else {
+          this._serviceMessage.addMessage({
+            type: 'warning',
+            message:
+              'Usuario no encontrado en el sistema por favor comunicarse con el administrador...',
+          });
+        }
+        this._loading.view(false);
+      },
+      error: () => {
+        this._serviceMessage.addMessage({
+          type: 'error',
+          message: 'Error al consultar el usuario...',
+          life: 5000,
+        });
+        this._loading.view(false);
+      },
+    });
+  }
+
+  private registerForm(formResponse: any) {
     this._serviceForm.createFormResponse(formResponse).subscribe({
       next: (value) => {
         if (value.success) {

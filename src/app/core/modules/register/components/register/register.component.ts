@@ -40,6 +40,7 @@ import {
   DataTemplate,
   MeetingId,
 } from '@store';
+import { DYNAMIC_FORM_DATA_DEFAULT } from '@constants';
 
 @Component({
   selector: 'app-register',
@@ -102,9 +103,7 @@ export class RegisterComponent implements OnInit, OnChanges, OnDestroy {
   private _serviceForm = inject(FormDynamicService);
   private _loading = inject(NxLoadingService);
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes['disabled']);
-  }
+  ngOnChanges(_: SimpleChanges): void {}
 
   ngOnInit(): void {
     this.initData();
@@ -396,6 +395,10 @@ export class RegisterComponent implements OnInit, OnChanges, OnDestroy {
         });
         return;
       }
+      if (!this.statusCustomize) {
+        this.saveDataAll();
+        return;
+      }
     }
     if (isSave) {
       this.saveDataAll();
@@ -442,8 +445,11 @@ export class RegisterComponent implements OnInit, OnChanges, OnDestroy {
       this._serviceMeetingData.createMeetingData(data).subscribe({
         next: (value) => {
           if (value.success) {
-            if (value.meeting_id && this.form) {
-              this.saveDynamicForm(value.meeting_id, this.form);
+            if (value.meeting_id) {
+              this.saveDynamicForm(
+                value.meeting_id,
+                this.form ?? DYNAMIC_FORM_DATA_DEFAULT
+              );
               return;
             }
             this._serviceMessage.addMessage({
@@ -480,8 +486,11 @@ export class RegisterComponent implements OnInit, OnChanges, OnDestroy {
         .subscribe({
           next: (value) => {
             if (value.success) {
-              if (this.meeting_id && this.form) {
-                this.saveDynamicForm(this.meeting_id, this.form);
+              if (this.meeting_id) {
+                this.saveDynamicForm(
+                  this.meeting_id,
+                  this.form ?? DYNAMIC_FORM_DATA_DEFAULT
+                );
                 return;
               }
               this._serviceMessage.addMessage({
@@ -515,33 +524,35 @@ export class RegisterComponent implements OnInit, OnChanges, OnDestroy {
     const form_id = form.id;
     if (form_id) {
       this._subscription.add(
-        this._serviceForm.updateDynamicForm(form_id,{ ...form, meeting_id }).subscribe({
-          next: (value) => {
-            if (value.success) {
-              this._serviceMessage.addMessage({
-                type: 'success',
-                message: '¡Información editada exitosamente!',
-                life: 5000,
-              });
-              this.resetAll();
-            } else {
+        this._serviceForm
+          .updateDynamicForm(form_id, { ...form, meeting_id })
+          .subscribe({
+            next: (value) => {
+              if (value.success) {
+                this._serviceMessage.addMessage({
+                  type: 'success',
+                  message: '¡Información editada exitosamente!',
+                  life: 5000,
+                });
+                this.resetAll();
+              } else {
+                this._serviceMessage.addMessage({
+                  type: 'error',
+                  message: 'Error al editar el formulario...',
+                  life: 5000,
+                });
+              }
+              this._loading.view(false);
+            },
+            error: () => {
               this._serviceMessage.addMessage({
                 type: 'error',
-                message: 'Error al editar el formulario...',
+                message: 'Error al editar la información...',
                 life: 5000,
               });
-            }
-            this._loading.view(false);
-          },
-          error: () => {
-            this._serviceMessage.addMessage({
-              type: 'error',
-              message: 'Error al editar la información...',
-              life: 5000,
-            });
-            this._loading.view(false);
-          },
-        })
+              this._loading.view(false);
+            },
+          })
       );
       return;
     }
